@@ -22,7 +22,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/actionBarSize"
                 app:title="@string/register_appbar_title"
-                app:titleCentered="true"
                 tools:ignore="MissingConstraints">
 
             </com.google.android.material.appbar.MaterialToolbar>
@@ -39,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="200dp"
             app:helperText="@string/example_email"
             app:helperTextEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -95,64 +94,8 @@
             app:layout_constraintTop_toBottomOf="@id/til_password_register"
             tools:text="@string/register_btn_text" />
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_1_register"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="28dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/tv_to_login"
-            app:layout_constraintTop_toBottomOf="@+id/btn_register"
-            tools:ignore="MissingConstraints" />
-
         <TextView
-            android:id="@+id/tv_to_login"
-            android:layout_width="0dp"
-            android:layout_height="17dp"
-            android:layout_marginLeft="115dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="115dp"
-            android:fontFamily="@font/poppins_regular"
-            android:gravity="center_horizontal|center_vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_register"
-            tools:text="@string/log_in_with" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_2_register"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_to_login"
-            app:layout_constraintEnd_toStartOf="@+id/tv_to_login"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_register"
-            app:layout_constraintVertical_bias="0.216"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-            android:id="@+id/btn_to_login"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="340dp"
-            android:layout_height="45dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="16dp"
-            android:fontFamily="@font/poppins_medium"
-            android:gravity="center_horizontal|center_vertical"
-            android:textAppearance="@style/another"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.49"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_to_login"
-            tools:text="@string/btn_login_text" />
-
-        <TextView
-            android:id="@+id/syarat_ketentuan"
+            android:id="@+id/tv_term_condition"
             android:layout_width="match_parent"
             android:layout_height="34dp"
             android:layout_marginHorizontal="10dp"
@@ -168,9 +111,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_to_login"
+            app:layout_constraintTop_toBottomOf="@+id/btn_register"
             app:layout_constraintVertical_bias="0.165"
             tools:text="@string/term_condition_register" />
+
+        <TextView
+            android:id="@+id/tv_already_have_account"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:lineHeight="16sp"
+            android:lineSpacingExtra="-2sp"
+            android:textColor="#49454F"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.053"
+            tools:hint="Belum memiliki akun? Daftar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 <!--    <View-->

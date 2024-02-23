@@ -3,12 +3,13 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
-    id("com.google.firebase.crashlytics")
+//    id("com.google.firebase.crashlytics")
 }
 
 android {
     namespace = "com.movieappfinal.core"
     compileSdk = 34
+    buildFeatures.buildConfig = true
 
     defaultConfig {
         minSdk = 24
@@ -81,8 +82,8 @@ dependencies {
 
     //firebase
     api(platform("com.google.firebase:firebase-bom:32.7.2"))
-    api("com.google.firebase:firebase-analytics-ktx:21.5.1")
-    api("com.google.firebase:firebase-crashlytics-ndk")
+//    api("com.google.firebase:firebase-crashlytics")
+    api("com.google.firebase:firebase-analytics")
     api("com.google.firebase:firebase-config-ktx:21.6.1")
     api("com.google.firebase:firebase-messaging-ktx:23.4.1")
     api("com.google.firebase:firebase-auth")

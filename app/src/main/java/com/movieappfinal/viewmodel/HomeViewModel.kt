@@ -1,4 +1,6 @@
 package com.movieappfinal.viewmodel
 
-class HomeViewModel {
+import androidx.lifecycle.ViewModel
+
+class HomeViewModel : ViewModel() {
 }

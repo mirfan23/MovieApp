@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group>
+        <item android:id="@+id/cart_menu"
+            android:icon="@drawable/ic_cart"
+            android:title="@string/cart_menu_title"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/my_token_menu"
+            android:icon="@drawable/ic_token"
+            android:title="@string/my_token_title"
+            app:showAsAction="ifRoom"/>
+        <item
+            android:id="@+id/setting_menu"
+            android:icon="@drawable/ic_setting"
+            android:title="@string/setting_title"
+            app:showAsAction="ifRoom"/>
+    </group>
+</menu>

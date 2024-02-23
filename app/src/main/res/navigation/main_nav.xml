@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_myTokenFragment"
             app:destination="@id/myTokenFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -46,6 +49,9 @@
         <action
             android:id="@+id/action_loginFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -55,6 +61,9 @@
         <action
             android:id="@+id/action_registerFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -111,4 +120,9 @@
         android:name="com.movieappfinal.presentation.others.MoviePaymentPageFragment"
         android:label="fragment_movie_payment_page"
         tools:layout="@layout/fragment_movie_payment_page" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.movieappfinal.presentation.others.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

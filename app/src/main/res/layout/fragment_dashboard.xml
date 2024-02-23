@@ -1,14 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.dashboard.DashboardFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:iconTint="?attr/colorControlNormal"
+            app:navigationIcon="@drawable/leading_icon"
+            app:menu="@menu/option_menu"
+            style="@style/headline"
+            app:title="John">
+
+        </com.google.android.material.appbar.MaterialToolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+<!--    <com.google.android.material.divider.MaterialDivider-->
+<!--        android:id="@+id/divider"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_below="@id/appbar_dashboard"-->
+<!--        android:layout_height="1dp" />-->
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_dashboard"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_below="@id/appbar_dashboard"
+        android:layout_above="@id/bottom_navbar"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/bottom_nav" />
 
-</FrameLayout>
+<!--    <com.google.android.material.divider.MaterialDivider-->
+<!--        android:id="@+id/divider_2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_above="@id/bottom_navbar"-->
+<!--        android:layout_height="1dp" />-->
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        app:labelVisibilityMode="auto"
+        app:menu="@menu/bottom_nav_menu" />
+
+</RelativeLayout>
