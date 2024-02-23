@@ -25,12 +25,6 @@
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--    <com.google.android.material.divider.MaterialDivider-->
-<!--        android:id="@+id/divider"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_below="@id/appbar_dashboard"-->
-<!--        android:layout_height="1dp" />-->
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_dashboard"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -40,12 +34,6 @@
         android:layout_above="@id/bottom_navbar"
         app:defaultNavHost="true"
         app:navGraph="@navigation/bottom_nav" />
-
-<!--    <com.google.android.material.divider.MaterialDivider-->
-<!--        android:id="@+id/divider_2"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_above="@id/bottom_navbar"-->
-<!--        android:layout_height="1dp" />-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navbar"
