@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav"
+    app:startDestination="@id/onBoardingFragment">
+
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.movieappfinal.presentation.preLogin.OnBoardingFragment"
+        android:label="fragment_on_boarding"
+        tools:layout="@layout/fragment_on_boarding" >
+        <action
+            android:id="@+id/action_onBoardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_onBoardingFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.movieappfinal.presentation.preLogin.SplashScreenFragment"
+        android:label="fragment_splash_screen"
+        tools:layout="@layout/fragment_splash_screen" >
+        <action
+            android:id="@+id/action_splashScreenFragment_to_onBoardingFragment"
+            app:destination="@id/onBoardingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.movieappfinal.presentation.dashboard.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_myTokenFragment"
+            app:destination="@id/myTokenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.movieappfinal.presentation.authentication.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.movieappfinal.presentation.authentication.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.movieappfinal.presentation.authentication.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.movieappfinal.presentation.others.CartFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myTokenFragment"
+        android:name="com.movieappfinal.presentation.others.MyTokenFragment"
+        android:label="fragment_my_token"
+        tools:layout="@layout/fragment_my_token" >
+        <action
+            android:id="@+id/action_myTokenFragment_to_topUpFragment"
+            app:destination="@id/topUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.movieappfinal.presentation.others.CheckoutFragment"
+        android:label="fragment_checkout"
+        tools:layout="@layout/fragment_checkout" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_moviePaymentPageFragment"
+            app:destination="@id/moviePaymentPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/topUpFragment"
+        android:name="com.movieappfinal.presentation.others.TopUpFragment"
+        android:label="fragment_top_up"
+        tools:layout="@layout/fragment_top_up" >
+        <action
+            android:id="@+id/action_topUpFragment_to_tokenPaymentFragment"
+            app:destination="@id/tokenPaymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tokenPaymentFragment"
+        android:name="com.movieappfinal.presentation.others.TokenPaymentFragment"
+        android:label="fragment_token_payment"
+        tools:layout="@layout/fragment_token_payment" />
+    <fragment
+        android:id="@+id/moviePaymentPageFragment"
+        android:name="com.movieappfinal.presentation.others.MoviePaymentPageFragment"
+        android:label="fragment_movie_payment_page"
+        tools:layout="@layout/fragment_movie_payment_page" />
+</navigation>
