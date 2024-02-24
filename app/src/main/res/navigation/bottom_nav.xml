@@ -25,4 +25,9 @@
         android:name="com.movieappfinal.presentation.dashboard.TransactionFragment"
         android:label="fragment_transaction"
         tools:layout="@layout/fragment_transaction" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.movieappfinal.presentation.others.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" />
 </navigation>

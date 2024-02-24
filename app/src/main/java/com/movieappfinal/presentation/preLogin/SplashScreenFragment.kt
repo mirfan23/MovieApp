@@ -1,5 +1,7 @@
 package com.movieappfinal.presentation.preLogin
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
@@ -16,21 +18,18 @@ import com.movieappfinal.databinding.FragmentSearchBinding
 import com.movieappfinal.databinding.FragmentSplashScreenBinding
 import com.movieappfinal.utils.Constant
 import com.movieappfinal.utils.Constant.ANIMATION_DELAY
+import com.movieappfinal.utils.Constant.ANIMATION_START
 import com.movieappfinal.viewmodel.AuthViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @SuppressLint("CustomSplashScreen")
-class SplashScreenFragment : BaseFragment<FragmentSplashScreenBinding, AuthViewModel>(FragmentSplashScreenBinding::inflate) {
+class SplashScreenFragment :
+    BaseFragment<FragmentSplashScreenBinding, AuthViewModel>(FragmentSplashScreenBinding::inflate) {
     override val viewModel: AuthViewModel by viewModel()
 
     override fun initView() {
-//        val navController =
-//            activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
-//                ?.findNavController()
-//        navController?.navigate(R.id.action_splashScreenFragment_to_onBoardingFragment)
-
         animation()
         lifecycleScope.launch {
             delay(ANIMATION_DELAY)
@@ -41,62 +40,41 @@ class SplashScreenFragment : BaseFragment<FragmentSplashScreenBinding, AuthViewM
     override fun initListener() {}
 
     override fun observeData() {}
+
     private fun animation() {
-        val yellowAnimator = ObjectAnimator.ofFloat(
-            binding.splashScreenYellow,
-            View.ROTATION,
-            Constant.ANIMATION_START,
-            Constant.YELLOW_ROTATION
+        val leftAnimatorDown = ObjectAnimator.ofFloat(
+            binding.splashScreenLogo,
+            View.TRANSLATION_Y,
+            ANIMATION_START,
+            400f
         )
-        val redAnimator = ObjectAnimator.ofFloat(
-            binding.splashScreenRed,
-            View.ROTATION,
-            Constant.ANIMATION_START,
-            Constant.RED_ROTATION,
+        val rightAnimatorDown = ObjectAnimator.ofFloat(
+            binding.splashScreenLogo2,
+            View.TRANSLATION_Y,
+            ANIMATION_START,
+            400f
         )
-        val redAnimatorTrans = ObjectAnimator.ofFloat(
-            binding.splashScreenRed,
+        val leftAnimatorMove = ObjectAnimator.ofFloat(
+            binding.splashScreenLogo,
             View.TRANSLATION_X,
-            Constant.ANIMATION_START,
-            Constant.RED_TRANSLATION_X
+            ANIMATION_START,
+            50f
         )
-        val yellowAnimatorTrans = ObjectAnimator.ofFloat(
-            binding.splashScreenYellow,
+        val rightAnimatorMove = ObjectAnimator.ofFloat(
+            binding.splashScreenLogo2,
             View.TRANSLATION_X,
-            Constant.ANIMATION_START,
-            Constant.YELLOW_TRANSLATION_X
-        )
-        val redAnimatorTrans2 = ObjectAnimator.ofFloat(
-            binding.splashScreenRed,
-            View.TRANSLATION_Y,
-            Constant.ANIMATION_START,
-            Constant.RED_TRANSLATION_Y
-        )
-        val yellowAnimatorTrans2 = ObjectAnimator.ofFloat(
-            binding.splashScreenYellow,
-            View.TRANSLATION_Y,
-            Constant.ANIMATION_START,
-            Constant.YELLOW_TRANSLATION_Y
-        )
-        val greenAnimator = ObjectAnimator.ofFloat(
-            binding.splashScreenGreen,
-            View.TRANSLATION_Y,
-            Constant.ANIMATION_START,
-            Constant.GREEN_TRANSLATION_Y
+            ANIMATION_START,
+            -50f
         )
 
         val animatorSet = AnimatorSet()
         animatorSet.playTogether(
-            yellowAnimator,
-            yellowAnimatorTrans,
-            yellowAnimatorTrans2,
-            redAnimator,
-            redAnimatorTrans,
-            redAnimatorTrans2,
-            greenAnimator
+            leftAnimatorDown,
+            leftAnimatorMove,
+            rightAnimatorDown,
+            rightAnimatorMove
         )
-        animatorSet.duration = Constant.ANIMATION_DELAY
+        animatorSet.duration = ANIMATION_DELAY
         animatorSet.start()
     }
-
 }

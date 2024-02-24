@@ -9,9 +9,9 @@ import com.movieappfinal.databinding.OnBoardingItemBinding
 class HomeCarouselAdapter : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouselAdapter>() {
 
     private val image = arrayOf(
-        R.drawable.on_boarding_1,
-        R.drawable.on_boarding_2,
-        R.drawable.on_boarding_3
+        R.drawable.carousel_home,
+        R.drawable.carousel_home,
+        R.drawable.carousel_home
     )
 
     private val title = arrayOf(

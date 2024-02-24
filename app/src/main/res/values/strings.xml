@@ -36,5 +36,7 @@
     <string name="search_title">Search</string>
     <string name="home_title">Home</string>
     <string name="action_drama_genre">Action . Drama</string>
+    <string name="navigation_drawer_open">Buka Navigasi</string>
+    <string name="navigation_drawer_close">Tutup Navigasi</string>
 
 </resources>

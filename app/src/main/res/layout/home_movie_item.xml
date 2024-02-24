@@ -8,18 +8,43 @@
     <ImageView
         android:id="@+id/iv_movie"
         android:layout_width="100dp"
-        android:layout_height="200dp"
-        android:src="@drawable/on_boarding_3"
+        android:layout_height="150dp"
+        android:src="@drawable/movie_item"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintTop_toBottomOf="@id/iv_movie"
+    app:layout_constraintStart_toStartOf="@id/iv_movie">
 
     <TextView
         android:id="@+id/tv_movie_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/iv_movie"
-        app:layout_constraintStart_toStartOf="@id/iv_movie"
-        app:layout_constraintEnd_toEndOf="@id/iv_movie"
-        tools:text="LIFE" />
+        android:textSize="18sp"
+        tools:text="The Martian" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_token"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:textSize="16sp"
+            tools:text="500"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

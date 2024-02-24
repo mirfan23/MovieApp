@@ -9,7 +9,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SearchFragment : BaseFragment<FragmentSearchBinding, AuthViewModel>(FragmentSearchBinding::inflate) {
     override val viewModel: AuthViewModel by viewModel()
 
-    override fun initView() {}
+    override fun initView() = with(binding){
+        tilSearchBar.hint = "Search"
+    }
 
     override fun initListener() {}
 

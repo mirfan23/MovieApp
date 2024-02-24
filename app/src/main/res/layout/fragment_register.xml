@@ -27,23 +27,26 @@
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            app:layout_constraintTop_toBottomOf="@+id/appbar_register" />
+        <ImageView
+            android:id="@+id/iv_logo_login"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:src="@drawable/logo_app_bg_remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_register" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_email_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="24dp"
             app:helperText="@string/example_email"
             app:helperTextEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo_login"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -121,9 +124,9 @@
             android:layout_height="34dp"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
             android:clickable="true"
             android:focusable="true"
-            android:layout_marginBottom="16dp"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
             android:lineHeight="16sp"
@@ -138,21 +141,21 @@
             tools:hint="Belum memiliki akun? Daftar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <View-->
-<!--        android:id="@+id/loading_overlay"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:background="#80000000"-->
-<!--        android:visibility="gone" />-->
+    <!--    <View-->
+    <!--        android:id="@+id/loading_overlay"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:background="#80000000"-->
+    <!--        android:visibility="gone" />-->
 
-<!--    <com.airbnb.lottie.LottieAnimationView-->
-<!--        android:id="@+id/lottie_loading"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:visibility="gone"-->
-<!--        app:lottie_autoPlay="true"-->
-<!--        app:lottie_loop="true"-->
-<!--        app:lottie_rawRes="@raw/loading_animation" />-->
+    <!--    <com.airbnb.lottie.LottieAnimationView-->
+    <!--        android:id="@+id/lottie_loading"-->
+    <!--        android:layout_width="100dp"-->
+    <!--        android:layout_height="100dp"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:visibility="gone"-->
+    <!--        app:lottie_autoPlay="true"-->
+    <!--        app:lottie_loop="true"-->
+    <!--        app:lottie_rawRes="@raw/loading_animation" />-->
 
 </FrameLayout>

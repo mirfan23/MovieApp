@@ -27,17 +27,26 @@
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <ImageView
+            android:id="@+id/iv_logo_login"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:src="@drawable/logo_app_bg_remove"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_login" />
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_email_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="200dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.492"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar_login"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo_login"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText

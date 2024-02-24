@@ -1,5 +1,9 @@
 package com.movieappfinal.presentation.dashboard
 
+import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -15,11 +19,16 @@ class DashboardFragment :
     override val viewModel: AuthViewModel by viewModel()
     private lateinit var navController: NavController
 
-    override fun initView() {
 
+    override fun initView() {
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.fragment_container_dashboard) as NavHostFragment
         navController = navHostFragment.navController
+
+//        val headerView = binding.navView.getHeaderView(0)
+//
+//        val textViewUsername = headerView.findViewById<TextView>(R.id.textView_username)
+//        textViewUsername.text = "John"
     }
 
     override fun initListener() = with(binding) {
@@ -34,9 +43,37 @@ class DashboardFragment :
                     findNavController().navigate(R.id.action_dashboardFragment_to_myTokenFragment)
                     true
                 }
-
-                R.id.setting_menu -> {
-                    findNavController().navigate(R.id.action_dashboardFragment_to_settingFragment)
+                else -> false
+            }
+        }
+        toolbarDashboard.setNavigationOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.homeFragment -> {
+                    navController.navigate(R.id.homeFragment)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.searchFragment -> {
+                    navController.navigate(R.id.searchFragment)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.wishlistFragment -> {
+                    navController.navigate(R.id.wishlistFragment)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.transactionFragment -> {
+                    navController.navigate(R.id.transactionFragment)
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    true
+                }
+                R.id.settingFragment -> {
+                    navController.navigate(R.id.settingFragment)
+                    drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
                 else -> false
@@ -45,5 +82,4 @@ class DashboardFragment :
     }
 
     override fun observeData() {}
-
 }

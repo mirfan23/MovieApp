@@ -1,19 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_home"
-        android:title="@string/home_title"/>
+        android:id="@+id/main_item"
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/homeFragment"
+                android:icon="@drawable/ic_home"
+                android:title="@string/home_title"/>
+            <item
+                android:id="@+id/searchFragment"
+                android:icon="@drawable/ic_search"
+                android:title="@string/search_title"/>
+            <item
+                android:id="@+id/wishlistFragment"
+                android:icon="@drawable/ic_wishlist"
+                android:title="@string/wishlist_title"/>
+            <item
+                android:id="@+id/transactionFragment"
+                android:icon="@drawable/ic_transaction"
+                android:title="@string/transaction_history_title"/>
+        </menu>
+    </item>
     <item
-        android:id="@+id/searchFragment"
-        android:icon="@drawable/ic_search"
-        android:title="@string/search_title"/>
-    <item
-        android:id="@+id/wishlistFragment"
-        android:icon="@drawable/ic_wishlist"
-        android:title="@string/wishlist_title"/>
-    <item
-        android:id="@+id/transactionFragment"
-        android:icon="@drawable/ic_transaction"
-        android:title="@string/transaction_history_title"/>
+        android:id="@+id/sub_menu"
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/settingFragment"
+                android:icon="@drawable/ic_setting"
+                android:title="@string/setting_title"/>
+
+            <item
+                android:id="@+id/logout_item"
+                android:title="Logout"
+                android:icon="@drawable/ic_logout" />
+        </menu>
+    </item>
+
+
 </menu>

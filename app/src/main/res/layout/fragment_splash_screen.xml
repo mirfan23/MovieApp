@@ -3,64 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.preLogin.SplashScreenFragment">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_container"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-
-        <ImageView
-            android:id="@+id/splash_screen_green"
-            android:layout_width="120dp"
-            android:layout_height="100dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/rounded_green"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.499" />
-
-        <ImageView
-            android:id="@+id/splash_screen_red"
-            android:layout_width="120dp"
-            android:layout_height="100dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/rounded_red"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.499" />
-
-        <ImageView
-            android:id="@+id/splash_screen_yellow"
-            android:layout_width="120dp"
-            android:layout_height="100dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/rounded_yellow"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.499" />
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/splash_screen_logo"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:src="@drawable/splash"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_alignParentStart="true"
+            android:src="@drawable/logo_left" />
 
+        <ImageView
+            android:id="@+id/splash_screen_logo_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/logo_right" />
+    </RelativeLayout>
 </FrameLayout>

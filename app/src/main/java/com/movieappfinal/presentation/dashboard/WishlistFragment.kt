@@ -8,7 +8,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class WishlistFragment : BaseFragment<FragmentWishlistBinding, AuthViewModel>(FragmentWishlistBinding::inflate) {
     override val viewModel: AuthViewModel by viewModel()
 
-    override fun initView() {}
+    override fun initView() {
+
+    }
 
     override fun initListener() {}
 

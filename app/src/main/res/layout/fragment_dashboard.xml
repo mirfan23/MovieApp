@@ -1,47 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.dashboard.DashboardFragment">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_dashboard"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar_dashboard"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_dashboard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            app:iconTint="?attr/colorControlNormal"
-            app:navigationIcon="@drawable/leading_icon"
-            app:menu="@menu/option_menu"
-            style="@style/headline"
-            app:title="John">
+            tools:ignore="MissingConstraints">
 
-        </com.google.android.material.appbar.MaterialToolbar>
-    </com.google.android.material.appbar.AppBarLayout>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar_dashboard"
+                style="@style/headline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu="@menu/option_menu"
+                app:navigationIcon="@drawable/logo_app"
+                app:title="John"
+                tools:ignore="MissingConstraints"
+                tools:title="John">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container_dashboard"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container_dashboard"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/appbar_dashboard"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/bottom_nav" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:layout_below="@id/appbar_dashboard"
-        android:layout_above="@id/bottom_navbar"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/bottom_nav" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_navbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
-        app:labelVisibilityMode="auto"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
         app:menu="@menu/bottom_nav_menu" />
 
-</RelativeLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
