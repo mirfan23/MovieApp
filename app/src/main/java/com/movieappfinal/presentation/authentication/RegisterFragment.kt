@@ -63,7 +63,6 @@ class RegisterFragment :
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        println("MASUK: Berhasil Register")
                         findNavController().navigate(R.id.action_registerFragment_to_profileFragment)
                     } else {
                         context?.let { ctx ->
@@ -75,7 +74,6 @@ class RegisterFragment :
                         }
                     }
                 }
-
         }
 
     }

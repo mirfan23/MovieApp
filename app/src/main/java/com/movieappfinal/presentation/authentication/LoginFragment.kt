@@ -11,12 +11,14 @@ import com.google.firebase.ktx.Firebase
 import com.movieappfinal.R
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.databinding.FragmentLoginBinding
+import com.movieappfinal.utils.CustomSnackbar
 import com.movieappfinal.utils.SpannableStringUtils
 import com.movieappfinal.viewmodel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(FragmentLoginBinding::inflate) {
+class LoginFragment :
+    BaseFragment<FragmentLoginBinding, AuthViewModel>(FragmentLoginBinding::inflate) {
     override val viewModel: AuthViewModel by viewModel()
 
     private lateinit var auth: FirebaseAuth
@@ -52,7 +54,24 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(Fragment
     override fun initListener() {
         binding.apply {
             btnLogin.setOnClickListener {
-                findNavController().navigate(R.id.action_loginFragment_to_dashboardFragment)
+                val email = tietEmailLogin.text.toString().trim()
+                val password = tietPasswordLogin.text.toString().trim()
+
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            findNavController().navigate(R.id.action_loginFragment_to_dashboardFragment)
+                        } else {
+                            context?.let { ctx ->
+                                CustomSnackbar.showSnackBar(
+                                    ctx,
+                                    binding.root,
+                                    "Gagal Login"
+                                )
+                            }
+                        }
+                    }
+
             }
         }
     }
@@ -63,7 +82,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, AuthViewModel>(Fragment
         val sk = binding.tvTermCondition
         val fullText = getString(R.string.term_condition_login)
         val defaultLocale = resources.configuration.locales[0].language
-        sk.text = context?.let { SpannableStringUtils.applyCustomTextColor(defaultLocale, it, fullText) }
+        sk.text =
+            context?.let { SpannableStringUtils.applyCustomTextColor(defaultLocale, it, fullText) }
         sk.movementMethod = LinkMovementMethod.getInstance()
     }
 }

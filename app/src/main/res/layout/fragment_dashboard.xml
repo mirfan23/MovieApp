@@ -24,7 +24,6 @@
                 android:layout_height="wrap_content"
                 app:menu="@menu/option_menu"
                 app:navigationIcon="@drawable/logo_app"
-                app:title="John"
                 tools:ignore="MissingConstraints"
                 tools:title="John">
 
