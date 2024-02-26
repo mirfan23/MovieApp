@@ -2,6 +2,7 @@ package com.movieappfinal.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.movieappfinal.core.domain.model.DataDetailMovie
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
 import com.movieappfinal.core.domain.model.DataPopularMovieItem
@@ -21,6 +22,11 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
         MutableStateFlow(UiState.Empty)
     val responseNowPlaying = _responseNowPlaying.asStateFlow()
 
+    private val _responseDetail: MutableStateFlow<UiState<DataDetailMovie>> =
+        MutableStateFlow(UiState.Empty)
+    val responseDetail = _responseDetail.asStateFlow()
+
+
 
     fun fetchPopularMovie() {
         viewModelScope.launch {
@@ -34,6 +40,14 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
         viewModelScope.launch {
             _responseNowPlaying.asMutableStateFLow {
                 useCase.fetchNowPlayingMovie()
+            }
+        }
+    }
+
+    fun fetchDetail(movieId: Int) {
+        viewModelScope.launch {
+            _responseDetail.asMutableStateFLow {
+                useCase.fetchDetailMovie(movieId)
             }
         }
     }

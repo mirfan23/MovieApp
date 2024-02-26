@@ -9,4 +9,5 @@ object Constant {
     const val ANIMATION_START = 0f
 
     const val Img_Url = "https://image.tmdb.org/t/p/w500"
+    const val Img_Url_Original = "https://image.tmdb.org/t/p/original"
 }

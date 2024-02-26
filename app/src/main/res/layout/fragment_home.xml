@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.dashboard.HomeFragment">
-
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,8 +19,8 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_movie"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
             android:background="@android:color/transparent"
             app:tabBackground="@drawable/tabs_selector"
             android:layout_alignParentStart="true"
@@ -29,7 +31,16 @@
             app:tabMode="fixed" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_home_item"
+            android:id="@+id/rv_home_now_playing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:layout_below="@id/rv_home_popular"
+            tools:listitem="@layout/home_item" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_home_popular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -38,4 +49,5 @@
             tools:listitem="@layout/home_item" />
 
     </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
 </FrameLayout>

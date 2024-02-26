@@ -19,7 +19,7 @@ class DashboardViewModel(private val useCase: AppUseCase): ViewModel() {
         useCase.saveOnBoardingState(value)
     }
 
-//    fun getOnBoardingState(){
-//        _onBoarding.update { useCase.dataSession().toSplashState() }
-//    }
+    fun getOnBoardingState(){
+        _onBoarding.update { useCase.dataSession().toSplashState() }
+    }
 }

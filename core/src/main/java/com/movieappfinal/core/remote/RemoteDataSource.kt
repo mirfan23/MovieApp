@@ -1,5 +1,6 @@
 package com.movieappfinal.core.remote
 
+import com.movieappfinal.core.remote.data.DetailMovieResponse
 import com.movieappfinal.core.remote.data.NowPlayingResponse
 import com.movieappfinal.core.remote.data.PopularMovieResponse
 import com.movieappfinal.core.remote.services.ApiEndPoint
@@ -13,5 +14,16 @@ class RemoteDataSource(private val apiEndPoint: ApiEndPoint) {
     suspend fun fetchNowPlayingProduct(): NowPlayingResponse {
         return safeApiCall { apiEndPoint.fetchNowPlayingMovie() }
     }
+
+    suspend fun fetchDetailMovie(
+        id: Int? = 0
+    ): DetailMovieResponse {
+        return safeApiCall {
+            apiEndPoint.fetchDetailMovie(
+                id
+            )
+        }
+    }
+
 
 }

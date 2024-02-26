@@ -9,21 +9,26 @@ import com.movieappfinal.core.domain.model.DataPopularMovieItem
 import com.movieappfinal.databinding.HomeItemBinding
 import com.movieappfinal.utils.SpaceItemDecoration
 
-class HomeAdapter(private val action: (DataPopularMovieItem) -> Unit): BaseListAdapter<DataPopularMovie, HomeItemBinding>(
-    HomeItemBinding::inflate){
+class HomePopularAdapter(
+    private val popular: (DataPopularMovieItem) -> Unit,
+) : BaseListAdapter<DataPopularMovie, HomeItemBinding>(
+    HomeItemBinding::inflate
+) {
 
     override fun onItemBind(): (DataPopularMovie, HomeItemBinding, View, Int) -> Unit =
         { item, binding, itemView, _ ->
             binding.run {
-                val homeImageAdapter = HomeImageAdapter(action)
-                tvSubTitle.text = item.title
+
+                val homePopularItemAdapter = HomePopularItemAdapter(popular)
+                tvSubTitle.text = "Popular"
                 rvItem.apply {
-                    layoutManager = LinearLayoutManager(root.context, LinearLayoutManager.HORIZONTAL, false)
-                    adapter = homeImageAdapter
+                    layoutManager =
+                        LinearLayoutManager(root.context, LinearLayoutManager.HORIZONTAL, false)
+                    adapter = homePopularItemAdapter
                     val spaceInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
                     addItemDecoration(SpaceItemDecoration(spaceInPixels))
                 }
-                homeImageAdapter.submitList(item.items)
+                homePopularItemAdapter.submitList(item.itemsPopular)
             }
         }
 

@@ -1,5 +1,6 @@
 package com.movieappfinal.core.domain.repository
 
+import com.movieappfinal.core.remote.data.DetailMovieResponse
 import com.movieappfinal.core.remote.data.NowPlayingResponse
 import com.movieappfinal.core.remote.data.PopularMovieResponse
 
@@ -7,6 +8,9 @@ interface MovieRepository {
     suspend fun fetchPopularMovie(): PopularMovieResponse
     suspend fun fetchNowPlayingMovie(): NowPlayingResponse
     suspend fun dataSession(name: String, accessToken: String, onBoardingState: Boolean)
+    suspend fun fetchDetailMovie(
+        movieId: Int? = null
+    ): DetailMovieResponse
     fun getProfileName(): String
     fun saveProfileName(string: String)
     fun getOnBoardingState(): Boolean

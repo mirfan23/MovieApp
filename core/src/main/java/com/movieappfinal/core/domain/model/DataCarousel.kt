@@ -4,10 +4,11 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
-
 @Keep
 @Parcelize
-data class DataPopularMovie(
+class DataCarousel(
+    var id: Int = 0,
+    var genreIds: List<Int> = listOf(),
     var title: String = "",
-    var itemsPopular: List<DataPopularMovieItem> = listOf(),
-): Parcelable
+    var backdrop: String = "",
+) : Parcelable

@@ -7,7 +7,7 @@ import com.movieappfinal.core.domain.model.DataPopularMovieItem
 import com.movieappfinal.databinding.HomeMovieItemBinding
 import com.movieappfinal.utils.Constant.Img_Url
 
-class HomeImageAdapter(private val action: (DataPopularMovieItem) -> Unit) :
+class HomePopularItemAdapter(private val action: (DataPopularMovieItem) -> Unit) :
     BaseListAdapter<DataPopularMovieItem, HomeMovieItemBinding>(HomeMovieItemBinding::inflate) {
 
     override fun onItemBind(): (DataPopularMovieItem, HomeMovieItemBinding, View, Int) -> Unit =
@@ -16,6 +16,7 @@ class HomeImageAdapter(private val action: (DataPopularMovieItem) -> Unit) :
                 ivMovie.load(Img_Url + item.poster)
                 tvMovieTitle.text = item.title
                 tvReleaseDate.text = item.releaseDate
+                tvToken.text = "500"
             }
             itemView.setOnClickListener {
                 action.invoke(item)

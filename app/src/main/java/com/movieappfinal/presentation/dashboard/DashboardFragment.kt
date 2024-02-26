@@ -1,9 +1,6 @@
 package com.movieappfinal.presentation.dashboard
 
-import android.widget.TextView
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -23,6 +20,7 @@ class DashboardFragment :
     override val viewModel: AuthViewModel by viewModel()
     private lateinit var navController: NavController
     private var user: FirebaseUser? = null
+    private var auth: FirebaseAuth? = null
 
 
     override fun initView() {
@@ -31,6 +29,7 @@ class DashboardFragment :
         navController = navHostFragment.navController
 
         user = Firebase.auth.currentUser
+        auth = Firebase.auth
 
         if (user != null && user?.displayName != null) {
             val username = user?.displayName
@@ -50,6 +49,7 @@ class DashboardFragment :
                     findNavController().navigate(R.id.action_dashboardFragment_to_myTokenFragment)
                     true
                 }
+
                 else -> false
             }
         }
@@ -63,29 +63,35 @@ class DashboardFragment :
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
+
                 R.id.searchFragment -> {
                     navController.navigate(R.id.searchFragment)
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
+
                 R.id.wishlistFragment -> {
                     navController.navigate(R.id.wishlistFragment)
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
+
                 R.id.transactionFragment -> {
                     navController.navigate(R.id.transactionFragment)
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
+
                 R.id.settingFragment -> {
                     navController.navigate(R.id.settingFragment)
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
-//                R.id.logout_item -> {
-//                    user.getI
-//                }
+                R.id.logout_item -> {
+                    auth?.signOut()
+                    activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)?.findNavController()?.navigate(R.id.action_dashboardFragment_to_loginFragment)
+                    true
+                }
                 else -> false
             }
         }

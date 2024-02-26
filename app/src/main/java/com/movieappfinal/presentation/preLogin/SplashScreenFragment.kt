@@ -35,38 +35,37 @@ class SplashScreenFragment :
     override val viewModel: DashboardViewModel by viewModel()
 
     override fun initView() {
-//        viewModel.getOnBoardingState()
+        viewModel.getOnBoardingState()
         animation()
         lifecycleScope.launch {
             delay(ANIMATION_DELAY)
-            findNavController().navigate(R.id.action_splashScreenFragment_to_onBoardingFragment)
         }
     }
 
     override fun initListener() {
         with(viewModel) {
-//            onBoarding.launchAndCollectIn(viewLifecycleOwner) { state ->
-//                Handler(Looper.getMainLooper()).postDelayed({
-//                    val navController =
-//                        activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
-//                            ?.findNavController()
-//                    when (state) {
-//                        is SplashState.OnBoarding -> {
-//                            navController?.navigate(R.id.action_splashScreenFragment_to_onBoardingFragment)
-//                        }
-//                        is SplashState.Dashboard -> {
-//                            navController?.navigate(R.id.action_splashScreenFragment_to_dashboardFragment)
-//                        }
-//                        is SplashState.Profile -> {
-//                            navController?.navigate(R.id.action_splashScreenFragment_to_profileFragment)
-//                        }
-//                        else -> {
-//                            navController?.navigate(R.id.action_splashScreenFragment_to_loginFragment)
-//                        }
-//                    }
-//                }, 3000L)
-//
-//            }
+            onBoarding.launchAndCollectIn(viewLifecycleOwner) { state ->
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val navController =
+                        activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
+                            ?.findNavController()
+                    when (state) {
+                        is SplashState.OnBoarding -> {
+                            navController?.navigate(R.id.action_splashScreenFragment_to_onBoardingFragment)
+                        }
+                        is SplashState.Dashboard -> {
+                            navController?.navigate(R.id.action_splashScreenFragment_to_dashboardFragment)
+                        }
+                        is SplashState.Profile -> {
+                            navController?.navigate(R.id.action_splashScreenFragment_to_profileFragment)
+                        }
+                        else -> {
+                            navController?.navigate(R.id.action_splashScreenFragment_to_loginFragment)
+                        }
+                    }
+                }, 1000L)
+
+            }
         }
     }
 

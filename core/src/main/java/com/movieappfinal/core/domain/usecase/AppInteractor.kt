@@ -1,6 +1,7 @@
 package com.movieappfinal.core.domain.usecase
 
 import com.example.core.local.preferences.SharedPreferencesHelper
+import com.movieappfinal.core.domain.model.DataDetailMovie
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
 import com.movieappfinal.core.domain.model.DataSession
@@ -23,6 +24,10 @@ class AppInteractor(
         movieRepo.fetchNowPlayingMovie().toUIData()
     }
 
+    override suspend fun fetchDetailMovie(movieId: Int): DataDetailMovie = safeDataCall {
+        movieRepo.fetchDetailMovie(movieId).toUIData()
+    }
+
     override fun dataSession(): DataSession {
         val name = movieRepo.getProfileName()
         val uid = movieRepo.getUid()
@@ -32,7 +37,7 @@ class AppInteractor(
     }
 
     override fun saveOnBoardingState(value: Boolean) {
-         movieRepo.saveOnBoardingState(value)
+        movieRepo.saveOnBoardingState(value)
     }
 
     override fun getOnBoardingState(): Boolean = movieRepo.getOnBoardingState()

@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Keep
 @Parcelize
-data class DataPopularMovie(
-    var title: String = "",
-    var itemsPopular: List<DataPopularMovieItem> = listOf(),
+data class DataGenre(
+    val id: Int,
+    val name: String
 ): Parcelable

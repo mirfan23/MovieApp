@@ -39,5 +39,6 @@
     <string name="navigation_drawer_open">Buka Navigasi</string>
     <string name="navigation_drawer_close">Tutup Navigasi</string>
     <string name="logout">Logout</string>
+    <string name="duration_minutes">%duration% minutes</string>
 
 </resources>

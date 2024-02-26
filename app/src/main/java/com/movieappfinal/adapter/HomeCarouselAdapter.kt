@@ -3,29 +3,15 @@ package com.movieappfinal.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.movieappfinal.R
+import com.movieappfinal.core.domain.model.DataPopularMovieItem
 import com.movieappfinal.databinding.HomeRecyclerItemBinding
 import com.movieappfinal.databinding.OnBoardingItemBinding
+import com.movieappfinal.utils.Constant.Img_Url
+import com.movieappfinal.utils.Constant.Img_Url_Original
 
-class HomeCarouselAdapter : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouselViewHolder>() {
-
-    private val image = arrayOf(
-        R.drawable.carousel_home,
-        R.drawable.carousel_home,
-        R.drawable.carousel_home
-    )
-
-    private val title = arrayOf(
-        R.string.onboarding_1_title,
-        R.string.onboarding_2_title,
-        R.string.onboarding_3_title
-    )
-
-    private val genre = arrayOf(
-        R.string.action_drama_genre,
-        R.string.action_drama_genre,
-        R.string.action_drama_genre
-    )
+class HomeCarouselAdapter(private val movieList: List<DataPopularMovieItem>) : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouselViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCarouselViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -34,21 +20,19 @@ class HomeCarouselAdapter : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouse
     }
 
     override fun onBindViewHolder(holder: HomeCarouselViewHolder, position: Int) {
-        val currentImage  = image[position]
-        val currentTitle = holder.itemView.context.getString(title[position])
-        val currentDesc = holder.itemView.context.getString(genre[position])
-        holder.bind(currentImage, currentTitle, currentDesc)
+        val movie  = movieList[position]
+        holder.bind(movie)
     }
     override fun getItemCount(): Int {
-        return image.size
+        return 3
     }
 
     inner class HomeCarouselViewHolder(private val binding: HomeRecyclerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(image: Int, title: String, genre: String) {
-            binding.ivCarousel.setImageResource(image)
-            binding.tvTitleCarousel.text = title
-            binding.tvGenre.text = genre
+        fun bind(movie: DataPopularMovieItem) {
+            binding.ivCarousel.load(Img_Url_Original+movie.backdrop)
+            binding.tvTitleCarousel.text = movie.title
+            binding.tvGenre.text = movie.genreIds.toString()
         }
     }
 }

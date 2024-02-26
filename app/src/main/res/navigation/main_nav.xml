@@ -9,7 +9,7 @@
         android:id="@+id/onBoardingFragment"
         android:name="com.movieappfinal.presentation.preLogin.OnBoardingFragment"
         android:label="fragment_on_boarding"
-        tools:layout="@layout/fragment_on_boarding" >
+        tools:layout="@layout/fragment_on_boarding">
         <action
             android:id="@+id/action_onBoardingFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -21,7 +21,7 @@
         android:id="@+id/splashScreenFragment"
         android:name="com.movieappfinal.presentation.preLogin.SplashScreenFragment"
         android:label="fragment_splash_screen"
-        tools:layout="@layout/fragment_splash_screen" >
+        tools:layout="@layout/fragment_splash_screen">
         <action
             android:id="@+id/action_splashScreenFragment_to_onBoardingFragment"
             app:destination="@id/onBoardingFragment" />
@@ -39,7 +39,7 @@
         android:id="@+id/dashboardFragment"
         android:name="com.movieappfinal.presentation.dashboard.DashboardFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" >
+        tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_dashboardFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
@@ -47,17 +47,22 @@
             android:id="@+id/action_dashboardFragment_to_myTokenFragment"
             app:destination="@id/myTokenFragment" />
         <action
-            android:id="@+id/action_dashboardFragment_to_settingFragment"
-            app:destination="@id/settingFragment" />
+            android:id="@+id/action_dashboardFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.movieappfinal.presentation.authentication.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
@@ -66,10 +71,12 @@
         android:id="@+id/registerFragment"
         android:name="com.movieappfinal.presentation.authentication.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -78,16 +85,18 @@
         android:id="@+id/profileFragment"
         android:name="com.movieappfinal.presentation.authentication.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment_to_dashboardFragment"
-            app:destination="@id/dashboardFragment" />
+            app:destination="@id/dashboardFragment"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.movieappfinal.presentation.others.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" >
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_cartFragment_to_checkoutFragment"
             app:destination="@id/checkoutFragment" />
@@ -96,7 +105,7 @@
         android:id="@+id/myTokenFragment"
         android:name="com.movieappfinal.presentation.others.MyTokenFragment"
         android:label="fragment_my_token"
-        tools:layout="@layout/fragment_my_token" >
+        tools:layout="@layout/fragment_my_token">
         <action
             android:id="@+id/action_myTokenFragment_to_topUpFragment"
             app:destination="@id/topUpFragment" />
@@ -105,7 +114,7 @@
         android:id="@+id/checkoutFragment"
         android:name="com.movieappfinal.presentation.others.CheckoutFragment"
         android:label="fragment_checkout"
-        tools:layout="@layout/fragment_checkout" >
+        tools:layout="@layout/fragment_checkout">
         <action
             android:id="@+id/action_checkoutFragment_to_moviePaymentPageFragment"
             app:destination="@id/moviePaymentPageFragment" />
@@ -114,7 +123,7 @@
         android:id="@+id/topUpFragment"
         android:name="com.movieappfinal.presentation.others.TopUpFragment"
         android:label="fragment_top_up"
-        tools:layout="@layout/fragment_top_up" >
+        tools:layout="@layout/fragment_top_up">
         <action
             android:id="@+id/action_topUpFragment_to_tokenPaymentFragment"
             app:destination="@id/tokenPaymentFragment" />
@@ -129,9 +138,16 @@
         android:name="com.movieappfinal.presentation.others.MoviePaymentPageFragment"
         android:label="fragment_movie_payment_page"
         tools:layout="@layout/fragment_movie_payment_page" />
-<!--    <fragment-->
-<!--        android:id="@+id/settingFragment"-->
-<!--        android:name="com.movieappfinal.presentation.others.SettingFragment"-->
-<!--        android:label="fragment_setting"-->
-<!--        tools:layout="@layout/fragment_setting" />-->
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.movieappfinal.presentation.others.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="movieId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_detailFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+    </fragment>
 </navigation>
