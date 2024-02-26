@@ -7,4 +7,6 @@ object Constant {
 
     const val ANIMATION_DELAY = 1000L
     const val ANIMATION_START = 0f
+
+    const val Img_Url = "https://image.tmdb.org/t/p/w500"
 }

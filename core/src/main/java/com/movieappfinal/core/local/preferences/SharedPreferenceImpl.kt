@@ -7,7 +7,7 @@ class SharedPreferenceImpl(private val sharedPreferences: SharedPreferences) :
     SharedPreferencesHelper {
     companion object {
         const val PREFS_NAME = "MySharedPreferences"
-        private const val KEY_ACCESS_TOKEN = "access_token"
+        private const val KEY_UID = "access_token"
         private const val KEY_REFRESH_TOKEN = "refresh_token"
         private const val KEY_ON_BOARDING_STATE = "on_boarding_state"
         private const val LANGUAGE_STATUS= "language_status"
@@ -32,12 +32,12 @@ class SharedPreferenceImpl(private val sharedPreferences: SharedPreferences) :
         return sharedPreferences.getString(LANGUAGE_STATUS, "").toString()
     }
 
-    override fun putAccessToken(value: String) {
-        sharedPreferences.edit().putString(KEY_ACCESS_TOKEN, value).apply()
+    override fun putUid(value: String) {
+        sharedPreferences.edit().putString(KEY_UID, value).apply()
     }
 
-    override fun getAccessToken(): String {
-        return sharedPreferences.getString(KEY_ACCESS_TOKEN, "").toString()
+    override fun getUid(): String {
+        return sharedPreferences.getString(KEY_UID, "").toString()
     }
 
     override fun putRefreshToken(value: String) {
@@ -74,7 +74,7 @@ class SharedPreferenceImpl(private val sharedPreferences: SharedPreferences) :
 
     override fun clearAllSession() {
         sharedPreferences.edit().apply{
-            remove(KEY_ACCESS_TOKEN)
+            remove(KEY_UID)
             remove(KEY_REFRESH_TOKEN)
             remove(PROFILE_KEY)
             apply()

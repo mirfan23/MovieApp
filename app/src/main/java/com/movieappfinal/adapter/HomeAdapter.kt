@@ -1,35 +1,29 @@
 package com.movieappfinal.adapter
 
 import android.view.View
-import coil.load
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.base.BaseListAdapter
 import com.movieappfinal.R
-import com.movieappfinal.core.remote.data.DataDummy
-import com.movieappfinal.databinding.HomeMovieItemBinding
+import com.movieappfinal.core.domain.model.DataPopularMovie
+import com.movieappfinal.core.domain.model.DataPopularMovieItem
+import com.movieappfinal.databinding.HomeItemBinding
+import com.movieappfinal.utils.SpaceItemDecoration
 
-class HomeAdapter(private val action:(DataDummy) -> Unit): BaseListAdapter<DataDummy, HomeMovieItemBinding>(
-    HomeMovieItemBinding::inflate){
+class HomeAdapter(private val action: (DataPopularMovieItem) -> Unit): BaseListAdapter<DataPopularMovie, HomeItemBinding>(
+    HomeItemBinding::inflate){
 
-    private val image = arrayOf(
-        R.drawable.carousel_home,
-        R.drawable.carousel_home,
-        R.drawable.carousel_home
-    )
-
-    private val title = arrayOf(
-        R.string.onboarding_1_title,
-        R.string.onboarding_2_title,
-        R.string.onboarding_3_title
-    )
-
-    override fun onItemBind(): (DataDummy, HomeMovieItemBinding, View, Int) -> Unit =
+    override fun onItemBind(): (DataPopularMovie, HomeItemBinding, View, Int) -> Unit =
         { item, binding, itemView, _ ->
             binding.run {
-                ivMovie.load(image)
-                tvMovieTitle.text = title.toString()
-            }
-            itemView.setOnClickListener {
-                action.invoke(item)
+                val homeImageAdapter = HomeImageAdapter(action)
+                tvSubTitle.text = item.title
+                rvItem.apply {
+                    layoutManager = LinearLayoutManager(root.context, LinearLayoutManager.HORIZONTAL, false)
+                    adapter = homeImageAdapter
+                    val spaceInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
+                    addItemDecoration(SpaceItemDecoration(spaceInPixels))
+                }
+                homeImageAdapter.submitList(item.items)
             }
         }
 

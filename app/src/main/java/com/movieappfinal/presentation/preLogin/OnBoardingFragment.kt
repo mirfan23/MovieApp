@@ -10,11 +10,12 @@ import com.movieappfinal.adapter.OnBoardingAdapter
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.databinding.FragmentOnBoardingBinding
 import com.movieappfinal.viewmodel.AuthViewModel
+import com.movieappfinal.viewmodel.DashboardViewModel
 import kotlinx.coroutines.Runnable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, AuthViewModel>(FragmentOnBoardingBinding::inflate) {
-    override val viewModel: AuthViewModel by viewModel()
+class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, DashboardViewModel>(FragmentOnBoardingBinding::inflate) {
+    override val viewModel: DashboardViewModel by viewModel()
     private lateinit var viewPager: ViewPager2
     private lateinit var onBoardingAdapter: OnBoardingAdapter
     private lateinit var tabLayout: TabLayout
@@ -34,7 +35,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, AuthViewModel
 
         tabLayout = binding.tlOnboarding
         TabLayoutMediator(tabLayout, viewPager) {_,_ ->}.attach()
-
+        viewModel.putOnBoardingState(true)
         binding.apply {
             btnLoginOnBoarding.setOnClickListener {
                 findNavController().navigate(R.id.action_onBoardingFragment_to_loginFragment)

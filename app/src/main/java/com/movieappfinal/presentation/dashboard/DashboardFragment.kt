@@ -83,6 +83,9 @@ class DashboardFragment :
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
+//                R.id.logout_item -> {
+//                    user.getI
+//                }
                 else -> false
             }
         }

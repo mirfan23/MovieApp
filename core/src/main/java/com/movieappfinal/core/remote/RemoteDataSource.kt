@@ -1,4 +1,17 @@
 package com.movieappfinal.core.remote
 
-class RemoteDataSource {
+import com.movieappfinal.core.remote.data.NowPlayingResponse
+import com.movieappfinal.core.remote.data.PopularMovieResponse
+import com.movieappfinal.core.remote.services.ApiEndPoint
+import com.movieappfinal.core.utils.safeApiCall
+
+class RemoteDataSource(private val apiEndPoint: ApiEndPoint) {
+    suspend fun fetchPopularProduct(): PopularMovieResponse {
+        return safeApiCall { apiEndPoint.fetchPopularMovie() }
+    }
+
+    suspend fun fetchNowPlayingProduct(): NowPlayingResponse {
+        return safeApiCall { apiEndPoint.fetchNowPlayingMovie() }
+    }
+
 }

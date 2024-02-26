@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.movieappfinal.R
+import com.movieappfinal.databinding.HomeRecyclerItemBinding
 import com.movieappfinal.databinding.OnBoardingItemBinding
 
-class HomeCarouselAdapter : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouselAdapter>() {
+class HomeCarouselAdapter : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouselViewHolder>() {
 
     private val image = arrayOf(
         R.drawable.carousel_home,
@@ -26,13 +27,13 @@ class HomeCarouselAdapter : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouse
         R.string.action_drama_genre
     )
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCarouselAdapter {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCarouselViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = OnBoardingItemBinding.inflate(inflater, parent, false)
-        return HomeCarouselAdapter(binding)
+        val binding = HomeRecyclerItemBinding.inflate(inflater, parent, false)
+        return HomeCarouselViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: HomeCarouselAdapter, position: Int) {
+    override fun onBindViewHolder(holder: HomeCarouselViewHolder, position: Int) {
         val currentImage  = image[position]
         val currentTitle = holder.itemView.context.getString(title[position])
         val currentDesc = holder.itemView.context.getString(genre[position])
@@ -42,12 +43,12 @@ class HomeCarouselAdapter : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouse
         return image.size
     }
 
-    inner class HomeCarouselAdapter(private val binding: OnBoardingItemBinding) :
+    inner class HomeCarouselViewHolder(private val binding: HomeRecyclerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(image: Int, title: String, desc: String) {
-            binding.ivOnBoarding.setImageResource(image)
-            binding.tvTitleOnBoarding.text = title
-            binding.tvMiniDesc.text = desc
+        fun bind(image: Int, title: String, genre: String) {
+            binding.ivCarousel.setImageResource(image)
+            binding.tvTitleCarousel.text = title
+            binding.tvGenre.text = genre
         }
     }
 }

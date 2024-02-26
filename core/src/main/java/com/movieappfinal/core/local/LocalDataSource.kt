@@ -21,11 +21,11 @@ class LocalDataSource(
         preference.putRefreshToken(token)
     }
 
-    fun saveAccessToken(token: String) {
-        preference.putAccessToken(token)
+    fun putUid(token: String) {
+        preference.putUid(token)
     }
 
-    fun getAccessToken(): String = preference.getAccessToken()
+    fun getUid(): String = preference.getUid()
 
     fun saveProfileName(name: String) {
         preference.putProfileName(name)
