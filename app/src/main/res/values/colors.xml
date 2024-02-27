@@ -2,4 +2,13 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primaryColor">#6750A4</color>
+    <color name="secondaryColor">#625B71</color>
+    <color name="tertiary">#7D5260</color>
+    <color name="error">#B3261E</color>
+    <color name="neutral">#605D64</color>
+    <color name="bg_grey">#80CAC4D0</color>
+    <color name="neutral_variant">#605D66</color>
+    <color name="divider">#CAC4D0</color>
+    <color name="shimmer_background">#DDDDDDDD</color>
 </resources>

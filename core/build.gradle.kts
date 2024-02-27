@@ -3,18 +3,22 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("kotlin-parcelize")
-    id("com.google.firebase.crashlytics")
+//    id("com.google.firebase.crashlytics")
 }
 
 android {
     namespace = "com.movieappfinal.core"
     compileSdk = 34
+    buildFeatures.buildConfig = true
 
     defaultConfig {
         minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "BASE_URL", "\"https://api.themoviedb.org/3/\"")
+        buildConfigField("String","Access_Token", "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJlZTEzYjMxZDU0MzY5Mjk3YzdjMGRkMWU1YzI0NDY2NyIsInN1YiI6IjY1ZDdlZDhmMzk3ZGYwMDE0OThhNDUyZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.XW7p3ifQ403TgLXjwMGvNIv_IVjzihuRD7ygyxBPrX8\"")
     }
 
     buildTypes {
@@ -81,8 +85,8 @@ dependencies {
 
     //firebase
     api(platform("com.google.firebase:firebase-bom:32.7.2"))
-    api("com.google.firebase:firebase-analytics-ktx:21.5.1")
-    api("com.google.firebase:firebase-crashlytics-ndk")
+//    api("com.google.firebase:firebase-crashlytics")
+    api("com.google.firebase:firebase-analytics")
     api("com.google.firebase:firebase-config-ktx:21.6.1")
     api("com.google.firebase:firebase-messaging-ktx:23.4.1")
     api("com.google.firebase:firebase-auth")

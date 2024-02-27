@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("androidx.navigation.safeargs.kotlin")
+    id("androidx.navigation.safeargs")
     id("com.google.gms.google-services")
 }
 
@@ -57,10 +57,6 @@ dependencies {
     //coil
     implementation("io.coil-kt:coil:2.5.0")
 
-    //navigation
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
-
     //Swipe Refresh Layout
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
@@ -70,8 +66,6 @@ dependencies {
     //window
     implementation("androidx.window:window:1.2.0")
     implementation("androidx.annotation:annotation:1.7.1")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
 
     //testing
     testImplementation("junit:junit:4.13.2")

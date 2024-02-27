@@ -24,10 +24,11 @@
     </style>
 
     <style name="headline" parent="Theme.Material3.Light">
-        <item name="android:fontFamily">@font/poppins_regular</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/poppins_medium_italic</item>
+        <item name="android:textSize">30sp</item>
         <item name="android:textColor">#1D1B20</item>
         <item name="android:includeFontPadding">false</item>
+    </style>
 
         <style name="ShapeAppearanceOverlay.App.ConerSize50percent" parent="">
             <item name="cornerSize">50%</item>
@@ -42,5 +43,4 @@
             <item name="android:minWidth">0dp</item>
             <item name="android:minHeight">0dp</item>
         </style>
-    </style>
 </resources>
