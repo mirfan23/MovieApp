@@ -5,20 +5,16 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.movieappfinal.R
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.databinding.FragmentDashboardBinding
-import com.movieappfinal.viewmodel.AuthViewModel
+import com.movieappfinal.viewmodel.DashboardViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardFragment :
-    BaseFragment<FragmentDashboardBinding, AuthViewModel>(FragmentDashboardBinding::inflate) {
-    override val viewModel: AuthViewModel by viewModel()
+    BaseFragment<FragmentDashboardBinding, DashboardViewModel>(FragmentDashboardBinding::inflate) {
+    override val viewModel: DashboardViewModel by viewModel()
     private lateinit var navController: NavController
-    private var user: FirebaseUser? = null
     private var auth: FirebaseAuth? = null
 
 
@@ -27,12 +23,12 @@ class DashboardFragment :
             childFragmentManager.findFragmentById(R.id.fragment_container_dashboard) as NavHostFragment
         navController = navHostFragment.navController
 
-        user = Firebase.auth.currentUser
-        auth = Firebase.auth
         val userName = viewModel.getCurrentUser()
         binding.toolbarDashboard.title = userName.let {
             it?.userName
         }
+        userName?.let { viewModel.putUID(it.userId) }
+
     }
 
     override fun initListener() = with(binding) {

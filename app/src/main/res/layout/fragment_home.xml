@@ -31,12 +31,21 @@
             app:tabMode="fixed" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_trending_movie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:orientation="horizontal"
+            android:layout_below="@id/vp_home_movie"
+            tools:listitem="@layout/home_item" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_home_now_playing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:orientation="horizontal"
-            android:layout_below="@id/rv_home_popular"
+            android:layout_below="@id/rv_trending_movie"
             tools:listitem="@layout/home_item" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -45,9 +54,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:orientation="horizontal"
-            android:layout_below="@id/vp_home_movie"
+            android:layout_below="@id/rv_home_now_playing"
             tools:listitem="@layout/home_item" />
 
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>
+
 </FrameLayout>

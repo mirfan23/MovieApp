@@ -14,7 +14,7 @@
                 android:title="@string/search_title"/>
             <item
                 android:id="@+id/wishlistFragment"
-                android:icon="@drawable/ic_wishlist"
+                android:icon="@drawable/ic_wishlist_filled"
                 android:title="@string/wishlist_title"/>
             <item
                 android:id="@+id/transactionFragment"

@@ -49,5 +49,31 @@
     <string name="already_have_account">Sudah memiliki akun? Masuk.</string>
     <string name="login_text">Masuk</string>
     <string name="detail_title">Detail</string>
-
+    <string name="email_is_required">Email is required</string>
+    <string name="password_is_required">Password is required</string>
+    <string name="email_is_invalid">Email is invalid</string>
+    <string name="password_is_invalid">Password is invalid</string>
+    <string name="name_can_not_be_null">Name Can Not be Null</string>
+    <string name="now_playing_title">Now Playing</string>
+    <string name="popular_title">Popular</string>
+    <string name="trending_title">Trending</string>
+    <string name="movie_overview">Movie Overview</string>
+    <string name="rent_now_btn">Rent Now</string>
+    <string name="add_to_cart_btn">Add to Cart</string>
+    <string name="cart_title">Cart</string>
+    <string name="are_you_sure">Are You sure want to delete this item?</string>
+    <string name="item_will_deleted">Item will deleted from Cart</string>
+    <string name="cancel_btn_cart">Cancel</string>
+    <string name="delete_btn_cart">Delete</string>
+    <string name="successful_added_to_cart">Successful Added to Cart</string>
+    <string name="delete_btn_text">Delete</string>
+    <string name="en">EN</string>
+    <string name="id">ID</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="theme_text">Theme</string>
+    <string name="successful_added_to_wishlist">Success Added to Wishlist</string>
+    <string name="success_delete_from_wishlist">Success Delete from Wishlist</string>
+    <string name="total_items">%total% items</string>
+    <string name="failed_to_get_data">Gagal Mendapatkan Data</string>
 </resources>

@@ -53,7 +53,7 @@ class AuthViewModel(private val useCase: AppUseCase): ViewModel() {
 
     fun signInWithFirebase(email: String, password: String) = runBlocking { useCase.signInFirebase(email, password) }
     fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest) = runBlocking { useCase.updateProfile(userProfileChangeRequest) }
-    fun getCurrentUser() = runBlocking { useCase.getCurrentUser() }
+
     fun saveProfileName(dataProfile: DataProfile) {
         useCase.saveProfileName(dataProfile.userName)
     }

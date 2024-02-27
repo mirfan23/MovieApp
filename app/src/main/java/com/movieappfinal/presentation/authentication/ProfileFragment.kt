@@ -1,12 +1,15 @@
 package com.movieappfinal.presentation.authentication
 
 import android.text.method.LinkMovementMethod
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.movieappfinal.R
+import com.movieappfinal.core.domain.state.onCreated
+import com.movieappfinal.core.domain.state.onValue
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.core.utils.launchAndCollectIn
 import com.movieappfinal.databinding.FragmentProfileBinding
@@ -31,6 +34,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, AuthViewModel>(Frag
 
     override fun initListener() {
         binding.run {
+            tietProfile.doOnTextChanged { text, _, _, _ ->
+                viewModel.validateProfileName(text.toString())
+            }
             btnFinish.setOnClickListener {
                 val profileUpdates = userProfileChangeRequest {
                     displayName = tietProfile.text.toString().trim()
@@ -52,7 +58,21 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, AuthViewModel>(Frag
         }
     }
 
-    override fun observeData() {}
+    override fun observeData() {
+        with(viewModel){
+            validateProfileName.launchAndCollectIn(viewLifecycleOwner){state ->
+                state.onCreated {}
+                    .onValue {isValid->
+                        binding.run {
+                            tilProfile.isErrorEnabled = isValid.not()
+                            if (isValid) {
+                                tilProfile.error = null
+                            } else tilProfile.error = getString(R.string.name_can_not_be_null)
+                        }
+                    }
+            }
+        }
+    }
 
     private fun termsCo() {
         val sk = binding.tvTermCondition
