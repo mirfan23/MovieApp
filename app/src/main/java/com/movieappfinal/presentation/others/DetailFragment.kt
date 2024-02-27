@@ -23,7 +23,7 @@ class DetailFragment :
         safeArgs.movieId.let { movieId ->
             fetchDetail(movieId)
         }
-        binding.toolbarDetail.title = "Detail"
+        binding.toolbarDetail.title = getString(R.string.detail_title)
     }
 
     override fun initListener() {

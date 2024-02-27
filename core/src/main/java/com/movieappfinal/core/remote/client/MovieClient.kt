@@ -1,6 +1,7 @@
 package com.movieappfinal.core.remote.client
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.movieappfinal.core.BuildConfig
 import com.movieappfinal.core.remote.interceptor.MovieInterceptor
 import com.movieappfinal.core.remote.services.ApiEndPoint
 import okhttp3.OkHttpClient
@@ -19,7 +20,7 @@ class MovieClient(
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

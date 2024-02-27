@@ -14,7 +14,6 @@ import com.movieappfinal.databinding.FragmentDashboardBinding
 import com.movieappfinal.viewmodel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class DashboardFragment :
     BaseFragment<FragmentDashboardBinding, AuthViewModel>(FragmentDashboardBinding::inflate) {
     override val viewModel: AuthViewModel by viewModel()
@@ -30,10 +29,9 @@ class DashboardFragment :
 
         user = Firebase.auth.currentUser
         auth = Firebase.auth
-
-        if (user != null && user?.displayName != null) {
-            val username = user?.displayName
-            binding.toolbarDashboard.title = username
+        val userName = viewModel.getCurrentUser()
+        binding.toolbarDashboard.title = userName.let {
+            it?.userName
         }
     }
 

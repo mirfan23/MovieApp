@@ -1,6 +1,7 @@
 package com.movieappfinal.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.movieappfinal.core.domain.model.DataProfile
 import com.movieappfinal.core.domain.state.FlowState
 import com.movieappfinal.core.domain.usecase.AppUseCase
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.runBlocking
 
 class AuthViewModel(private val useCase: AppUseCase): ViewModel() {
 
@@ -46,6 +48,12 @@ class AuthViewModel(private val useCase: AppUseCase): ViewModel() {
         MutableStateFlow(FlowState.FlowCreated)
     val validateProfileField = _validateProfileField.asSharedFlow()
 
+
+    fun signUpWithFirebase(email: String, password: String) = runBlocking { useCase.signUpFirebase(email, password) }
+
+    fun signInWithFirebase(email: String, password: String) = runBlocking { useCase.signInFirebase(email, password) }
+    fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest) = runBlocking { useCase.updateProfile(userProfileChangeRequest) }
+    fun getCurrentUser() = runBlocking { useCase.getCurrentUser() }
     fun saveProfileName(dataProfile: DataProfile) {
         useCase.saveProfileName(dataProfile.userName)
     }

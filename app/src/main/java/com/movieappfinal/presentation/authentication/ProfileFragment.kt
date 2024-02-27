@@ -8,11 +8,12 @@ import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import com.movieappfinal.R
 import com.movieappfinal.core.utils.BaseFragment
+import com.movieappfinal.core.utils.launchAndCollectIn
 import com.movieappfinal.databinding.FragmentProfileBinding
+import com.movieappfinal.utils.CustomSnackbar
 import com.movieappfinal.utils.SpannableStringUtils
 import com.movieappfinal.viewmodel.AuthViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding, AuthViewModel>(FragmentProfileBinding::inflate) {
     override val viewModel: AuthViewModel by viewModel()
@@ -20,9 +21,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, AuthViewModel>(Frag
     private lateinit var auth: FirebaseAuth
 
     override fun initView() = with(binding){
-        toolbarProfile.title = "Profile"
-        tietProfile.hint = "Name"
-        btnFinish.text = "Finish"
+        toolbarProfile.title = getString(R.string.profile_title)
+        tietProfile.hint = getString(R.string.name_hint)
+        btnFinish.text = getString(R.string.finish_text)
         termsCo()
 
         auth = Firebase.auth
@@ -34,9 +35,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, AuthViewModel>(Frag
                 val profileUpdates = userProfileChangeRequest {
                     displayName = tietProfile.text.toString().trim()
                 }
-                auth.currentUser?.updateProfile(profileUpdates)?.addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
+                viewModel.updateProfile(profileUpdates).launchAndCollectIn(viewLifecycleOwner) {
+                    if (it){
                         findNavController().navigate(R.id.action_profileFragment_to_dashboardFragment)
+                    } else {
+                        context?.let { ctx ->
+                            CustomSnackbar.showSnackBar(
+                                ctx,
+                                binding.root,
+                                getString(R.string.failed_to_add_profile_name)
+                            )
+                        }
                     }
                 }
             }

@@ -41,4 +41,13 @@
     <string name="navigation_drawer_close">Tutup Navigasi</string>
     <string name="logout">Keluar</string>
     <string name="duration_minutes">%duration% minutes</string>
+    <string name="doesnt_have_account">Belum memiliki akun? Daftar.</string>
+    <string name="register_text">Daftar</string>
+    <string name="name_hint">Name</string>
+    <string name="finish_text">Finish</string>
+    <string name="failed_to_add_profile_name">Gagal Menambahkan Nama Profile</string>
+    <string name="register_failed">Gagal Register</string>
+    <string name="already_have_account">Sudah memiliki akun? Masuk.</string>
+    <string name="login_text">Masuk</string>
+    <string name="detail_title">Detail</string>
 </resources>

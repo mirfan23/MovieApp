@@ -8,4 +8,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class DataProfile (
     var userName: String = "",
+    var userId: String = ""
 ): Parcelable
