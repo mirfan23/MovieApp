@@ -1,5 +1,6 @@
 package com.movieappfinal.presentation.others
 
+import androidx.navigation.fragment.findNavController
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.databinding.FragmentTopUpBinding
 import com.movieappfinal.viewmodel.AuthViewModel
@@ -10,7 +11,11 @@ class TopUpFragment : BaseFragment<FragmentTopUpBinding, AuthViewModel>(Fragment
 
     override fun initView() {}
 
-    override fun initListener() {}
+    override fun initListener() {
+        binding.toolbarTopup.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
 
     override fun observeData() {}
 

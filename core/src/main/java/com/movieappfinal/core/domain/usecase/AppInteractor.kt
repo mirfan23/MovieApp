@@ -1,20 +1,29 @@
 package com.movieappfinal.core.domain.usecase
 
+import androidx.paging.PagingData
+import com.example.core.domain.model.DataPaymentMethod
 import com.movieappfinal.core.local.preferences.SharedPreferencesHelper
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.gson.Gson
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataDetailMovie
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
 import com.movieappfinal.core.domain.model.DataProfile
+import com.movieappfinal.core.domain.model.DataSearchMovie
 import com.movieappfinal.core.domain.model.DataSession
+import com.movieappfinal.core.domain.model.DataTokenPaymentItem
 import com.movieappfinal.core.domain.model.DataTrendingMovie
 import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.repository.FirebaseRepository
 import com.movieappfinal.core.domain.repository.MovieRepository
 import com.movieappfinal.core.domain.state.UiState
+import com.movieappfinal.core.remote.data.PaymentMethodResponse
+import com.movieappfinal.core.remote.data.TokenPaymentResponse
 import com.movieappfinal.core.utils.DataMapper.toEntity
 import com.movieappfinal.core.utils.DataMapper.toUIData
+import com.movieappfinal.core.utils.DataMapper.toUiData
+import com.movieappfinal.core.utils.safeApiCall
 import com.movieappfinal.core.utils.safeDataCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,38 +36,46 @@ class AppInteractor(
     private val sharedPreferencesHelper: SharedPreferencesHelper,
     private val firebaseRepo: FirebaseRepository
 ) : AppUseCase {
-    override suspend fun fetchPopularMovie(): DataPopularMovie = safeDataCall {
+    override suspend fun fetchPopularMovie(): DataPopularMovie = safeApiCall {
         movieRepo.fetchPopularMovie().toUIData()
     }
 
-    override suspend fun fetchNowPlayingMovie(): DataNowPlaying = safeDataCall {
+    override suspend fun fetchNowPlayingMovie(): DataNowPlaying = safeApiCall {
         movieRepo.fetchNowPlayingMovie().toUIData()
     }
 
-    override suspend fun fetchTrendingMovie(): DataTrendingMovie = safeDataCall {
+    override suspend fun fetchTrendingMovie(): DataTrendingMovie = safeApiCall {
         movieRepo.fetchTrendingMovie().toUIData()
     }
 
-    override suspend fun fetchDetailMovie(movieId: Int): DataDetailMovie = safeDataCall {
+    override suspend fun fetchDetailMovie(movieId: Int): DataDetailMovie = safeApiCall {
         movieRepo.fetchDetailMovie(movieId).toUIData()
     }
 
-    override suspend fun signUpFirebase(email: String, password: String): Flow<Boolean> = safeDataCall{
-        firebaseRepo.signUpFirebase(email, password)
-    }
+    override suspend fun signUpFirebase(email: String, password: String): Flow<Boolean> =
+        safeDataCall {
+            firebaseRepo.signUpFirebase(email, password)
+        }
 
-    override suspend fun signInFirebase(email: String, password: String): Flow<Boolean> = safeDataCall {
-        firebaseRepo.signInFirebase(email, password)
-    }
+    override suspend fun signInFirebase(email: String, password: String): Flow<Boolean> =
+        safeDataCall {
+            firebaseRepo.signInFirebase(email, password)
+        }
 
     override suspend fun getCurrentUser(): DataProfile? {
         val user = firebaseRepo.getCurrentUser()
-        return  user?.let { it.displayName?.let { displayName -> DataProfile(displayName,it.uid) } }
+        return user?.let { it.displayName?.let { displayName -> DataProfile(displayName, it.uid) } }
     }
 
-    override suspend fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest): Flow<Boolean> = safeDataCall {
-        firebaseRepo.updateProfile(userProfileChangeRequest)
-    }
+    override suspend fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest): Flow<Boolean> =
+        safeDataCall {
+            firebaseRepo.updateProfile(userProfileChangeRequest)
+        }
+
+    override suspend fun fetchSearch(query: String): Flow<PagingData<DataSearchMovie>> =
+        safeDataCall {
+            movieRepo.fetchSearch(query)
+        }
 
     override suspend fun insertCart(productCart: DataCart) {
         movieRepo.insertCart(productCart.toEntity())
@@ -91,6 +108,24 @@ class AppInteractor(
         movieRepo.deleteWishlist(dataWishList.toEntity())
     }
 
+    override suspend fun getConfigPayment(): Flow<List<DataTokenPaymentItem>> = safeDataCall {
+        firebaseRepo.getConfigPayment().map { data ->
+            val response = Gson().fromJson(data, TokenPaymentResponse::class.java)
+            response.map { it.toUiData() }.toList()
+        }
+    }
+
+    override suspend fun getConfigStatusUpdate(): Flow<Boolean> = firebaseRepo.getConfigStatusUpdate()
+
+    override suspend fun getConfigPaymentMethod(): Flow<List<DataPaymentMethod>> = safeDataCall {
+        firebaseRepo.getConfigPaymentMethod().map { data ->
+            val response = Gson().fromJson(data, PaymentMethodResponse::class.java)
+            response.data.map { data -> data.toUIData() }.toList()
+        }
+    }
+
+    override suspend fun getConfigStatusUpdatePayment(): Flow<Boolean> = firebaseRepo.getConfigStatusUpdatePayment()
+
     override fun dataSession(): DataSession {
         val name = movieRepo.getProfileName()
         val uid = movieRepo.getUid()
@@ -105,7 +140,7 @@ class AppInteractor(
 
     override fun getOnBoardingState(): Boolean = movieRepo.getOnBoardingState()
     override fun putWishlistState(value: Boolean) {
-         movieRepo.putWishlistState(value)
+        movieRepo.putWishlistState(value)
     }
 
     override fun getWishlistState(): Boolean = movieRepo.getWishlistState()

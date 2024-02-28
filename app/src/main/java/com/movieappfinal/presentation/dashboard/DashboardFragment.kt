@@ -24,11 +24,9 @@ class DashboardFragment :
         navController = navHostFragment.navController
 
         val userName = viewModel.getCurrentUser()
-        binding.toolbarDashboard.title = userName.let {
-            it?.userName
-        }
+        binding.toolbarDashboard.title = userName.let { it?.userName }
         userName?.let { viewModel.putUID(it.userId) }
-
+        userName?.let { viewModel.saveProfileName(it.userName) }
     }
 
     override fun initListener() = with(binding) {

@@ -3,7 +3,6 @@ package com.movieappfinal.core.remote.client
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.movieappfinal.core.BuildConfig
 import com.movieappfinal.core.remote.interceptor.MovieInterceptor
-import com.movieappfinal.core.remote.services.ApiEndPoint
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

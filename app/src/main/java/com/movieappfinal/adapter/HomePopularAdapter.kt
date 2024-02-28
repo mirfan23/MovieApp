@@ -14,11 +14,9 @@ class HomePopularAdapter(
 ) : BaseListAdapter<DataPopularMovie, HomeItemBinding>(
     HomeItemBinding::inflate
 ) {
-
     override fun onItemBind(): (DataPopularMovie, HomeItemBinding, View, Int) -> Unit =
         { item, binding, itemView, _ ->
             binding.run {
-
                 val homePopularItemAdapter = HomePopularItemAdapter(popular)
                 tvSubTitle.text = root.context.getString(R.string.popular_title)
                 rvItem.apply {

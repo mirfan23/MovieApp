@@ -2,11 +2,11 @@ package com.movieappfinal.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataDetailMovie
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
-import com.movieappfinal.core.domain.model.DataPopularMovieItem
 import com.movieappfinal.core.domain.model.DataTrendingMovie
 import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.state.UiState
@@ -40,6 +40,9 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
 
     private var listCart: MutableList<DataCart> = mutableListOf()
 
+
+
+
     fun getCurrentUser() = runBlocking { useCase.getCurrentUser() }
 
     fun fetchPopularMovie() {
@@ -72,10 +75,6 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
                 useCase.fetchDetailMovie(movieId)
             }
         }
-    }
-
-    fun setDataCart(data: DataCart) {
-        dataCart = data
     }
 
     fun setDataWishlist(data: DataWishlist) {
@@ -124,6 +123,10 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
         }
     }
 
+    fun setDataCart(data: DataCart) {
+        dataCart = data
+    }
+
     fun setDataListCart(list: List<DataCart>) {
         listCart.clear()
         listCart.addAll(list)
@@ -132,6 +135,9 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
     fun putWishlistState(value: Boolean) {
         useCase.putWishlistState(value)
     }
+
+    fun fetchSearch(query: String) = runBlocking{ useCase.fetchSearch(query).cachedIn(viewModelScope) }
+
 
 
 }

@@ -5,59 +5,61 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.dashboard.HomeFragment">
-<androidx.core.widget.NestedScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <RelativeLayout
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_home_movie"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="match_parent">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tl_movie"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:background="@android:color/transparent"
-            app:tabBackground="@drawable/tabs_selector"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@id/vp_home_movie"
-            app:tabGravity="center"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed" />
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vp_home_movie"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_trending_movie"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:orientation="horizontal"
-            android:layout_below="@id/vp_home_movie"
-            tools:listitem="@layout/home_item" />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tl_movie"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_alignBottom="@id/vp_home_movie"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:background="@android:color/transparent"
+                app:tabBackground="@drawable/tabs_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:tabMode="fixed" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_home_now_playing"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:orientation="horizontal"
-            android:layout_below="@id/rv_trending_movie"
-            tools:listitem="@layout/home_item" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_trending_movie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vp_home_movie"
+                android:layout_marginStart="16dp"
+                tools:listitem="@layout/home_item"
+                tools:orientation="horizontal" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_home_popular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:orientation="horizontal"
-            android:layout_below="@id/rv_home_now_playing"
-            tools:listitem="@layout/home_item" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_home_now_playing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rv_trending_movie"
+                android:layout_marginStart="16dp"
+                tools:listitem="@layout/home_item"
+                tools:orientation="horizontal" />
 
-    </RelativeLayout>
-</androidx.core.widget.NestedScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_home_popular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rv_home_now_playing"
+                android:layout_marginStart="16dp"
+                tools:listitem="@layout/home_item"
+                tools:orientation="horizontal" />
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

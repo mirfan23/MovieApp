@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="48dp"
+            android:layout_height="15dp"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="10dp"
+            tools:src="@drawable/bca_icon" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_icon"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:visibility="gone"
+            android:gravity="center_vertical"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.ConerSize50percent"
+            tools:src="@drawable/bca_icon"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins_semi_bold"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            tools:text="BCA Virtual Account" />
+
+        <ImageView
+            android:id="@+id/iv_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:src="@drawable/ic_arrow_forward" />
+</LinearLayout>

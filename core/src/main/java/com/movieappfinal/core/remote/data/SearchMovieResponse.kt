@@ -7,7 +7,7 @@ import android.os.Parcelable
 
 @Keep
 @Parcelize
-data class PopularMovieResponse(
+data class SearchMovieResponse(
     @SerializedName("page")
     val page: Int,
     @SerializedName("results")

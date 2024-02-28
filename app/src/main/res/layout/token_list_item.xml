@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_token_item">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivBadge"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_badge"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/iv_token_ic"
+            app:layout_constraintTop_toTopOf="@id/iv_token_ic"
+            tools:ignore="NotSibling" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_token_ic"
+                android:layout_width="35dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_token" />
+
+            <TextView
+                android:id="@+id/tv_token"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/iv_token_ic"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="26sp"
+                tools:text="100" />
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

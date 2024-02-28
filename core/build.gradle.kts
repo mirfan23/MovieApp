@@ -80,7 +80,7 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //paging
-    api("androidx.paging:paging-runtime:3.2.1")
+    api("androidx.paging:paging-runtime-ktx:3.2.1")
 
     //firebase
     api(platform("com.google.firebase:firebase-bom:32.7.2"))
