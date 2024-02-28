@@ -1,10 +1,9 @@
 package com.movieappfinal.core.di
 
 import android.content.Context
+import androidx.room.Room
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.example.core.local.preferences.SharedPreferencesHelper
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.analytics
+import com.movieappfinal.core.local.preferences.SharedPreferencesHelper
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -16,6 +15,7 @@ import com.movieappfinal.core.domain.repository.MovieRepositoryImpl
 import com.movieappfinal.core.domain.usecase.AppInteractor
 import com.movieappfinal.core.domain.usecase.AppUseCase
 import com.movieappfinal.core.local.LocalDataSource
+import com.movieappfinal.core.local.database.MovieDatabase
 import com.movieappfinal.core.local.preferences.SharedPreferenceImpl
 import com.movieappfinal.core.local.preferences.SharedPreferenceImpl.Companion.PREFS_NAME
 import com.movieappfinal.core.remote.RemoteDataSource
@@ -36,10 +36,10 @@ object CoreModule : BaseModules {
     }
     val dataSourceModule = module {
         single { RemoteDataSource(get()) }
-        single { LocalDataSource(get()) }
+        single { LocalDataSource(get(), get()) }
     }
     val networkModule = module {
-        single { ChuckerInterceptor.Builder(androidContext()).build() }
+        single { ChuckerInterceptor.Builder(androidContext()).redactHeaders("Authorization", "Bearer").build() }
         single { MovieInterceptor() }
         single { MovieClient(get(), get()) }
         single<ApiEndPoint> { get<MovieClient>().create() }
@@ -57,6 +57,14 @@ object CoreModule : BaseModules {
         single { Firebase.auth }
         single<FirebaseRepository>{ FirebaseRepositoryImpl(get(), get(), get()) }
     }
+    val databaseModule = module {
+        single {
+            Room.databaseBuilder(androidContext(), MovieDatabase::class.java, "app_database")
+                .fallbackToDestructiveMigration()
+                .build()
+        }
+        single { get<MovieDatabase>().movieDao() }
+    }
 
     override fun getModules(): List<Module> = listOf(
         sharedPrefModule,
@@ -64,6 +72,7 @@ object CoreModule : BaseModules {
         useCaseModule,
         networkModule,
         firebaseModule,
-        movieRepositoryModule
+        movieRepositoryModule,
+        databaseModule
     )
 }

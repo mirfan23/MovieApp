@@ -9,7 +9,6 @@ import com.movieappfinal.R
 import com.movieappfinal.adapter.OnBoardingAdapter
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.databinding.FragmentOnBoardingBinding
-import com.movieappfinal.viewmodel.AuthViewModel
 import com.movieappfinal.viewmodel.DashboardViewModel
 import kotlinx.coroutines.Runnable
 import org.koin.androidx.viewmodel.ext.android.viewModel

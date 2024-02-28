@@ -15,4 +15,5 @@ data class DataPopularMovieItem(
     var overview: String = "",
     var poster: String = "",
     var releaseDate: String = "",
+    var popularity: Int =0
 ) : Parcelable

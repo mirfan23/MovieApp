@@ -14,12 +14,11 @@ class HomeNowPlayingAdapter(
 ) : BaseListAdapter<DataNowPlaying, HomeItemBinding>(
     HomeItemBinding::inflate
 ) {
-
     override fun onItemBind(): (DataNowPlaying, HomeItemBinding, View, Int) -> Unit =
         { item, binding, itemView, _ ->
             binding.run {
                 val homeNowPlayingItemAdapter = HomeNowPlayingItemAdapter(action)
-                tvSubTitle.text = "Now Playing"
+                tvSubTitle.text = root.context.getString(R.string.now_playing_title)
                 rvItem.apply {
                     layoutManager =
                         LinearLayoutManager(root.context, LinearLayoutManager.HORIZONTAL, false)

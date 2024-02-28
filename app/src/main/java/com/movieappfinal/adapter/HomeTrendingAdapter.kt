@@ -4,31 +4,29 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.base.BaseListAdapter
 import com.movieappfinal.R
-import com.movieappfinal.core.domain.model.DataPopularMovie
-import com.movieappfinal.core.domain.model.DataPopularMovieItem
+import com.movieappfinal.core.domain.model.DataTrendingMovie
+import com.movieappfinal.core.domain.model.DataTrendingMovieItem
 import com.movieappfinal.databinding.HomeItemBinding
 import com.movieappfinal.utils.SpaceItemDecoration
 
-class HomePopularAdapter(
-    private val popular: (DataPopularMovieItem) -> Unit,
-) : BaseListAdapter<DataPopularMovie, HomeItemBinding>(
+class HomeTrendingAdapter(
+    private val action: (DataTrendingMovieItem) -> Unit,
+) : BaseListAdapter<DataTrendingMovie, HomeItemBinding>(
     HomeItemBinding::inflate
 ) {
-
-    override fun onItemBind(): (DataPopularMovie, HomeItemBinding, View, Int) -> Unit =
+    override fun onItemBind(): (DataTrendingMovie, HomeItemBinding, View, Int) -> Unit =
         { item, binding, itemView, _ ->
             binding.run {
-
-                val homePopularItemAdapter = HomePopularItemAdapter(popular)
-                tvSubTitle.text = root.context.getString(R.string.popular_title)
+                val homeTrendingItemAdapter = HomeTrendingItemAdapter(action)
+                tvSubTitle.text = root.context.getString(R.string.trending_title)
                 rvItem.apply {
                     layoutManager =
                         LinearLayoutManager(root.context, LinearLayoutManager.HORIZONTAL, false)
-                    adapter = homePopularItemAdapter
+                    adapter = homeTrendingItemAdapter
                     val spaceInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
                     addItemDecoration(SpaceItemDecoration(spaceInPixels))
                 }
-                homePopularItemAdapter.submitList(item.itemsPopular)
+                homeTrendingItemAdapter.submitList(item.items)
             }
         }
 

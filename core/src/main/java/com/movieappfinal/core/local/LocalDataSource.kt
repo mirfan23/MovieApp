@@ -1,10 +1,34 @@
 package com.movieappfinal.core.local
 
-import com.example.core.local.preferences.SharedPreferencesHelper
+import com.movieappfinal.core.local.database.MovieDao
+import com.movieappfinal.core.local.entity.CartEntity
+import com.movieappfinal.core.local.entity.WishListEntity
+import com.movieappfinal.core.local.preferences.SharedPreferencesHelper
+import kotlinx.coroutines.flow.Flow
 
 class LocalDataSource(
     private val preference: SharedPreferencesHelper,
+    private val dao: MovieDao
 ) {
+
+    suspend fun insertCart(cartEntity: CartEntity) {
+        dao.insertCart(cartEntity)
+    }
+    fun fetchCart(id: Int): Flow<List<CartEntity>> = dao.retrieveAllCart(id)
+
+    suspend fun deleteCart(cartEntity: CartEntity) {
+        dao.deleteCart(cartEntity)
+    }
+
+    suspend fun insertWishList(wishListEntity: WishListEntity) {
+        dao.insertWishList(wishListEntity)
+    }
+
+    fun fetchWishList(id: Int): Flow<List<WishListEntity>> = dao.retrieveAllWishList(id)
+
+    suspend fun deleteWishlist(wishListEntity: WishListEntity) {
+        dao.deleteWishlist(wishListEntity)
+    }
     fun getOnBoardingState(): Boolean = preference.getOnBoardingState()
 
     fun saveOnBoardingState(state: Boolean) {

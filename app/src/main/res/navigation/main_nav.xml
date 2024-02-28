@@ -48,7 +48,9 @@
             app:destination="@id/myTokenFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/dashboardFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_dashboardFragment_to_detailFragment"
             app:destination="@id/detailFragment" />

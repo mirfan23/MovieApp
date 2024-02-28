@@ -1,17 +1,26 @@
 package com.movieappfinal.core.domain.usecase
 
-import com.example.core.local.preferences.SharedPreferencesHelper
+import com.movieappfinal.core.local.preferences.SharedPreferencesHelper
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataDetailMovie
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
 import com.movieappfinal.core.domain.model.DataProfile
 import com.movieappfinal.core.domain.model.DataSession
+import com.movieappfinal.core.domain.model.DataTrendingMovie
+import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.repository.FirebaseRepository
 import com.movieappfinal.core.domain.repository.MovieRepository
+import com.movieappfinal.core.domain.state.UiState
+import com.movieappfinal.core.utils.DataMapper.toEntity
 import com.movieappfinal.core.utils.DataMapper.toUIData
 import com.movieappfinal.core.utils.safeDataCall
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 class AppInteractor(
     private val movieRepo: MovieRepository,
@@ -24,6 +33,10 @@ class AppInteractor(
 
     override suspend fun fetchNowPlayingMovie(): DataNowPlaying = safeDataCall {
         movieRepo.fetchNowPlayingMovie().toUIData()
+    }
+
+    override suspend fun fetchTrendingMovie(): DataTrendingMovie = safeDataCall {
+        movieRepo.fetchTrendingMovie().toUIData()
     }
 
     override suspend fun fetchDetailMovie(movieId: Int): DataDetailMovie = safeDataCall {
@@ -39,11 +52,43 @@ class AppInteractor(
     }
 
     override suspend fun getCurrentUser(): DataProfile? {
-        return  firebaseRepo.getCurrentUser()?.displayName?.let { DataProfile(it) }
+        val user = firebaseRepo.getCurrentUser()
+        return  user?.let { it.displayName?.let { displayName -> DataProfile(displayName,it.uid) } }
     }
 
     override suspend fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest): Flow<Boolean> = safeDataCall {
         firebaseRepo.updateProfile(userProfileChangeRequest)
+    }
+
+    override suspend fun insertCart(productCart: DataCart) {
+        movieRepo.insertCart(productCart.toEntity())
+    }
+
+    override suspend fun deleteCart(dataCart: DataCart) {
+        movieRepo.deleteCart(dataCart.toEntity())
+    }
+
+    override suspend fun fetchCart(id: Int): Flow<UiState<List<DataCart>>> = safeDataCall {
+        movieRepo.fetchCart(id).map { data ->
+            val mapped = data.map { cartEntity -> cartEntity.toUIData() }
+            UiState.Success(mapped)
+        }.flowOn(Dispatchers.IO).catch { throwable -> UiState.Error(throwable) }
+    }
+
+    override suspend fun insertWishList(dataWishList: DataWishlist) {
+        movieRepo.insertWishList(dataWishList.toEntity())
+    }
+
+    override suspend fun fetchWishList(id: Int): Flow<UiState<List<DataWishlist>>> =
+        safeDataCall {
+            movieRepo.fetchWishList(id).map { data ->
+                val mapped = data.map { wishListEntity -> wishListEntity.toUIData() }
+                UiState.Success(mapped)
+            }.flowOn(Dispatchers.IO).catch { throwable -> UiState.Error(throwable) }
+        }
+
+    override suspend fun deleteWishlist(dataWishList: DataWishlist) {
+        movieRepo.deleteWishlist(dataWishList.toEntity())
     }
 
     override fun dataSession(): DataSession {
@@ -60,13 +105,10 @@ class AppInteractor(
 
     override fun getOnBoardingState(): Boolean = movieRepo.getOnBoardingState()
     override fun putWishlistState(value: Boolean) {
-//         productRepo.putWishlistState(value)
+         movieRepo.putWishlistState(value)
     }
 
-    override fun getWishlistState(): Boolean {
-        TODO()
-    }
-//     = productRepo.getWishlistState()
+    override fun getWishlistState(): Boolean = movieRepo.getWishlistState()
 
 
     override fun putThemeStatus(value: Boolean) {

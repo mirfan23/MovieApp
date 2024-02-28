@@ -10,7 +10,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding, HomeViewModel>(Frag
 
     override fun initView() {}
 
-    override fun initListener() {}
+    override fun initListener() {
+    }
 
     override fun observeData() {}
 

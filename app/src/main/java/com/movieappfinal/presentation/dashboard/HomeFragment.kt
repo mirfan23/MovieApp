@@ -1,7 +1,7 @@
 package com.movieappfinal.presentation.dashboard
 
-import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,9 +12,11 @@ import com.movieappfinal.R
 import com.movieappfinal.adapter.HomePopularAdapter
 import com.movieappfinal.adapter.HomeCarouselAdapter
 import com.movieappfinal.adapter.HomeNowPlayingAdapter
+import com.movieappfinal.adapter.HomeTrendingAdapter
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
 import com.movieappfinal.core.domain.model.DataPopularMovieItem
+import com.movieappfinal.core.domain.model.DataTrendingMovie
 import com.movieappfinal.core.domain.state.oError
 import com.movieappfinal.core.domain.state.onLoading
 import com.movieappfinal.core.domain.state.onSuccess
@@ -32,6 +34,7 @@ class HomeFragment :
     private lateinit var tabLayout: TabLayout
     private val listPopular: MutableList<DataPopularMovie> = mutableListOf()
     private val listNowPlaying: MutableList<DataNowPlaying> = mutableListOf()
+    private val listTrending: MutableList<DataTrendingMovie> = mutableListOf()
     private val listCarousel: MutableList<DataPopularMovieItem> = mutableListOf()
     private val homePopularAdapter by lazy {
         HomePopularAdapter { data ->
@@ -49,21 +52,33 @@ class HomeFragment :
                 ?.navigate(R.id.action_dashboardFragment_to_detailFragment, bundle)
         }
     }
+    private val homeTrendingAdapter by lazy {
+        HomeTrendingAdapter{ data ->
+            val bundle = bundleOf("movieId" to data.id)
+            activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
+                ?.findNavController()
+                ?.navigate(R.id.action_dashboardFragment_to_detailFragment, bundle)
+        }
+    }
     private val homeCarouselAdapter by lazy {
         HomeCarouselAdapter(listCarousel)
     }
 
 
     override fun initView() {
-        autoScrollOnBoarding()
+        autoScrollCarousel()
+        viewModel.fetchTrendingMovie()
         viewModel.fetchPopularMovie()
         viewModel.fetchNowPlaying()
 
         tabLayout = binding.tlMovie
         viewPager = binding.vpHomeMovie
 
-
-
+        binding.rvTrendingMovie.run {
+            layoutManager = LinearLayoutManager(context)
+            adapter = homeTrendingAdapter
+            hasFixedSize()
+        }
         binding.rvHomePopular.run {
             layoutManager = LinearLayoutManager(context)
             adapter = homePopularAdapter
@@ -91,10 +106,12 @@ class HomeFragment :
                         CustomSnackbar.showSnackBar(
                             ctx,
                             binding.root,
-                            "Gagal Mendapatkan Data"
+                            getString(R.string.failed_to_get_data)
                         )
                     }
-                }.onLoading {}
+                }.onLoading {
+
+                }
 
             }
             responseNowPlaying.launchAndCollectIn(viewLifecycleOwner) { movieState ->
@@ -106,7 +123,22 @@ class HomeFragment :
                         CustomSnackbar.showSnackBar(
                             ctx,
                             binding.root,
-                            "Gagal Mendapatkan Data"
+                            getString(R.string.failed_to_get_data)
+                        )
+                    }
+                }.onLoading {}
+
+            }
+            responseTrendingMovie.launchAndCollectIn(viewLifecycleOwner) { movieState ->
+                movieState.onSuccess {
+                    listTrending.addAll(listOf(it))
+                    homeTrendingAdapter.submitList(listTrending)
+                }.oError {
+                    context?.let { ctx ->
+                        CustomSnackbar.showSnackBar(
+                            ctx,
+                            binding.root,
+                            getString(R.string.failed_to_get_data)
                         )
                     }
                 }.onLoading {}
@@ -115,8 +147,8 @@ class HomeFragment :
         }
     }
 
-    private fun autoScrollOnBoarding() {
-        val handler = Handler()
+    private fun autoScrollCarousel() {
+        val handler = Handler(Looper.getMainLooper())
         val update = kotlinx.coroutines.Runnable {
             if (viewPager.currentItem < homeCarouselAdapter.itemCount - 1) {
                 viewPager.currentItem = viewPager.currentItem + 1

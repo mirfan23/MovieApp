@@ -4,17 +4,15 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
-
 @Keep
 @Parcelize
-data class DataDetailMovie(
+data class DataTrendingMovieItem(
     var id: Int = 0,
-    var backdrop: String = "",
+    var genreIds: List<Int> = listOf(),
     var title: String = "",
-    var releaseDate: String = "",
-    var poster: String = "",
+    var backdrop: String = "",
     var overview: String = "",
-    var runtime: Int = 0,
-    var genres: List<DataGenre>,
+    var poster: String = "",
+    var releaseDate: String = "",
     var popularity: Int =0
 ):Parcelable

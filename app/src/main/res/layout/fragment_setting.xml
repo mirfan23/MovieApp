@@ -1,33 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.others.SettingFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar_setting"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/siv_app_logo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="100dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="100dp"
+            android:src="@drawable/logo_app_bg_remove" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/siv_app_logo"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:textSize="30sp"
+            tools:text="USERNAME" />
+
+        <RelativeLayout
+            android:id="@+id/switch_language_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:ignore="MissingConstraints">
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/tv_username"
+            android:layout_marginHorizontal="16dp">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar_setting"
-                style="@style/headline"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:navigationIcon="@drawable/ic_back"
-                app:title="John"
-                app:titleCentered="true"
-                tools:title="Setting">
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp"
+                tools:text="Language" />
 
-            </com.google.android.material.appbar.MaterialToolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+            <TextView
+                android:id="@+id/tv_EN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/switch_language"
+                android:fontFamily="@font/poppins_regular"
+                android:letterSpacing="0.02"
+                android:text="@string/en"
+                android:textSize="14sp" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginHorizontal="20dp"
+                android:layout_toStartOf="@id/tv_ID" />
+
+            <TextView
+                android:id="@+id/tv_ID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_regular"
+                android:letterSpacing="0.02"
+                android:text="@string/id"
+                android:layout_marginEnd="20dp"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/switch_theme_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/switch_language_container"
+            android:layout_marginHorizontal="16dp"
+            tools:ignore="NotSibling">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="14sp"
+                tools:text="@string/theme_text" />
+
+            <TextView
+                android:id="@+id/tv_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/switch_theme"
+                android:fontFamily="@font/poppins_regular"
+                android:letterSpacing="0.02"
+                android:textSize="14sp"
+                tools:text="@string/light" />
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginHorizontal="20dp"
+                android:layout_toStartOf="@id/tv_dark"
+                android:checked="true" />
+
+            <TextView
+                android:id="@+id/tv_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="19dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_regular"
+                android:letterSpacing="0.02"
+                android:textSize="14sp"
+                tools:text="@string/dark" />
+        </RelativeLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            tools:text="Delete Account"
+            android:backgroundTint="@color/error"
+            android:layout_marginBottom="24dp"/>
 
     </RelativeLayout>
 

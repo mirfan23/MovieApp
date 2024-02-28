@@ -4,12 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.movieappfinal.R
 import com.movieappfinal.core.domain.model.DataPopularMovieItem
 import com.movieappfinal.databinding.HomeRecyclerItemBinding
-import com.movieappfinal.databinding.OnBoardingItemBinding
-import com.movieappfinal.utils.Constant.Img_Url
 import com.movieappfinal.utils.Constant.Img_Url_Original
+import com.movieappfinal.utils.changeGenre
 
 class HomeCarouselAdapter(private val movieList: List<DataPopularMovieItem>) : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouselViewHolder>() {
 
@@ -32,7 +30,7 @@ class HomeCarouselAdapter(private val movieList: List<DataPopularMovieItem>) : R
         fun bind(movie: DataPopularMovieItem) {
             binding.ivCarousel.load(Img_Url_Original+movie.backdrop)
             binding.tvTitleCarousel.text = movie.title
-            binding.tvGenre.text = movie.genreIds.toString()
+            binding.tvGenre.text = changeGenre(movie.genreIds.first())
         }
     }
 }
