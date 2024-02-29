@@ -99,4 +99,10 @@
     <string name="war_genre">War</string>
     <string name="western_genre">Western</string>
     <string name="choose_payment">Choose Payment</string>
+    <string name="language_setting">Language</string>
+    <string name="delete_account_setting">Delete Account</string>
+    <string name="delete_account_failed">Gagal Hapus Account</string>
+    <string name="name_title_payment">Name :</string>
+    <string name="payment_method_title">Payment Method :</string>
+    <string name="total_price_title">Total Price :</string>
 </resources>

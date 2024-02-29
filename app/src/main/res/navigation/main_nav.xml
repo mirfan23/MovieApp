@@ -109,8 +109,8 @@
         android:label="fragment_my_token"
         tools:layout="@layout/fragment_my_token">
         <action
-            android:id="@+id/action_myTokenFragment_to_topUpFragment"
-            app:destination="@id/topUpFragment" />
+            android:id="@+id/action_myTokenFragment_to_tokenPaymentFragment"
+            app:destination="@id/paymentFragment" />
     </fragment>
     <fragment
         android:id="@+id/checkoutFragment"
@@ -126,15 +126,21 @@
         android:name="com.movieappfinal.presentation.others.TopUpFragment"
         android:label="fragment_top_up"
         tools:layout="@layout/fragment_top_up">
-        <action
-            android:id="@+id/action_topUpFragment_to_tokenPaymentFragment"
-            app:destination="@id/tokenPaymentFragment" />
+
     </fragment>
     <fragment
-        android:id="@+id/tokenPaymentFragment"
-        android:name="com.movieappfinal.presentation.others.TokenPaymentFragment"
+        android:id="@+id/paymentFragment"
+        android:name="com.movieappfinal.presentation.others.PaymentFragment"
         android:label="fragment_token_payment"
-        tools:layout="@layout/fragment_token_payment" />
+        tools:layout="@layout/fragment_payment" >
+        <argument android:name="selectedTokenItem"
+            app:argType="com.movieappfinal.core.domain.model.DataTokenPaymentItem"/>
+        <argument android:name="bottomSheetItem"
+            app:argType="com.movieappfinal.core.domain.model.DataPaymentMethodItem"/>
+        <action
+            android:id="@+id/action_tokenPaymentFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+    </fragment>
     <fragment
         android:id="@+id/moviePaymentPageFragment"
         android:name="com.movieappfinal.presentation.others.MoviePaymentPageFragment"

@@ -6,10 +6,12 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.remoteconfig.ConfigUpdate
 import com.google.firebase.remoteconfig.ConfigUpdateListener
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
+import com.movieappfinal.core.domain.model.DataTokenTransaction
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -17,7 +19,8 @@ import kotlinx.coroutines.flow.callbackFlow
 class FirebaseRepositoryImpl(
     private val firebaseAnalytics: FirebaseAnalytics,
     private val remoteConfig: FirebaseRemoteConfig,
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val database: FirebaseDatabase
 ) : FirebaseRepository {
     override fun signUpFirebase(email: String, password: String): Flow<Boolean> = callbackFlow {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
@@ -39,6 +42,19 @@ class FirebaseRepositoryImpl(
                 println("MASUK: signInUserWithEmail: success")
             } else {
                 println("MASUK: signInUserWithEmail: failed ${task.exception}")
+
+            }
+        }
+        awaitClose()
+    }
+
+    override fun deleteAccount(): Flow<Boolean> = callbackFlow{
+        auth.currentUser?.delete()?.addOnCompleteListener { task ->
+            trySend(task.isSuccessful)
+            if (task.isSuccessful){
+                println("MASUK: deleteUser: success")
+            } else {
+                println("MASUK: deleteUser: failed ${task.exception}")
 
             }
         }
@@ -122,5 +138,11 @@ class FirebaseRepositoryImpl(
         }
         awaitClose()
     }
+
+//    override fun sendDataToDatabase(userName: String): Flow<Boolean> = callbackFlow {
+//        database.getReference("token_transaction").child(userName).push().addValueEventListener(
+//
+//        )
+//    }
 
 }

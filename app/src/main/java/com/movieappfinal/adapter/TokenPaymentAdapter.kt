@@ -1,7 +1,10 @@
 package com.movieappfinal.adapter
 
+import android.graphics.Color
 import android.view.View
+import androidx.core.content.ContextCompat
 import com.example.core.base.BaseListAdapter
+import com.movieappfinal.R
 import com.movieappfinal.core.domain.model.DataTokenPaymentItem
 import com.movieappfinal.databinding.TokenListItemBinding
 import kotlinx.coroutines.GlobalScope
@@ -26,7 +29,13 @@ class TokenPaymentAdapter(
             binding.run {
                 tvToken.text = item.token.toString()
                 root.isSelected = item == selectedItem?.value
-
+                root.setBackgroundColor(
+                    if (item == selectedItem?.value) {
+                        ContextCompat.getColor(root.context, R.color.bg_grey)
+                    } else {
+                        Color.TRANSPARENT
+                    }
+                )
                 ivBadge.visibility = if (item == selectedItem?.value) View.VISIBLE else View.GONE
             }
             itemView.setOnClickListener {

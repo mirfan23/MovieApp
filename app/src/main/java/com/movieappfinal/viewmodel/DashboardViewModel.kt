@@ -25,7 +25,6 @@ class DashboardViewModel(private val useCase: AppUseCase) : ViewModel() {
         selectedItem.value = item
     }
 
-
     fun putOnBoardingState(value: Boolean) {
         useCase.saveOnBoardingState(value)
     }
@@ -59,4 +58,9 @@ class DashboardViewModel(private val useCase: AppUseCase) : ViewModel() {
     }
 
     fun getConfigStatusUpdatePayment() = runBlocking { useCase.getConfigStatusUpdatePayment() }
+
+    fun clearAllSession() {
+        useCase.clearAllSession()
+    }
+
 }

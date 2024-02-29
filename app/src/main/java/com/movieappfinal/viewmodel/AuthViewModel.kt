@@ -54,9 +54,6 @@ class AuthViewModel(private val useCase: AppUseCase): ViewModel() {
     fun signInWithFirebase(email: String, password: String) = runBlocking { useCase.signInFirebase(email, password) }
     fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest) = runBlocking { useCase.updateProfile(userProfileChangeRequest) }
 
-    fun saveProfileName(dataProfile: DataProfile) {
-        useCase.saveProfileName(dataProfile.userName)
-    }
 
     fun validateLoginEmail(email: String) {
         _validateLoginEmail.update { FlowState.FlowValue(email.validateEmail()) }

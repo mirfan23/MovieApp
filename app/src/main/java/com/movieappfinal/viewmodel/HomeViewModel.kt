@@ -12,8 +12,10 @@ import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.state.UiState
 import com.movieappfinal.core.domain.usecase.AppUseCase
 import com.movieappfinal.core.utils.asMutableStateFLow
+import com.movieappfinal.utils.Constant
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -40,8 +42,11 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
 
     private var listCart: MutableList<DataCart> = mutableListOf()
 
+    private  val _theme = MutableStateFlow(false)
+    val theme = _theme.asStateFlow()
 
-
+    private  val _language = MutableStateFlow(false)
+    val language = _language.asStateFlow()
 
     fun getCurrentUser() = runBlocking { useCase.getCurrentUser() }
 
@@ -138,6 +143,19 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
 
     fun fetchSearch(query: String) = runBlocking{ useCase.fetchSearch(query).cachedIn(viewModelScope) }
 
+    fun getThemeStatus() {
+        _theme.update { useCase.getThemeStatus() }
+    }
+    fun putThemeStatus(value:Boolean){
+        useCase.putThemeStatus(value)
+    }
+    fun getLanguageStatus() : Boolean {
+        return useCase.getLanguageStatus().equals(Constant.LANGUAGE_IN, true)
+    }
+    fun putLanguageStatus(value:String){
+        useCase.putLanguageStatus(value)
+    }
 
+    fun deleteAccount() = runBlocking { useCase.deleteAccount() }
 
 }

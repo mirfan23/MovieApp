@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.core.domain.model.DataPaymentMethod
+import com.movieappfinal.core.domain.model.DataPaymentMethodItem
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -20,15 +21,14 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentBottomSheetBinding
     private val viewModel: DashboardViewModel by viewModel()
-    private var filterListener: OnFilterFragmentListener? = null
     private val listPaymentMethod: MutableList<DataPaymentMethod> = mutableListOf()
     private lateinit var paymentMethodAdapter: PaymentMethodAdapter
-
-    interface OnFilterFragmentListener {
-        fun onFilterApplied(
-            sort: String?, brand: String?
-        )
+    var listener: BottomSheetListener? = null
+    private val bottomListener: (DataPaymentMethodItem) -> Unit = {
+        listener?.onItemSelected(it)
+        dismiss()
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,13 +45,18 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         observeData()
     }
 
-    private fun initView() { binding.apply {
-        paymentMethodAdapter = PaymentMethodAdapter(listPaymentMethod)
-        rvItemPayment.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = paymentMethodAdapter
+    private fun initView() {
+        binding.apply {
+            paymentMethodAdapter = PaymentMethodAdapter(
+                listPaymentMethod,
+                bottomListener
+            )
+            rvItemPayment.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = paymentMethodAdapter
+            }
         }
-    } }
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         dialog?.setOnShowListener { it ->
@@ -72,20 +77,15 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
         with(viewModel) {
             getConfigStatusUpdatePayment().launchAndCollectIn(viewLifecycleOwner) {
                 getDataPayment()
-                println("MASUK: ${getDataPayment()}")
             }
             getDataPayment()
 
         }
     }
 
-    fun setFilterListener(listener: OnFilterFragmentListener) {
-        filterListener = listener
-    }
-
     private fun getDataPayment() {
         viewModel.doPaymentMethod().launchAndCollectIn(viewLifecycleOwner) {
-            println("MASUK FRAGMENT : $it")
+            listPaymentMethod.clear()
             listPaymentMethod.addAll(it)
             paymentMethodAdapter.notifyDataSetChanged()
         }
@@ -93,5 +93,19 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "ModalBottomSheetDialog"
+        const val ARG_SELECTED_PAYMENT = "selected_payment"
+
+        fun newInstance(selectedPayment: DataPaymentMethod): BottomSheetFragment {
+            val args = Bundle().apply {
+                putParcelable(ARG_SELECTED_PAYMENT, selectedPayment)
+            }
+            return BottomSheetFragment().apply {
+                arguments = args
+            }
+        }
+    }
+
+    interface BottomSheetListener {
+        fun onItemSelected(item: DataPaymentMethodItem)
     }
 }

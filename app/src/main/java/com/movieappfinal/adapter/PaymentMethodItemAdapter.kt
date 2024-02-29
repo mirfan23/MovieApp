@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.core.domain.model.DataPaymentMethodItem
+import com.movieappfinal.core.domain.model.DataPaymentMethodItem
 import com.movieappfinal.R
 import com.movieappfinal.databinding.PaymentListItemBinding
 import com.movieappfinal.utils.visibleIf
 class PaymentMethodItemAdapter(
     private val list: List<DataPaymentMethodItem>,
+    private val listener: (DataPaymentMethodItem) -> Unit
 ) : RecyclerView.Adapter<PaymentMethodItemAdapter.PaymentMethodItemViewHolder>() {
 
     inner class PaymentMethodItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -44,6 +45,9 @@ class PaymentMethodItemAdapter(
                     load(data.image)
                 }
                 tvName.text = data.label
+                itemView.setOnClickListener {
+                    listener.invoke(data)
+                }
             }
         }
     }
@@ -67,10 +71,6 @@ class PaymentMethodItemAdapter(
 
     override fun getItemCount(): Int {
         return list.size
-    }
-
-    interface OnClickListener {
-        fun onClick(label: String, image: String)
     }
 
 }

@@ -1,7 +1,7 @@
 package com.movieappfinal.core.utils
 
 import com.example.core.domain.model.DataPaymentMethod
-import com.example.core.domain.model.DataPaymentMethodItem
+import com.movieappfinal.core.domain.model.DataPaymentMethodItem
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataDetailMovie
 import com.movieappfinal.core.domain.model.DataGenre
@@ -168,10 +168,10 @@ object DataMapper {
     )
 
     fun DataSession.toSplashState() = when {
-        this.name?.isEmpty() == true -> {
+        this.name?.isEmpty() == true && this.uid.isNotEmpty()-> {
             SplashState.Profile
         }
-        this.name?.isNotEmpty() == true  -> {
+        this.name?.isNotEmpty() == true && this.uid.isNotEmpty() -> {
             SplashState.Dashboard
         }
         this.onBoardingState -> {

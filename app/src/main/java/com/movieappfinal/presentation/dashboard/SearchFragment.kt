@@ -30,7 +30,9 @@ class SearchFragment :
 
     override fun initListener() {
         binding.tietSearchBar.doAfterTextChanged { query ->
-            fetchSearch(query.toString())
+            viewModel.fetchSearch(query.toString()).launchAndCollectIn(viewLifecycleOwner) {
+                searchAdapter.submitData(it)
+            }
             /**
              * println still in use
              */
@@ -39,17 +41,4 @@ class SearchFragment :
     }
 
     override fun observeData() {}
-
-    private fun fetchSearch(query: String) {
-        if (query.isNotEmpty()) {
-            viewModel.fetchSearch(query).launchAndCollectIn(viewLifecycleOwner) {
-                searchAdapter.submitData(it)
-                /**
-                 * println still in use
-                 */
-                println("MASUK FETCHSEARCH: $it")
-                println("MASUK FETCHSEARCH 2: ${searchAdapter.snapshot().items}")
-            }
-        }
-    }
 }

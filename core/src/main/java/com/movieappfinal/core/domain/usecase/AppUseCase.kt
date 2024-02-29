@@ -24,6 +24,7 @@ interface AppUseCase {
     suspend fun fetchDetailMovie(movieId: Int): DataDetailMovie
     suspend fun signUpFirebase(email: String, password: String): Flow<Boolean>
     suspend fun signInFirebase(email: String, password: String): Flow<Boolean>
+    suspend fun deleteAccount(): Flow<Boolean>
     suspend fun getCurrentUser(): DataProfile?
     suspend fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest): Flow<Boolean>
     suspend fun fetchSearch(query: String): Flow<PagingData<DataSearchMovie>>

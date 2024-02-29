@@ -62,6 +62,11 @@ class AppInteractor(
             firebaseRepo.signInFirebase(email, password)
         }
 
+    override suspend fun deleteAccount(): Flow<Boolean> =
+        safeDataCall {
+            firebaseRepo.deleteAccount()
+        }
+
     override suspend fun getCurrentUser(): DataProfile? {
         val user = firebaseRepo.getCurrentUser()
         return user?.let { it.displayName?.let { displayName -> DataProfile(displayName, it.uid) } }
@@ -115,7 +120,8 @@ class AppInteractor(
         }
     }
 
-    override suspend fun getConfigStatusUpdate(): Flow<Boolean> = firebaseRepo.getConfigStatusUpdate()
+    override suspend fun getConfigStatusUpdate(): Flow<Boolean> =
+        firebaseRepo.getConfigStatusUpdate()
 
     override suspend fun getConfigPaymentMethod(): Flow<List<DataPaymentMethod>> = safeDataCall {
         firebaseRepo.getConfigPaymentMethod().map { data ->
@@ -124,7 +130,8 @@ class AppInteractor(
         }
     }
 
-    override suspend fun getConfigStatusUpdatePayment(): Flow<Boolean> = firebaseRepo.getConfigStatusUpdatePayment()
+    override suspend fun getConfigStatusUpdatePayment(): Flow<Boolean> =
+        firebaseRepo.getConfigStatusUpdatePayment()
 
     override fun dataSession(): DataSession {
         val name = movieRepo.getProfileName()
@@ -146,17 +153,17 @@ class AppInteractor(
     override fun getWishlistState(): Boolean = movieRepo.getWishlistState()
 
 
+    override fun getThemeStatus(): Boolean = sharedPreferencesHelper.getThemeStatus()
     override fun putThemeStatus(value: Boolean) {
         sharedPreferencesHelper.putThemeStatus(value)
     }
 
-    override fun getThemeStatus(): Boolean = sharedPreferencesHelper.getThemeStatus()
+    override fun getLanguageStatus(): String = sharedPreferencesHelper.getLanguageStatus()
 
     override fun putLanguageStatus(value: String) {
         sharedPreferencesHelper.putLanguageStatus(value)
     }
 
-    override fun getLanguageStatus(): String = sharedPreferencesHelper.getLanguageStatus()
 
     override fun clearAllSession() {
         sharedPreferencesHelper.clearAllSession()

@@ -81,7 +81,10 @@ class DashboardFragment :
                 }
                 R.id.logout_item -> {
                     auth?.signOut()
-                    activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)?.findNavController()?.navigate(R.id.action_dashboardFragment_to_loginFragment)
+                    viewModel.clearAllSession()
+                    activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
+                        ?.findNavController()
+                        ?.navigate(R.id.action_dashboardFragment_to_loginFragment)
                     true
                 }
                 else -> false

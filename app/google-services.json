@@ -2,7 +2,8 @@
   "project_info": {
     "project_number": "794325968744",
     "project_id": "movieappfinal-142fc",
-    "storage_bucket": "movieappfinal-142fc.appspot.com"
+    "storage_bucket": "movieappfinal-142fc.appspot.com",
+    "firebase_url": "https://movieappfinal-142fc-default-rtdb.asia-southeast1.firebasedatabase.app"
   },
   "client": [
     {

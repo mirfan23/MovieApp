@@ -1,4 +1,4 @@
-package com.example.core.domain.model
+package com.movieappfinal.core.domain.model
 
 import android.os.Parcelable
 import androidx.annotation.Keep

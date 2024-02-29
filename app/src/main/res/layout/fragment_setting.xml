@@ -43,12 +43,13 @@
             android:layout_marginHorizontal="16dp">
 
             <TextView
+                android:id="@+id/tv_language_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="14sp"
-                tools:text="Language" />
+                tools:text="@string/language_setting" />
 
             <TextView
                 android:id="@+id/tv_EN"
@@ -58,7 +59,7 @@
                 android:layout_toStartOf="@id/switch_language"
                 android:fontFamily="@font/poppins_regular"
                 android:letterSpacing="0.02"
-                android:text="@string/en"
+                tools:text="@string/en"
                 android:textSize="14sp" />
 
             <com.google.android.material.materialswitch.MaterialSwitch
@@ -77,7 +78,7 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/poppins_regular"
                 android:letterSpacing="0.02"
-                android:text="@string/id"
+                tools:text="@string/id"
                 android:layout_marginEnd="20dp"
                 android:textSize="14sp" />
         </RelativeLayout>
@@ -92,6 +93,7 @@
             tools:ignore="NotSibling">
 
             <TextView
+                android:id="@+id/tv_theme_setting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -132,13 +134,14 @@
         </RelativeLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_delete_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            tools:text="Delete Account"
+            android:layout_marginBottom="24dp"
             android:backgroundTint="@color/error"
-            android:layout_marginBottom="24dp"/>
+            tools:text="@string/delete_account_setting" />
 
     </RelativeLayout>
 

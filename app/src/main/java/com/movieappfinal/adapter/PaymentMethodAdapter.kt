@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.core.domain.model.DataPaymentMethod
+import com.movieappfinal.core.domain.model.DataPaymentMethodItem
 import com.movieappfinal.databinding.PaymentListBinding
-import com.movieappfinal.utils.CustomSnackbar
 
-class PaymentMethodAdapter(private val list: List<DataPaymentMethod>) : RecyclerView.Adapter<PaymentMethodAdapter.PaymentMethodViewHolder>() {
-
+class PaymentMethodAdapter(
+    private val list: List<DataPaymentMethod>,
+    private val listener: (DataPaymentMethodItem) -> Unit
+) : RecyclerView.Adapter<PaymentMethodAdapter.PaymentMethodViewHolder>() {
 
     inner class PaymentMethodViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding: PaymentListBinding = PaymentListBinding.bind(itemView)
@@ -20,18 +22,8 @@ class PaymentMethodAdapter(private val list: List<DataPaymentMethod>) : Recycler
                 tvTitle.text = data.title
                 rvItemPayment.apply {
                     layoutManager = LinearLayoutManager(context)
-                    adapter = PaymentMethodItemAdapter(data.item)
-                    println("MASUK: $data")
+                    adapter = PaymentMethodItemAdapter(data.item, listener)
                     setHasFixedSize(true)
-
-                    setOnClickListener {
-                        CustomSnackbar.showSnackBar(
-                            root.context,
-                            root,
-                            "Click ${data.title}"
-                        )
-                    }
-
                 }
             }
         }
@@ -49,7 +41,10 @@ class PaymentMethodAdapter(private val list: List<DataPaymentMethod>) : Recycler
         return PaymentMethodViewHolder(binding.root)
     }
 
-    override fun onBindViewHolder(holder: PaymentMethodAdapter.PaymentMethodViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: PaymentMethodAdapter.PaymentMethodViewHolder,
+        position: Int
+    ) {
         val currentItem = list[position]
         holder.bind(currentItem)
     }

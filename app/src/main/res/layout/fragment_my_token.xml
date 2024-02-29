@@ -135,7 +135,7 @@
                 android:layout_margin="16dp">
 
                 <ImageView
-                    android:id="@+id/img_thumbnail_cart"
+                    android:id="@+id/iv_thumbnail_cart"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_add_card" />
