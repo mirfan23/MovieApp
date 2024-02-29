@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.movieappfinal.core.utils.Constant.tableCartName
 
-
 @Entity(tableName = tableCartName)
 data class CartEntity(
     @PrimaryKey(autoGenerate = true)

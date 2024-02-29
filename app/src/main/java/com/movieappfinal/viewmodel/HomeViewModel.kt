@@ -2,18 +2,20 @@ package com.movieappfinal.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataDetailMovie
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
-import com.movieappfinal.core.domain.model.DataPopularMovieItem
 import com.movieappfinal.core.domain.model.DataTrendingMovie
 import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.state.UiState
 import com.movieappfinal.core.domain.usecase.AppUseCase
 import com.movieappfinal.core.utils.asMutableStateFLow
+import com.movieappfinal.utils.Constant
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -39,6 +41,12 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
     private var dataWishlist: DataWishlist? = null
 
     private var listCart: MutableList<DataCart> = mutableListOf()
+
+    private  val _theme = MutableStateFlow(false)
+    val theme = _theme.asStateFlow()
+
+    private  val _language = MutableStateFlow(false)
+    val language = _language.asStateFlow()
 
     fun getCurrentUser() = runBlocking { useCase.getCurrentUser() }
 
@@ -72,10 +80,6 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
                 useCase.fetchDetailMovie(movieId)
             }
         }
-    }
-
-    fun setDataCart(data: DataCart) {
-        dataCart = data
     }
 
     fun setDataWishlist(data: DataWishlist) {
@@ -124,6 +128,10 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
         }
     }
 
+    fun setDataCart(data: DataCart) {
+        dataCart = data
+    }
+
     fun setDataListCart(list: List<DataCart>) {
         listCart.clear()
         listCart.addAll(list)
@@ -133,5 +141,21 @@ class HomeViewModel(private val useCase: AppUseCase) : ViewModel() {
         useCase.putWishlistState(value)
     }
 
+    fun fetchSearch(query: String) = runBlocking{ useCase.fetchSearch(query).cachedIn(viewModelScope) }
+
+    fun getThemeStatus() {
+        _theme.update { useCase.getThemeStatus() }
+    }
+    fun putThemeStatus(value:Boolean){
+        useCase.putThemeStatus(value)
+    }
+    fun getLanguageStatus() : Boolean {
+        return useCase.getLanguageStatus().equals(Constant.LANGUAGE_IN, true)
+    }
+    fun putLanguageStatus(value:String){
+        useCase.putLanguageStatus(value)
+    }
+
+    fun deleteAccount() = runBlocking { useCase.deleteAccount() }
 
 }

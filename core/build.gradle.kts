@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
     id("kotlin-parcelize")
 }
 
@@ -80,15 +81,16 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //paging
-    api("androidx.paging:paging-runtime:3.2.1")
+    api("androidx.paging:paging-runtime-ktx:3.2.1")
 
     //firebase
     api(platform("com.google.firebase:firebase-bom:32.7.2"))
-//    api("com.google.firebase:firebase-crashlytics")
+    api("com.google.firebase:firebase-crashlytics")
     api("com.google.firebase:firebase-analytics")
     api("com.google.firebase:firebase-config-ktx:21.6.1")
     api("com.google.firebase:firebase-messaging-ktx:23.4.1")
     api("com.google.firebase:firebase-auth")
+    api("com.google.firebase:firebase-database")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

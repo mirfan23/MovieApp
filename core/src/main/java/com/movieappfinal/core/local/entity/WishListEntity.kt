@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.movieappfinal.core.utils.Constant.tableWishListName
 
-
 @Entity(tableName = tableWishListName)
 data class WishListEntity(
     @PrimaryKey(autoGenerate = true)

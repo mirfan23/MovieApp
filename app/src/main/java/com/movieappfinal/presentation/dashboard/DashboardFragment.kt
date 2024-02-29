@@ -24,11 +24,9 @@ class DashboardFragment :
         navController = navHostFragment.navController
 
         val userName = viewModel.getCurrentUser()
-        binding.toolbarDashboard.title = userName.let {
-            it?.userName
-        }
+        binding.toolbarDashboard.title = userName.let { it?.userName }
         userName?.let { viewModel.putUID(it.userId) }
-
+        userName?.let { viewModel.saveProfileName(it.userName) }
     }
 
     override fun initListener() = with(binding) {
@@ -83,7 +81,10 @@ class DashboardFragment :
                 }
                 R.id.logout_item -> {
                     auth?.signOut()
-                    activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)?.findNavController()?.navigate(R.id.action_dashboardFragment_to_loginFragment)
+                    viewModel.clearAllSession()
+                    activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
+                        ?.findNavController()
+                        ?.navigate(R.id.action_dashboardFragment_to_loginFragment)
                     true
                 }
                 else -> false

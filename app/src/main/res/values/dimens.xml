@@ -3,4 +3,5 @@
     <dimen name="fragment_horizontal_margin">16dp</dimen>
     <dimen name="fragment_vertical_margin">16dp</dimen>
     <dimen name="item_spacing">8dp</dimen>
+    <dimen name="item_spacing_token">16dp</dimen>
 </resources>

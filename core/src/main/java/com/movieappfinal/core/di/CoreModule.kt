@@ -6,6 +6,7 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.movieappfinal.core.local.preferences.SharedPreferencesHelper
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.movieappfinal.core.domain.repository.FirebaseRepository
@@ -18,6 +19,7 @@ import com.movieappfinal.core.local.LocalDataSource
 import com.movieappfinal.core.local.database.MovieDatabase
 import com.movieappfinal.core.local.preferences.SharedPreferenceImpl
 import com.movieappfinal.core.local.preferences.SharedPreferenceImpl.Companion.PREFS_NAME
+import com.movieappfinal.core.remote.PagingDataSource
 import com.movieappfinal.core.remote.RemoteDataSource
 import com.movieappfinal.core.remote.client.MovieClient
 import com.movieappfinal.core.remote.interceptor.MovieInterceptor
@@ -39,7 +41,10 @@ object CoreModule : BaseModules {
         single { LocalDataSource(get(), get()) }
     }
     val networkModule = module {
-        single { ChuckerInterceptor.Builder(androidContext()).redactHeaders("Authorization", "Bearer").build() }
+        single {
+            ChuckerInterceptor.Builder(androidContext()).redactHeaders("Authorization", "Bearer")
+                .build()
+        }
         single { MovieInterceptor() }
         single { MovieClient(get(), get()) }
         single<ApiEndPoint> { get<MovieClient>().create() }
@@ -55,7 +60,8 @@ object CoreModule : BaseModules {
         single { Firebase.analytics }
         single { Firebase.remoteConfig }
         single { Firebase.auth }
-        single<FirebaseRepository>{ FirebaseRepositoryImpl(get(), get(), get()) }
+        single { Firebase.database }
+        single<FirebaseRepository> { FirebaseRepositoryImpl(get(), get(), get(), get( )) }
     }
     val databaseModule = module {
         single {

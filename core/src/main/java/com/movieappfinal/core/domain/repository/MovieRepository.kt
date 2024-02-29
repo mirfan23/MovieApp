@@ -1,5 +1,7 @@
 package com.movieappfinal.core.domain.repository
 
+import androidx.paging.PagingData
+import com.movieappfinal.core.domain.model.DataSearchMovie
 import com.movieappfinal.core.local.entity.CartEntity
 import com.movieappfinal.core.local.entity.WishListEntity
 import com.movieappfinal.core.remote.data.DetailMovieResponse
@@ -16,7 +18,7 @@ interface MovieRepository {
     suspend fun fetchDetailMovie(
         movieId: Int? = null
     ): DetailMovieResponse
-
+    suspend fun fetchSearch(query: String): Flow<PagingData<DataSearchMovie>>
     suspend fun insertCart(cartEntity: CartEntity)
 
     suspend fun deleteCart(cartEntity: CartEntity)
@@ -28,10 +30,9 @@ interface MovieRepository {
     suspend fun fetchWishList(id: Int): Flow<List<WishListEntity>>
 
     suspend fun deleteWishlist(wishListEntity: WishListEntity)
+
     fun putWishlistState(state: Boolean)
-
     fun getWishlistState(): Boolean
-
     fun getProfileName(): String
     fun saveProfileName(string: String)
     fun getOnBoardingState(): Boolean
