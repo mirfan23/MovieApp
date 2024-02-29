@@ -15,7 +15,7 @@ class HomeNowPlayingAdapter(
     HomeItemBinding::inflate
 ) {
     override fun onItemBind(): (DataNowPlaying, HomeItemBinding, View, Int) -> Unit =
-        { item, binding, itemView, _ ->
+        { item, binding, _, _ ->
             binding.run {
                 val homeNowPlayingItemAdapter = HomeNowPlayingItemAdapter(action)
                 tvSubTitle.text = root.context.getString(R.string.now_playing_title)

@@ -26,9 +26,7 @@ class CartFragment :
 
     private val cartAdapter by lazy {
         CartAdapter(
-            action = {
-
-            },
+            action = {},
             remove = { entity -> removeItemFromCart(entity) },
             checkbox = { id, isChecked -> }
         )

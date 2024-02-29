@@ -120,6 +120,9 @@
         <action
             android:id="@+id/action_checkoutFragment_to_moviePaymentPageFragment"
             app:destination="@id/moviePaymentPageFragment" />
+        <argument
+            android:name="dataCheckout"
+            app:argType="com.movieappfinal.core.domain.model.DataCheckout" />
     </fragment>
     <fragment
         android:id="@+id/topUpFragment"
@@ -145,7 +148,14 @@
         android:id="@+id/moviePaymentPageFragment"
         android:name="com.movieappfinal.presentation.others.MoviePaymentPageFragment"
         android:label="fragment_movie_payment_page"
-        tools:layout="@layout/fragment_movie_payment_page" />
+        tools:layout="@layout/fragment_movie_payment_page" >
+        <argument
+            android:name="dataCheckout"
+            app:argType="com.movieappfinal.core.domain.model.DataMoviePayment" />
+        <action
+            android:id="@+id/action_moviePaymentPageFragment_to_dashboardFragment"
+            app:destination="@id/dashboardFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.movieappfinal.presentation.others.DetailFragment"
@@ -157,5 +167,8 @@
         <action
             android:id="@+id/action_detailFragment_to_cartFragment"
             app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_detailFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" />
     </fragment>
 </navigation>

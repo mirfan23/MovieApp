@@ -1,12 +1,12 @@
 package com.movieappfinal.presentation.others
 
-import android.provider.ContactsContract.Data
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
-import com.google.firebase.auth.FirebaseUser
 import com.movieappfinal.R
 import com.movieappfinal.core.domain.model.DataCart
+import com.movieappfinal.core.domain.model.DataCheckout
 import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.state.onSuccess
 import com.movieappfinal.core.utils.BaseFragment
@@ -15,7 +15,6 @@ import com.movieappfinal.databinding.FragmentDetailBinding
 import com.movieappfinal.utils.Constant.Img_Url
 import com.movieappfinal.utils.Constant.Img_Url_Original
 import com.movieappfinal.utils.CustomSnackbar
-import com.movieappfinal.viewmodel.AuthViewModel
 import com.movieappfinal.viewmodel.HomeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -25,6 +24,7 @@ class DetailFragment :
     private val safeArgs: DetailFragmentArgs by navArgs()
     private var dataCart = DataCart()
     private var dataWishlist = DataWishlist()
+    private var dataCheckout = DataCheckout()
 
     override fun initView() {
         safeArgs.movieId.let { movieId ->
@@ -112,6 +112,15 @@ class DetailFragment :
                             wishlist = false
                         )
                         viewModel.setDataWishlist(dataWishlist)
+                        dataCheckout = DataCheckout(
+                            image = Img_Url+it.poster,
+                            itemName = it.title,
+                            itemPrice = it.popularity
+                        )
+                        binding.btnBuy.setOnClickListener {
+                            val bundle = bundleOf("dataCheckout" to dataCheckout)
+                            findNavController().navigate(R.id.action_detailFragment_to_checkoutFragment, bundle)
+                        }
                     }
                 }
             }

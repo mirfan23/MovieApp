@@ -105,4 +105,6 @@
     <string name="name_title_payment">Name :</string>
     <string name="payment_method_title">Payment Method :</string>
     <string name="total_price_title">Total Price :</string>
+    <string name="check_out_title">Check Out</string>
+    <string name="btn_buy">Buy</string>
 </resources>

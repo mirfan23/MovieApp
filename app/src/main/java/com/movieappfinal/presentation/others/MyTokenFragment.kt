@@ -37,8 +37,9 @@ class MyTokenFragment :
         arguments?.getParcelable(ARG_SELECTED_PAYMENT) as DataPaymentMethod?
     }
     private var selectedBottomSheetItem: DataPaymentMethodItem? = null
-    val database = FirebaseDatabase.getInstance().reference
+    private val database = FirebaseDatabase.getInstance().reference
     private val tokenReference = database.child("token_transaction")
+    private val movieReference = database.child("movie_transaction")
 
 
     override fun initView() {
@@ -70,7 +71,33 @@ class MyTokenFragment :
                                 ?.toInt() ?: 0
                         totalTokenAmount += tokenAmount
                     }
-                    binding.tvTokenBalance.text = totalTokenAmount.toString()
+                    movieReference.child(user?.userName ?: "").addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            var totalItemPrice = 0
+                            for (transactionSnapshot in snapshot.children) {
+                                val itemPrice = transactionSnapshot.child("itemPrice")
+                                    .getValue(Int::class.java) ?: 0
+                                totalItemPrice += itemPrice
+                                println("MASUK snapshot $snapshot")
+                                println("MASUK itemPrice: $itemPrice")
+                            }
+                            println("MASUK totalPrice: $totalItemPrice")
+                            val newTokenAmount = totalTokenAmount - totalItemPrice
+                            println("MASUK: $newTokenAmount")
+
+                            binding.tvTokenBalance.text = newTokenAmount.toString()
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            context?.let {
+                                CustomSnackbar.showSnackBar(
+                                    it,
+                                    binding.root,
+                                    "Gagal mengambil data"
+                                )
+                            }
+                        }
+                    })
                 }
 
                 override fun onCancelled(error: DatabaseError) {
