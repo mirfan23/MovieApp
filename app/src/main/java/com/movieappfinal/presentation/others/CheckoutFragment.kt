@@ -27,7 +27,9 @@ class CheckoutFragment :
     private val args: CheckoutFragmentArgs by navArgs()
     private val database = FirebaseDatabase.getInstance().reference
     private val tokenReference = database.child("token_transaction")
+    private val movieReference = database.child("movie_transaction")
     var totalTokenAmount = 0
+    var totalItemPrice = 0
     private var dataCheckoutToPayment = DataMoviePayment()
 
     override fun initView() {
@@ -36,16 +38,57 @@ class CheckoutFragment :
         val dataCheckoutFragment = args.dataCheckout
 
         val user = viewModel.getCurrentUser()
-        tokenReference.child(user?.userName ?: "")
+        tokenReference.child(user?.userId ?: "")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     for (transactionSnapshot in snapshot.children) {
                         val tokenAmount =
                             transactionSnapshot.child("tokenAmount").getValue(String::class.java)
-                                ?.toInt() ?: 0
+                                ?.toIntOrNull() ?: 0
                         totalTokenAmount += tokenAmount
                     }
+                    movieReference.child(user?.userId ?: "")
+                        .addValueEventListener(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                for (transactionSnapshot in snapshot.children) {
+                                    val itemPrice = transactionSnapshot.child("itemPrice")
+                                        .getValue(Int::class.java) ?: 0
+                                    totalItemPrice += itemPrice
+                                }
+                                val newTokenAmount = totalTokenAmount - totalItemPrice
+                                binding.tvTokenBalance.text = newTokenAmount.toString()
+                                binding.btnPay.setOnClickListener {
+                                    if (newTokenAmount >= args.dataCheckout.itemPrice) {
+                                        dataCheckoutToPayment = DataMoviePayment(
+                                            movieId = args.dataCheckout.movieId,
+                                            image = args.dataCheckout.image,
+                                            itemName = args.dataCheckout.itemName,
+                                            itemPrice = args.dataCheckout.itemPrice,
+                                            totalPayment = newTokenAmount
+                                        )
+                                        val bundle =
+                                            bundleOf("dataMoviePayment" to dataCheckoutToPayment)
+                                        findNavController().navigate(
+                                            R.id.action_checkoutFragment_to_moviePaymentPageFragment,
+                                            bundle
+                                        )
+                                    } else {
+                                        findNavController().navigate(R.id.action_checkoutFragment_to_myTokenFragment)
+                                    }
+                                }
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                context?.let {
+                                    CustomSnackbar.showSnackBar(
+                                        it,
+                                        binding.root,
+                                        getString(R.string.failed_to_get_data)
+                                    )
+                                }
+                            }
+                        })
                     binding.tvTokenBalance.text = totalTokenAmount.toString()
                 }
 
@@ -62,9 +105,6 @@ class CheckoutFragment :
         binding.rvListView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = checkoutAdapter
-            /**
-             * println() still in use
-             */
             val listDataCheckout = listOf(dataCheckoutFragment)
             checkoutAdapter.submitList(listDataCheckout)
         }
@@ -73,21 +113,6 @@ class CheckoutFragment :
     override fun initListener() {
         binding.toolbarCheckout.setNavigationOnClickListener {
             findNavController().popBackStack()
-        }
-
-        binding.btnPay.setOnClickListener {
-            if (totalTokenAmount >= args.dataCheckout.itemPrice ) {
-                val newTokenAmount = totalTokenAmount - args.dataCheckout.itemPrice
-                dataCheckoutToPayment = DataMoviePayment(
-                    image = args.dataCheckout.image,
-                    itemName = args.dataCheckout.itemName,
-                    itemPrice = args.dataCheckout.itemPrice,
-                    totalAmount = newTokenAmount
-                )
-                println("MASUK: $dataCheckoutToPayment")
-                val bundle = bundleOf("dataCheckout" to dataCheckoutToPayment)
-                findNavController().navigate(R.id.action_checkoutFragment_to_moviePaymentPageFragment, bundle)
-            }
         }
     }
 

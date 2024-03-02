@@ -1,11 +1,13 @@
 package com.movieappfinal.presentation.authentication
 
+import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.movieappfinal.R
 import com.movieappfinal.core.domain.state.onCreated
 import com.movieappfinal.core.domain.state.onValue
@@ -20,6 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class LoginFragment :
     BaseFragment<FragmentLoginBinding, AuthViewModel>(FragmentLoginBinding::inflate) {
     override val viewModel: AuthViewModel by viewModel()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun initView() = with(binding) {
 
@@ -64,6 +67,8 @@ class LoginFragment :
                 if (tilEmailLogin.isErrorEnabled.not() && tilPasswordLogin.isErrorEnabled.not()) {
                     viewModel.validateLoginField(email, password)
                 }
+//                viewModel.firebaseAnalytic("LOGIN")
+                analytics("LOGIN")
             }
         }
     }
@@ -133,6 +138,13 @@ class LoginFragment :
         sk.text =
             context?.let { SpannableStringUtils.applyCustomTextColor(defaultLocale, it, fullText) }
         sk.movementMethod = LinkMovementMethod.getInstance()
+    }
+
+    private fun analytics(data: String) {
+        val bundle = Bundle()
+        bundle.putString("show_message", data)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
     }
 
     private fun enableLoginButtonIfValid() {

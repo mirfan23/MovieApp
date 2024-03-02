@@ -68,7 +68,7 @@ class MovieRepositoryImpl(
         local.putWishlistState(state)
     }
 
-    override fun getWishlistState(): Boolean = local.getWishlistState()
+//    override fun getWishlistState(): Boolean = local.getWishlistState()
 
     override fun getProfileName(): String = local.getProfileName()
 
@@ -88,4 +88,15 @@ class MovieRepositoryImpl(
         local.putUid(string)
     }
 
+    override suspend fun checkWishlist(movieId: Int): Int = safeDataCall {
+        local.checkWishlist(movieId)
+    }
+
+    override suspend fun updateCheckCart(cartId: Int, value: Boolean) {
+        local.updateCheckCart(cartId, value)
+    }
+
+    override suspend fun updateTotalPrice(): Int {
+        return local.updateTotalPriceChecked()
+    }
 }

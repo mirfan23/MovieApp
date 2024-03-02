@@ -12,6 +12,13 @@ class CartAdapter(
     private val checkbox: (Int, Boolean) -> Unit
 ) :
     BaseListAdapter<DataCart, CartListCardBinding>(CartListCardBinding::inflate) {
+
+    private var allChecked: Boolean = false
+
+    fun setAllChecked(checked: Boolean) {
+        allChecked = checked
+        notifyDataSetChanged()
+    }
     override fun onItemBind(): (DataCart, CartListCardBinding, View, Int) -> Unit =
         { item, binding, itemView, _ ->
             binding.run {
@@ -21,6 +28,8 @@ class CartAdapter(
                 btnDeleteCart.setOnClickListener {
                     remove.invoke(item)
                 }
+                cbCart.isChecked = allChecked
+
                 cbCart.setOnCheckedChangeListener { _, isChecked ->
                     checkbox(item.cartId, isChecked)
                 }

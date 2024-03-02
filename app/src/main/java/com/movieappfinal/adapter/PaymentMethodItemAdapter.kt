@@ -8,12 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.movieappfinal.core.domain.model.DataPaymentMethodItem
 import com.movieappfinal.R
+import com.movieappfinal.core.domain.model.DataTokenPaymentItem
 import com.movieappfinal.databinding.PaymentListItemBinding
 import com.movieappfinal.utils.visibleIf
 class PaymentMethodItemAdapter(
     private val list: List<DataPaymentMethodItem>,
     private val listener: (DataPaymentMethodItem) -> Unit
 ) : RecyclerView.Adapter<PaymentMethodItemAdapter.PaymentMethodItemViewHolder>() {
+
+    private var selectedItem: DataPaymentMethodItem? = null
 
     inner class PaymentMethodItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val binding: PaymentListItemBinding = PaymentListItemBinding.bind(itemView)
@@ -30,6 +33,11 @@ class PaymentMethodItemAdapter(
                     isClickable = data.status
                     isEnabled = data.status
                     setBackgroundColor(bg)
+                }
+                if (data == selectedItem) {
+                    itemView.setBackgroundColor(itemView.resources.getColor(R.color.bg_grey))
+                } else {
+                    itemView.setBackgroundColor(ResourcesCompat.getColor(root.context.resources, colorId, null))
                 }
                 ivIcon.apply {
                     visibleIf(

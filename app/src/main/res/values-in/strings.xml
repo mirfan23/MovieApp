@@ -108,4 +108,5 @@
     <string name="total_price_title">Total Price :</string>
     <string name="check_out_title">Check Out</string>
     <string name="btn_buy">Buy</string>
+    <string name="total_payment_title">Total Bayar</string>
 </resources>

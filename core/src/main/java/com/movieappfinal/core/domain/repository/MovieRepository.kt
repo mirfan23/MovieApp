@@ -32,11 +32,14 @@ interface MovieRepository {
     suspend fun deleteWishlist(wishListEntity: WishListEntity)
 
     fun putWishlistState(state: Boolean)
-    fun getWishlistState(): Boolean
+//    fun getWishlistState(): Boolean
     fun getProfileName(): String
     fun saveProfileName(string: String)
     fun getOnBoardingState(): Boolean
     fun saveOnBoardingState(state: Boolean)
     fun getUid(): String
     fun saveUid(string: String)
+    suspend fun checkWishlist(movieId: Int): Int
+    suspend fun updateCheckCart(cartId: Int, value: Boolean)
+    suspend fun updateTotalPrice(): Int
 }

@@ -16,6 +16,7 @@ class WishlistAdapter(private val action: (DataWishlist) -> Unit, private val re
                 ivMoviePoster.load(item.image)
                 tvMovieName.text = item.movieTitle
                 tvMoviePrice.text = item.moviePrice.toString()
+                tvMovieRelease.text = item.releaseDate
                 btnDeleteWishlist.setOnClickListener {
                     remove.invoke(item)
                 }

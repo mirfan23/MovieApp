@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.movieappfinal.core.local.entity.CartEntity
 import com.movieappfinal.core.local.entity.WishListEntity
+import com.movieappfinal.core.utils.Constant.tableCartName
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -40,4 +41,8 @@ interface MovieDao {
 
     @Query("UPDATE cart_table SET isChecked = :value WHERE cartId = :cartId")
     suspend fun updateCheckCart(cartId: Int, value: Boolean)
+
+    @Query("SELECT SUM(productPrice) FROM cart_table WHERE isChecked = 1")
+    fun updateTotalPriceChecked(): Int
+
 }

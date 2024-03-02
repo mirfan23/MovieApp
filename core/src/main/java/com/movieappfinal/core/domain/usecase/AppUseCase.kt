@@ -11,6 +11,7 @@ import com.movieappfinal.core.domain.model.DataProfile
 import com.movieappfinal.core.domain.model.DataSearchMovie
 import com.movieappfinal.core.domain.model.DataSession
 import com.movieappfinal.core.domain.model.DataTokenPaymentItem
+import com.movieappfinal.core.domain.model.DataTokenTransaction
 import com.movieappfinal.core.domain.model.DataTrendingMovie
 import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.state.UiState
@@ -24,6 +25,7 @@ interface AppUseCase {
     suspend fun fetchDetailMovie(movieId: Int): DataDetailMovie
     suspend fun signUpFirebase(email: String, password: String): Flow<Boolean>
     suspend fun signInFirebase(email: String, password: String): Flow<Boolean>
+    suspend fun sendToDatabase(dataTokenTransaction: DataTokenTransaction): Flow<Boolean>
     suspend fun deleteAccount(): Flow<Boolean>
     suspend fun getCurrentUser(): DataProfile?
     suspend fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest): Flow<Boolean>
@@ -38,11 +40,13 @@ interface AppUseCase {
     suspend fun getConfigPayment(): Flow<List<DataTokenPaymentItem>>
     suspend fun getConfigStatusUpdatePayment(): Flow<Boolean>
     suspend fun getConfigPaymentMethod(): Flow<List<DataPaymentMethod>>
+    suspend fun updateCheckCart(cartId: Int, value: Boolean)
+    suspend fun updateTotalPrice(): Int
     fun dataSession(): DataSession
     fun saveOnBoardingState(value: Boolean)
     fun getOnBoardingState(): Boolean
     fun putWishlistState(value: Boolean)
-    fun getWishlistState(): Boolean
+//    fun getWishlistState(): Boolean
     fun putThemeStatus(value: Boolean)
     fun getThemeStatus(): Boolean
     fun putLanguageStatus(value: String)
@@ -52,4 +56,5 @@ interface AppUseCase {
     fun putUid(value: String)
     fun getUid(): String
     fun clearAllSession()
+    suspend fun checkWishlist(movieId: Int) : Int
 }

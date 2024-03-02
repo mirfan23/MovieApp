@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Keep
 @Parcelize
 data class DataCheckout(
+    var movieId: Int = 0,
     var image: String = "",
     var itemName: String = "",
     var itemPrice: Int = 0

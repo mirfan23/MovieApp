@@ -81,6 +81,7 @@
             android:layout_above="@id/cart_divider_3"
             android:layout_below="@id/cart_divider_2"
             android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
             tools:listitem="@layout/cart_list_card" />
 
         <com.google.android.material.divider.MaterialDivider
@@ -106,12 +107,12 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_total_payment_cart"
+                    android:id="@+id/tv_total_payment_cart_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
                     android:textSize="16sp"
-                    tools:text="Total Bayar" />
+                    tools:text="@string/total_payment_title" />
 
                 <TextView
                     android:id="@+id/tv_total_price"

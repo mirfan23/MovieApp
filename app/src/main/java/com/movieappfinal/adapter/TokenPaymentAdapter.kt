@@ -7,6 +7,7 @@ import com.example.core.base.BaseListAdapter
 import com.movieappfinal.R
 import com.movieappfinal.core.domain.model.DataTokenPaymentItem
 import com.movieappfinal.databinding.TokenListItemBinding
+import com.movieappfinal.utils.currency
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -17,30 +18,27 @@ class TokenPaymentAdapter(
 ) : BaseListAdapter<DataTokenPaymentItem, TokenListItemBinding>(
     TokenListItemBinding::inflate
 ) {
-    private var selectedItem: MutableStateFlow<DataTokenPaymentItem?>? = null
-
-    init {
-        selectedItem?.onEach {
-            notifyDataSetChanged()
-        }?.launchIn(GlobalScope)
-    }
+    private var selectedItem: DataTokenPaymentItem? = null
     override fun onItemBind(): (DataTokenPaymentItem, TokenListItemBinding, View, Int) -> Unit =
-        { item, binding, itemView, position ->
+        { item, binding, itemView, _ ->
             binding.run {
                 tvToken.text = item.token.toString()
-                root.isSelected = item == selectedItem?.value
-                root.setBackgroundColor(
-                    if (item == selectedItem?.value) {
-                        ContextCompat.getColor(root.context, R.color.bg_grey)
-                    } else {
-                        Color.TRANSPARENT
-                    }
-                )
-                ivBadge.visibility = if (item == selectedItem?.value) View.VISIBLE else View.GONE
-            }
-            itemView.setOnClickListener {
-                action.invoke(item)
-                selectedItem?.value = item
+                tvCost.text = currency(item.price)
+                if (item == selectedItem) {
+                    cardToken.setBackgroundColor(itemView.resources.getColor(R.color.bg_grey))
+                } else {
+                    cardToken.setBackgroundColor(cardItem.cardBackgroundColor.defaultColor)
+                }
+                itemView.setOnClickListener {
+                    action.invoke(item)
+                    selectedItem = item
+                    notifyDataSetChanged()
+                }
             }
         }
+
+    fun clearSelectedItem() {
+        selectedItem = null
+        notifyDataSetChanged()
+    }
 }

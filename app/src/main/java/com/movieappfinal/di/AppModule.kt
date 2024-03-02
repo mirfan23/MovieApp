@@ -9,10 +9,10 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 object AppModule : BaseModules {
-    val viewModelModule = module {
-        viewModel { AuthViewModel(get()) }
-        viewModel { HomeViewModel(get()) }
-        viewModel { DashboardViewModel(get()) }
+    private val viewModelModule = module {
+        viewModel { AuthViewModel(get(), get()) }
+        viewModel { HomeViewModel(get(), get()) }
+        viewModel { DashboardViewModel(get(), get()) }
     }
 
     override fun getModules(): List<Module> = listOf(viewModelModule)

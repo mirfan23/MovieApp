@@ -68,6 +68,10 @@ class SharedPreferenceImpl(private val sharedPreferences: SharedPreferences) :
         sharedPreferences.edit().putBoolean(WISHLIST_STATE, value).apply()
     }
 
+//    override fun getWishlistState(movieId: Int) {
+//        TODO("Not yet implemented")
+//    }
+
     override fun getWishlistState(): Boolean {
         return sharedPreferences.getBoolean(WISHLIST_STATE, false)
     }

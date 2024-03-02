@@ -35,7 +35,7 @@ class LocalDataSource(
         preference.putOnBoardingState(state)
     }
 
-    fun getWishlistState(): Boolean = preference.getWishlistState()
+//    fun getWishlistState(): Boolean = preference.getWishlistState()
 
     fun putWishlistState(state: Boolean) {
         preference.putWishlistState(state)
@@ -56,4 +56,12 @@ class LocalDataSource(
     }
 
     fun getProfileName(): String = preference.getProfileName()
+
+    suspend fun checkWishlist(movieId: Int): Int = dao.checkFavorite(movieId)
+
+    suspend fun updateCheckCart(cartId: Int, value: Boolean) = dao.updateCheckCart(cartId, value)
+
+
+    fun updateTotalPriceChecked(): Int = dao.updateTotalPriceChecked()
+
 }

@@ -28,7 +28,7 @@
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/tv_total_wish_item"/>
+            android:layout_below="@id/tv_total_wish_item" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list_view"
@@ -36,6 +36,8 @@
             android:layout_height="match_parent"
             android:layout_below="@id/divider"
             android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="16dp"
+            tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/wishlist_card" />
 
     </RelativeLayout>

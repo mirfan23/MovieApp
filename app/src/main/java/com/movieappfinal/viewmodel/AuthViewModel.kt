@@ -1,8 +1,10 @@
 package com.movieappfinal.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.movieappfinal.core.domain.model.DataProfile
+import com.movieappfinal.core.domain.repository.FirebaseRepository
 import com.movieappfinal.core.domain.state.FlowState
 import com.movieappfinal.core.domain.usecase.AppUseCase
 import com.movieappfinal.utils.validateEmail
@@ -12,9 +14,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class AuthViewModel(private val useCase: AppUseCase): ViewModel() {
+class AuthViewModel(private val useCase: AppUseCase, private val fireRepo: FirebaseRepository): ViewModel() {
 
     private val _validateLoginEmail: MutableStateFlow<FlowState<Boolean>> =
         MutableStateFlow(FlowState.FlowCreated)
@@ -89,5 +92,11 @@ class AuthViewModel(private val useCase: AppUseCase): ViewModel() {
 
     fun resetValidateRegisterField() {
         _validateLoginField.update { FlowState.FlowCreated }
+    }
+
+    fun firebaseAnalytic(screenName: String) {
+        viewModelScope.launch {
+            fireRepo.logScreenView(screenName)
+        }
     }
 }

@@ -9,6 +9,7 @@ import com.movieappfinal.adapter.SearchAdapter
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.core.utils.launchAndCollectIn
 import com.movieappfinal.databinding.FragmentSearchBinding
+import com.movieappfinal.utils.SpaceItemDecoration
 import com.movieappfinal.viewmodel.HomeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,6 +27,8 @@ class SearchFragment :
         tilSearchBar.hint = getString(R.string.search_title)
         rvGridItem.layoutManager = GridLayoutManager(requireContext(), 2)
         rvGridItem.adapter = searchAdapter
+        val spaceInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
+        rvGridItem.addItemDecoration(SpaceItemDecoration(spaceInPixels))
     }
 
     override fun initListener() {

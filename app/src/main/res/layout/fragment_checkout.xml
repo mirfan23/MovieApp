@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.others.CheckoutFragment">
 
     <RelativeLayout
@@ -29,16 +29,16 @@
             </com.google.android.material.appbar.MaterialToolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
             android:layout_above="@id/ll_token_balance"
             android:layout_below="@id/appbar_checkout"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
             tools:listitem="@layout/movie_payment_item" />
+
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/cart_divider"
             android:layout_width="match_parent"
@@ -50,12 +50,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/cart_divider_2"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:gravity="center_vertical">
 
             <ImageView
                 android:id="@+id/iv_thumbnail_cart"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_marginStart="16dp"
                 android:src="@drawable/ic_token" />
 
             <TextView

@@ -123,6 +123,9 @@
         <argument
             android:name="dataCheckout"
             app:argType="com.movieappfinal.core.domain.model.DataCheckout" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_myTokenFragment"
+            app:destination="@id/myTokenFragment" />
     </fragment>
     <fragment
         android:id="@+id/topUpFragment"
@@ -135,11 +138,17 @@
         android:id="@+id/paymentFragment"
         android:name="com.movieappfinal.presentation.others.PaymentFragment"
         android:label="fragment_token_payment"
-        tools:layout="@layout/fragment_payment" >
-        <argument android:name="selectedTokenItem"
-            app:argType="com.movieappfinal.core.domain.model.DataTokenPaymentItem"/>
-        <argument android:name="bottomSheetItem"
-            app:argType="com.movieappfinal.core.domain.model.DataPaymentMethodItem"/>
+        tools:layout="@layout/fragment_payment">
+        <argument
+            android:name="selectedTokenItem"
+            app:argType="com.movieappfinal.core.domain.model.DataTokenPaymentItem"
+            app:nullable="true" />
+        <argument
+            android:name="bottomSheetItem"
+            app:argType="com.movieappfinal.core.domain.model.DataPaymentMethodItem" />
+        <argument
+            android:name="enteredTokenAmount"
+            app:argType="integer" />
         <action
             android:id="@+id/action_tokenPaymentFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />
@@ -148,9 +157,9 @@
         android:id="@+id/moviePaymentPageFragment"
         android:name="com.movieappfinal.presentation.others.MoviePaymentPageFragment"
         android:label="fragment_movie_payment_page"
-        tools:layout="@layout/fragment_movie_payment_page" >
+        tools:layout="@layout/fragment_movie_payment_page">
         <argument
-            android:name="dataCheckout"
+            android:name="dataMoviePayment"
             app:argType="com.movieappfinal.core.domain.model.DataMoviePayment" />
         <action
             android:id="@+id/action_moviePaymentPageFragment_to_dashboardFragment"

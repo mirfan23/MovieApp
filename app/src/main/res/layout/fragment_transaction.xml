@@ -6,6 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.dashboard.TransactionFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_transaction"
         android:layout_width="match_parent"
@@ -17,11 +22,19 @@
             style="@style/headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:navigationIcon="@drawable/ic_back"
             app:titleCentered="true"
             tools:title="Transaction History">
 
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_transaction_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/transaction_item"
+        android:layout_marginHorizontal="16dp"
+        android:layout_below="@+id/appbar_transaction"/>
+
+    </RelativeLayout>
 </FrameLayout>

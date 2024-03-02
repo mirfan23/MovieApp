@@ -61,29 +61,25 @@ class MyTokenFragment :
             }
         }
         val user = viewModel.getCurrentUser()
-        tokenReference.child(user?.userName ?: "")
+        tokenReference.child(user?.userId ?: "")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     var totalTokenAmount = 0
-                    for (transactionSnapshot in snapshot.children) {
-                        val tokenAmount =
-                            transactionSnapshot.child("tokenAmount").getValue(String::class.java)
-                                ?.toInt() ?: 0
+                    for (transactionTokenSnapshot in snapshot.children) {
+                        val tokenAmountString = transactionTokenSnapshot.child("tokenAmount").getValue(String::class.java)
+                        val tokenAmount = tokenAmountString?.toIntOrNull() ?: 0
+
                         totalTokenAmount += tokenAmount
                     }
-                    movieReference.child(user?.userName ?: "").addValueEventListener(object : ValueEventListener {
+                    movieReference.child(user?.userId ?: "").addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             var totalItemPrice = 0
-                            for (transactionSnapshot in snapshot.children) {
-                                val itemPrice = transactionSnapshot.child("itemPrice")
+                            for (transactionMovieSnapshot in snapshot.children) {
+                                val itemPrice = transactionMovieSnapshot.child("itemPrice")
                                     .getValue(Int::class.java) ?: 0
                                 totalItemPrice += itemPrice
-                                println("MASUK snapshot $snapshot")
-                                println("MASUK itemPrice: $itemPrice")
                             }
-                            println("MASUK totalPrice: $totalItemPrice")
                             val newTokenAmount = totalTokenAmount - totalItemPrice
-                            println("MASUK: $newTokenAmount")
 
                             binding.tvTokenBalance.text = newTokenAmount.toString()
                         }
@@ -93,7 +89,7 @@ class MyTokenFragment :
                                 CustomSnackbar.showSnackBar(
                                     it,
                                     binding.root,
-                                    "Gagal mengambil data"
+                                    getString(R.string.failed_to_get_data)
                                 )
                             }
                         }
@@ -105,7 +101,7 @@ class MyTokenFragment :
                         CustomSnackbar.showSnackBar(
                             it,
                             binding.root,
-                            "Gagal mengambil data"
+                            getString(R.string.failed_to_get_data)
                         )
                     }
                 }
@@ -117,20 +113,45 @@ class MyTokenFragment :
             findNavController().popBackStack()
         }
         binding.btnContinueToken.setOnClickListener {
-            val bundle = bundleOf(
-                "selectedTokenItem" to viewModel.selectedItem.value,
-                "bottomSheetItem" to selectedBottomSheetItem
-            )
-            findNavController().navigate(
-                R.id.action_myTokenFragment_to_tokenPaymentFragment,
-                bundle
-            )
-            println("MASUK: $bundle")
+            val enteredTokenAmount = binding.tietToken.text?.toString()?.toIntOrNull()
+            if (enteredTokenAmount != null && selectedBottomSheetItem != null || viewModel.selectedItem.value != null) {
+                val bundle = bundleOf(
+                    "selectedTokenItem" to viewModel.selectedItem.value,
+                    "enteredTokenAmount" to enteredTokenAmount,
+                    "bottomSheetItem" to selectedBottomSheetItem
+                )
+                findNavController().navigate(
+                    R.id.action_myTokenFragment_to_tokenPaymentFragment,
+                    bundle
+                )
+//            if (viewModel.selectedItem.value != null && selectedBottomSheetItem != null ) {
+//                val bundle = bundleOf(
+//                    "selectedTokenItem" to viewModel.selectedItem.value,
+//                    "bottomSheetItem" to selectedBottomSheetItem
+//                )
+//                findNavController().navigate(
+//                    R.id.action_myTokenFragment_to_tokenPaymentFragment,
+//                    bundle
+//                )
+            } else {
+                context?.let { ctx ->
+                    CustomSnackbar.showSnackBar(
+                        ctx,
+                        binding.root,
+                        "Data tidak boleh kosong"
+                    )
+                }
+            }
         }
         binding.cardPayment.setOnClickListener {
             val bottomSheetFragment = BottomSheetFragment()
             bottomSheetFragment.listener = this
             bottomSheetFragment.show(childFragmentManager, BottomSheetFragment.TAG)
+        }
+        binding.tietToken.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                tokenPaymentAdapter.clearSelectedItem()
+            }
         }
     }
 
@@ -153,7 +174,6 @@ class MyTokenFragment :
     override fun onItemSelected(item: DataPaymentMethodItem) {
         binding.ivThumbnailCart.load(item.image)
         binding.tvPaymentWay.text = item.label
-        println("MASUK: $item")
         selectedBottomSheetItem = item
     }
 }

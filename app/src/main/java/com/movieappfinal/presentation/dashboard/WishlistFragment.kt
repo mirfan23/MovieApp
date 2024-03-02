@@ -1,5 +1,8 @@
 package com.movieappfinal.presentation.dashboard
 
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.movieappfinal.R
 import com.movieappfinal.adapter.WishlistAdapter
@@ -22,10 +25,10 @@ class WishlistFragment :
                 /**
                  * will use it later
                  */
-//                val bundle = bundleOf("productId" to it.movieId)
-//                activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
-//                    ?.findNavController()
-//                    ?.navigate(R.id.action_dashboardFragment_to_detailFragment, bundle)
+                val bundle = bundleOf("movieId" to it.movieId)
+                activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
+                    ?.findNavController()
+                    ?.navigate(R.id.action_dashboardFragment_to_detailFragment, bundle)
             },
             remove = { removeItemFromWishlist(it) }
         )
@@ -59,7 +62,7 @@ class WishlistFragment :
 
     private fun listView() {
         binding.rvListView.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context, 2)
             adapter = wishlistAdapter
         }
     }

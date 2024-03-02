@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.movieappfinal.core.domain.model.DataTokenTransaction
+import com.movieappfinal.core.domain.state.UiState
 import kotlinx.coroutines.flow.Flow
 
 interface FirebaseRepository {
@@ -18,5 +19,5 @@ interface FirebaseRepository {
     fun deleteAccount(): Flow<Boolean>
     fun getConfigStatusUpdatePayment(): Flow<Boolean>
     fun getConfigPaymentMethod(): Flow<String>
-//    fun sendDataToDatabase(userName: String): Flow<Boolean>
+    suspend fun sendDataToDatabase(dataTokenTransaction: DataTokenTransaction): Flow<Boolean>
 }

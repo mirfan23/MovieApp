@@ -140,6 +140,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:layout_marginBottom="24dp"
+            android:textColor="@color/white"
             android:backgroundTint="@color/error"
             tools:text="@string/delete_account_setting" />
 

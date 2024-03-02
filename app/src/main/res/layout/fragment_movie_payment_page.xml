@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 tools:text="@string/name_title_payment" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 tools:text="User" />
         </LinearLayout>
 
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 tools:text="@string/total_price_title" />
 
             <TextView
@@ -69,19 +69,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="24sp"
-                tools:text="22.000" />
+                android:textSize="16sp"
+                tools:text="220" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="35dp"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
                 android:src="@drawable/ic_token"/>
         </LinearLayout>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_item"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="100dp"
             android:layout_marginTop="24dp"
             android:layout_below="@id/ll_payment_price"
             android:layout_marginHorizontal="16dp">
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/poppins_medium"
-                    android:textSize="30sp"
+                    android:textSize="24sp"
                     tools:text="John Wick Iv" />
             </LinearLayout>
 

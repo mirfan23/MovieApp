@@ -6,12 +6,17 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.getValue
 import com.google.firebase.remoteconfig.ConfigUpdate
 import com.google.firebase.remoteconfig.ConfigUpdateListener
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
 import com.movieappfinal.core.domain.model.DataTokenTransaction
+import com.movieappfinal.core.domain.state.UiState
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -138,11 +143,18 @@ class FirebaseRepositoryImpl(
         }
         awaitClose()
     }
-
-//    override fun sendDataToDatabase(userName: String): Flow<Boolean> = callbackFlow {
-//        database.getReference("token_transaction").child(userName).push().addValueEventListener(
-//
-//        )
-//    }
+    private val user = auth.currentUser?.uid
+    override suspend fun sendDataToDatabase(dataTokenTransaction: DataTokenTransaction): Flow<Boolean> = callbackFlow {
+        database.reference.child("token_transaction").child(user ?: "").push().setValue(dataTokenTransaction)
+            .addOnCompleteListener {task ->
+                trySend(task.isSuccessful)
+                println("MASUK : berhasil kirim ke database")
+            }
+            .addOnFailureListener {
+                trySend(false)
+                println("MASUK: GAGAL COK $it")
+            }
+        awaitClose()
+    }
 
 }

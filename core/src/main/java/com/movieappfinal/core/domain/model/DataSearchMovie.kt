@@ -7,12 +7,12 @@ import kotlinx.parcelize.Parcelize
 @Keep
 @Parcelize
 data class DataSearchMovie(
-    var id: Int = 0,
-    var genreIds: List<Int> = listOf(),
-    var title: String = "",
-    var backdrop: String = "",
-    var overview: String = "",
-    var poster: String = "",
-    var releaseDate: String = "",
-    var popularity: Int = 0
+    var id: Int? = null,
+    var genreIds: List<Int>? = null,
+    var title: String? = null,
+    var backdrop: String? = null,
+    var overview: String? = null,
+    var poster: String? = null,
+    var releaseDate: String? = null,
+    var popularity: Int? = null
 ) : Parcelable

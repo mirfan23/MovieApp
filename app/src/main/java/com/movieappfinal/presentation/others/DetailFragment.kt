@@ -1,5 +1,7 @@
 package com.movieappfinal.presentation.others
 
+import android.annotation.SuppressLint
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -36,8 +38,10 @@ class DetailFragment :
             btnBuy.text = getString(R.string.rent_now_btn)
             btnToCart.text = getString(R.string.add_to_cart_btn)
         }
+        updateWishlist()
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun initListener() {
         binding.toolbarDetail.setNavigationOnClickListener {
             findNavController().popBackStack()
@@ -52,17 +56,20 @@ class DetailFragment :
                 )
             }
         }
-        binding.cbWishlist.setOnCheckedChangeListener { _, isChecked ->
+        binding.cbWishlist.setOnClickListener {
+            val isChecked = binding.cbWishlist.isChecked
             if (isChecked) {
-                viewModel.run { insertWishList() }
+                binding.cbWishlist.setButtonDrawable(context?.getDrawable(R.drawable.ic_wishlist_filled))
                 context?.let { context ->
                     CustomSnackbar.showSnackBar(
                         context,
                         binding.root,
                         getString(R.string.successful_added_to_wishlist)
                     )
+                    viewModel.run { insertWishList() }
                 }
             } else {
+                binding.cbWishlist.setButtonDrawable(context?.getDrawable(R.drawable.ic_wishlist))
                 viewModel.run { removeWishlistDetail() }
                 context?.let { context ->
                     CustomSnackbar.showSnackBar(
@@ -72,7 +79,6 @@ class DetailFragment :
                     )
                 }
             }
-            viewModel.putWishlistState(isChecked)
         }
     }
 
@@ -93,6 +99,7 @@ class DetailFragment :
                         tvGenres.text = it.genres.map { it.name }.toString()
                         tvDetailDesc.text = it.overview
                         tvMoviePrice.text = it.popularity.toString()
+                        updateWishlist()
                         dataCart = DataCart(
                             movieId = it.id,
                             image = Img_Url+it.poster,
@@ -113,10 +120,15 @@ class DetailFragment :
                         )
                         viewModel.setDataWishlist(dataWishlist)
                         dataCheckout = DataCheckout(
+                            movieId = it.id,
                             image = Img_Url+it.poster,
                             itemName = it.title,
                             itemPrice = it.popularity
                         )
+                        /**
+                         * comment will be use later
+                         */
+//                        binding.btnBuy.isEnabled = viewModel.isMovieAlreadyPurchased(it.id.toString())
                         binding.btnBuy.setOnClickListener {
                             val bundle = bundleOf("dataCheckout" to dataCheckout)
                             findNavController().navigate(R.id.action_detailFragment_to_checkoutFragment, bundle)
@@ -124,6 +136,14 @@ class DetailFragment :
                     }
                 }
             }
+        }
+    }
+
+    private fun updateWishlist() {
+        binding.cbWishlist.isChecked = viewModel.checkWishlist(safeArgs.movieId)
+        when(binding.cbWishlist.isChecked) {
+            true -> binding.cbWishlist.setButtonDrawable(context?.getDrawable(R.drawable.ic_wishlist_filled))
+            else -> binding.cbWishlist.setButtonDrawable(context?.getDrawable(R.drawable.ic_wishlist))
         }
     }
 }

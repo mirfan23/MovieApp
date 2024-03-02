@@ -1,13 +1,16 @@
 package com.movieappfinal.presentation.others
 
+import android.os.Looper
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.movieappfinal.R
 import com.movieappfinal.adapter.CartAdapter
 import com.movieappfinal.core.domain.model.DataCart
+import com.movieappfinal.core.domain.model.DataCheckout
 import com.movieappfinal.core.domain.state.oError
 import com.movieappfinal.core.domain.state.onLoading
 import com.movieappfinal.core.domain.state.onSuccess
@@ -15,6 +18,7 @@ import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.core.utils.launchAndCollectIn
 import com.movieappfinal.databinding.FragmentCartBinding
 import com.movieappfinal.utils.CustomSnackbar
+import com.movieappfinal.utils.SpaceItemDecoration
 import com.movieappfinal.viewmodel.HomeViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,12 +27,22 @@ import retrofit2.HttpException
 class CartFragment :
     BaseFragment<FragmentCartBinding, HomeViewModel>(FragmentCartBinding::inflate) {
     override val viewModel: HomeViewModel by viewModel()
+    private var dataCheckout = DataCheckout()
 
     private val cartAdapter by lazy {
         CartAdapter(
-            action = {},
+            action = {
+                val bundle = bundleOf("movieId" to it.movieId)
+                activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
+                    ?.findNavController()
+                    ?.navigate(R.id.action_dashboardFragment_to_detailFragment, bundle)
+            },
             remove = { entity -> removeItemFromCart(entity) },
-            checkbox = { id, isChecked -> }
+            checkbox = { id, isChecked ->
+                viewModel.updateCheckCart(id, isChecked)
+                android.os.Handler(Looper.getMainLooper())
+                    .postDelayed({ viewModel.updateTotalPrice() }, 500L)
+            }
         )
     }
 
@@ -38,6 +52,12 @@ class CartFragment :
         binding.apply {
             cartToolbar.title = getString(R.string.cart_title)
             btnDeleteCart.text = getString(R.string.delete_btn_text)
+            tvTotalPaymentCartTitle.text = getString(R.string.total_price_title)
+            btnPay.text = getString(R.string.btn_buy)
+        }
+        binding.cbSelectAll.setOnClickListener {
+            val isChecked = binding.cbSelectAll.isChecked
+            cartAdapter.setAllChecked(isChecked)
         }
     }
 
@@ -69,8 +89,20 @@ class CartFragment :
                     }.onSuccess { data ->
                         cartAdapter.submitList(data)
                         viewModel.setDataListCart(data)
+                        /**
+                         * comment still in use
+                         */
+//                        dataCheckout = DataCheckout(
+//                            movieId = it.id,
+//                            image = Constant.Img_Url +it.poster,
+//                            itemName = it.title,
+//                            itemPrice = it.popularity
+//                        )
                     }
                 }
+            }
+            totalPrice.launchAndCollectIn(viewLifecycleOwner) {
+                binding.tvTotalPrice.text = it.toString()
             }
         }
     }
@@ -96,6 +128,8 @@ class CartFragment :
         binding.rvListView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = cartAdapter
+            val spaceInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
+            addItemDecoration(SpaceItemDecoration(spaceInPixels))
         }
     }
 

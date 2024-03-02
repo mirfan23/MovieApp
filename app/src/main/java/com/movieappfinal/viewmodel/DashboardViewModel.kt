@@ -1,17 +1,20 @@
 package com.movieappfinal.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.movieappfinal.core.domain.model.DataSession
 import com.movieappfinal.core.domain.model.DataTokenPaymentItem
+import com.movieappfinal.core.domain.repository.FirebaseRepository
 import com.movieappfinal.core.domain.state.SplashState
 import com.movieappfinal.core.domain.usecase.AppUseCase
 import com.movieappfinal.core.utils.DataMapper.toSplashState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class DashboardViewModel(private val useCase: AppUseCase) : ViewModel() {
+class DashboardViewModel(private val useCase: AppUseCase, private val fireRepo: FirebaseRepository) : ViewModel() {
 
     private val _onBoarding = MutableStateFlow<SplashState<DataSession>>(SplashState.OnBoarding)
     val onBoarding = _onBoarding.asStateFlow()
@@ -61,6 +64,11 @@ class DashboardViewModel(private val useCase: AppUseCase) : ViewModel() {
 
     fun clearAllSession() {
         useCase.clearAllSession()
+    }
+    fun firebaseAnalytic(screenName: String) {
+        viewModelScope.launch {
+            fireRepo.logScreenView(screenName)
+        }
     }
 
 }

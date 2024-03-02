@@ -13,6 +13,7 @@ import com.movieappfinal.core.domain.model.DataProfile
 import com.movieappfinal.core.domain.model.DataSearchMovie
 import com.movieappfinal.core.domain.model.DataSession
 import com.movieappfinal.core.domain.model.DataTokenPaymentItem
+import com.movieappfinal.core.domain.model.DataTokenTransaction
 import com.movieappfinal.core.domain.model.DataTrendingMovie
 import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.repository.FirebaseRepository
@@ -60,6 +61,12 @@ class AppInteractor(
     override suspend fun signInFirebase(email: String, password: String): Flow<Boolean> =
         safeDataCall {
             firebaseRepo.signInFirebase(email, password)
+        }
+
+    override suspend fun sendToDatabase(dataTokenTransaction: DataTokenTransaction): Flow<Boolean> =
+        safeDataCall {
+            println("MASUK : USECASE SEND TO DATABASE $dataTokenTransaction")
+            firebaseRepo.sendDataToDatabase(dataTokenTransaction)
         }
 
     override suspend fun deleteAccount(): Flow<Boolean> =
@@ -150,7 +157,7 @@ class AppInteractor(
         movieRepo.putWishlistState(value)
     }
 
-    override fun getWishlistState(): Boolean = movieRepo.getWishlistState()
+//    override fun getWishlistState(): Boolean = movieRepo.getWishlistState()
 
 
     override fun getThemeStatus(): Boolean = sharedPreferencesHelper.getThemeStatus()
@@ -180,4 +187,14 @@ class AppInteractor(
     }
 
     override fun getProfileName(): String = movieRepo.getProfileName()
+
+    override suspend fun checkWishlist(movieId: Int): Int = movieRepo.checkWishlist(movieId)
+
+    override suspend fun updateCheckCart(cartId: Int, value: Boolean) {
+        movieRepo.updateCheckCart(cartId, value)
+    }
+
+    override suspend fun updateTotalPrice(): Int = safeDataCall {
+        movieRepo.updateTotalPrice()
+    }
 }

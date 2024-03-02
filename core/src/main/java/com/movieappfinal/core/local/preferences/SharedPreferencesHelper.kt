@@ -1,5 +1,7 @@
 package com.movieappfinal.core.local.preferences
 
+import kotlinx.coroutines.flow.Flow
+
 interface SharedPreferencesHelper {
 
     fun putThemeStatus(value: Boolean)
