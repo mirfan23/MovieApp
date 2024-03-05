@@ -13,7 +13,7 @@ import com.movieappfinal.viewmodel.HomeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,15 +22,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel.getThemeStatus()
-        viewModel.theme.launchAndCollectIn(this){
+        viewModel.theme.launchAndCollectIn(this) {
             AppCompatDelegate.setDefaultNightMode(if (it) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
         }
 
         val isLanguageChecked = viewModel.getLanguageStatus()
-        if (isLanguageChecked){
+        if (isLanguageChecked) {
             val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(LANGUAGE_IN)
             AppCompatDelegate.setApplicationLocales(appLocale)
-        }else{
+        } else {
             val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(LANGUAGE_EN)
             AppCompatDelegate.setApplicationLocales(appLocale)
         }

@@ -13,14 +13,15 @@ import com.movieappfinal.viewmodel.DashboardViewModel
 import kotlinx.coroutines.Runnable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, DashboardViewModel>(FragmentOnBoardingBinding::inflate) {
+class OnBoardingFragment :
+    BaseFragment<FragmentOnBoardingBinding, DashboardViewModel>(FragmentOnBoardingBinding::inflate) {
     override val viewModel: DashboardViewModel by viewModel()
     private lateinit var viewPager: ViewPager2
     private lateinit var onBoardingAdapter: OnBoardingAdapter
     private lateinit var tabLayout: TabLayout
 
 
-    override fun initView() = with(binding){
+    override fun initView() = with(binding) {
         btnLoginOnBoarding.text = getString(R.string.btn_login_text)
         btnRegisterOnBoarding.text = getString(R.string.register_btn_text)
         autoScrollOnBoarding()
@@ -33,7 +34,7 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, DashboardView
         viewPager.adapter = onBoardingAdapter
 
         tabLayout = binding.tlOnboarding
-        TabLayoutMediator(tabLayout, viewPager) {_,_ ->}.attach()
+        TabLayoutMediator(tabLayout, viewPager) { _, _ -> }.attach()
         viewModel.putOnBoardingState(true)
         binding.apply {
             btnLoginOnBoarding.setOnClickListener {
@@ -67,5 +68,4 @@ class OnBoardingFragment : BaseFragment<FragmentOnBoardingBinding, DashboardView
             }
         }, delay)
     }
-
 }

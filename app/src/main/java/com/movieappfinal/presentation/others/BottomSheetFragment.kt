@@ -59,8 +59,8 @@ class BottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        dialog?.setOnShowListener { it ->
-            val d = it as BottomSheetDialog
+        dialog?.setOnShowListener { dialog ->
+            val d = dialog as BottomSheetDialog
             val bottomSheet =
                 d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.let {

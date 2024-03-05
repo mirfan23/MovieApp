@@ -154,7 +154,7 @@ class HomeFragment :
                 viewPager.currentItem = viewPager.currentItem + 1
             } else viewPager.currentItem = 0
         }
-        val delay = 3000L
+        val delay = Delay_Slider
 
         handler.postDelayed(object : Runnable {
             override fun run() {
@@ -165,5 +165,9 @@ class HomeFragment :
                 )
             }
         }, delay)
+    }
+
+    companion object{
+        const val Delay_Slider = 3000L
     }
 }

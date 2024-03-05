@@ -23,3 +23,4 @@ class HomeTrendingItemAdapter(private val action: (DataTrendingMovieItem) -> Uni
             }
         }
 }
+

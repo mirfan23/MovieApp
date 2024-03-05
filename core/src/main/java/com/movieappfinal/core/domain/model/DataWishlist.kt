@@ -12,7 +12,7 @@ data class DataWishlist(
     val image: String = "",
     val movieTitle: String = "",
     val moviePrice: Int = 0,
-    val userId: Int = 0,
+    val userId: String = "",
     val releaseDate: String = "",
     val wishlist: Boolean = false,
 ):Parcelable

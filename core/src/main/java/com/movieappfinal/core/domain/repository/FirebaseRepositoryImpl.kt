@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.getValue
@@ -15,6 +16,7 @@ import com.google.firebase.remoteconfig.ConfigUpdate
 import com.google.firebase.remoteconfig.ConfigUpdateListener
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
+import com.movieappfinal.core.domain.model.DataMovieTransaction
 import com.movieappfinal.core.domain.model.DataTokenTransaction
 import com.movieappfinal.core.domain.state.UiState
 import kotlinx.coroutines.channels.awaitClose
@@ -25,7 +27,7 @@ class FirebaseRepositoryImpl(
     private val firebaseAnalytics: FirebaseAnalytics,
     private val remoteConfig: FirebaseRemoteConfig,
     private val auth: FirebaseAuth,
-    private val database: FirebaseDatabase
+    private val database: DatabaseReference
 ) : FirebaseRepository {
     override fun signUpFirebase(email: String, password: String): Flow<Boolean> = callbackFlow {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
@@ -53,10 +55,10 @@ class FirebaseRepositoryImpl(
         awaitClose()
     }
 
-    override fun deleteAccount(): Flow<Boolean> = callbackFlow{
+    override fun deleteAccount(): Flow<Boolean> = callbackFlow {
         auth.currentUser?.delete()?.addOnCompleteListener { task ->
             trySend(task.isSuccessful)
-            if (task.isSuccessful){
+            if (task.isSuccessful) {
                 println("MASUK: deleteUser: success")
             } else {
                 println("MASUK: deleteUser: failed ${task.exception}")
@@ -143,17 +145,77 @@ class FirebaseRepositoryImpl(
         }
         awaitClose()
     }
-    private val user = auth.currentUser?.uid
-    override suspend fun sendDataToDatabase(dataTokenTransaction: DataTokenTransaction): Flow<Boolean> = callbackFlow {
-        database.reference.child("token_transaction").child(user ?: "").push().setValue(dataTokenTransaction)
-            .addOnCompleteListener {task ->
+
+    override suspend fun sendDataToDatabase(
+        dataTokenTransaction: DataTokenTransaction,
+        userId: String
+    ): Flow<Boolean> = callbackFlow {
+        trySend(false)
+        database.database.reference.child("token_transaction").child(userId).push()
+            .setValue(dataTokenTransaction)
+            .addOnCompleteListener { task ->
                 trySend(task.isSuccessful)
-                println("MASUK : berhasil kirim ke database")
+            }.addOnFailureListener { e ->
+                trySend(e.message?.isNotEmpty() ?: false)
             }
-            .addOnFailureListener {
-                trySend(false)
-                println("MASUK: GAGAL COK $it")
+        awaitClose()
+    }
+
+    override suspend fun sendMovieToDataBase(
+        dataMovieTransaction: DataMovieTransaction,
+        userId: String
+    ): Flow<Boolean> = callbackFlow {
+        trySend(false)
+        database.database.reference.child("movie_transaction").child(userId).push()
+            .setValue(dataMovieTransaction)
+            .addOnCompleteListener { task ->
+                trySend(task.isSuccessful)
+            }.addOnFailureListener { e ->
+                trySend(e.message?.isNotEmpty() ?: false)
             }
+        awaitClose()
+    }
+
+    override suspend fun getTokenFromFirebase(userId: String): Flow<Int> = callbackFlow {
+        trySend(0)
+        database.database.reference.child("token_transaction").child(userId).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var totalToken = 0
+
+                for (transaction in snapshot.children) {
+                    val token = transaction.child("tokenAmount").getValue(String::class.java)
+                    val tokenAmount = token?.toIntOrNull() ?: 0
+                    totalToken += tokenAmount
+                }
+                trySend(totalToken)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                trySend(0)
+            }
+        })
+        awaitClose()
+    }
+
+    override suspend fun getMovieTransactionFromFirebase(userId: String): Flow<Int> = callbackFlow {
+        trySend(0)
+        database.database.reference.child("movie_transaction").child(userId).addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var totalPrice = 0
+
+                for (transaction in snapshot.children) {
+                    val price = transaction.child("itemPrice").getValue(Int::class.java)
+                    if (price != null) {
+                        totalPrice += price
+                    }
+                }
+                trySend(totalPrice)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                trySend(0)
+            }
+        })
         awaitClose()
     }
 

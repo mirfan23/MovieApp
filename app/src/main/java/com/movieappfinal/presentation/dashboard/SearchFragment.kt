@@ -18,8 +18,10 @@ class SearchFragment :
     override val viewModel: HomeViewModel by viewModel()
     private val searchAdapter by lazy {
         SearchAdapter { data ->
-            val bundle = bundleOf("movieId" to data.id)
-            findNavController().navigate(R.id.action_dashboardFragment_to_detailFragment, bundle)
+            val bundle = bundleOf("movieId" to data.movieId)
+            activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
+                ?.findNavController()
+                ?.navigate(R.id.action_dashboardFragment_to_detailFragment, bundle)
         }
     }
 
@@ -36,10 +38,6 @@ class SearchFragment :
             viewModel.fetchSearch(query.toString()).launchAndCollectIn(viewLifecycleOwner) {
                 searchAdapter.submitData(it)
             }
-            /**
-             * println still in use
-             */
-            println("MASUK INIT: $query")
         }
     }
 

@@ -122,17 +122,15 @@
             app:destination="@id/moviePaymentPageFragment" />
         <argument
             android:name="dataCheckout"
+            app:nullable="true"
             app:argType="com.movieappfinal.core.domain.model.DataCheckout" />
+        <argument
+            android:name="listDataCheckout"
+            app:nullable="true"
+            app:argType="com.movieappfinal.core.domain.model.DataListCheckout" />
         <action
             android:id="@+id/action_checkoutFragment_to_myTokenFragment"
             app:destination="@id/myTokenFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/topUpFragment"
-        android:name="com.movieappfinal.presentation.others.TopUpFragment"
-        android:label="fragment_top_up"
-        tools:layout="@layout/fragment_top_up">
-
     </fragment>
     <fragment
         android:id="@+id/paymentFragment"

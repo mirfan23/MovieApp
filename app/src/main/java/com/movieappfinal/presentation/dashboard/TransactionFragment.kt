@@ -33,33 +33,34 @@ class TransactionFragment :
     override fun initView() {
         binding.toolbarTransaction.title = "Transaction History"
 
-        var user = viewModel.getCurrentUser()
-        movieReference.child(user?.userId ?: "").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                for (dataSnapshot in snapshot.children) {
-                    val dataTransaction = dataSnapshot.getValue(DataMovieTransaction::class.java)
-                    dataTransaction?.let { movieTransactionItem.addAll(listOf(it)) }
-                    println("MASUK: $movieTransactionItem")
+        val user = viewModel.getCurrentUser()
+        movieReference.child(user?.userId ?: "").orderByChild("transactionTime")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (dataSnapshot in snapshot.children) {
+                        val dataTransaction =
+                            dataSnapshot.getValue(DataMovieTransaction::class.java)
+                        dataTransaction?.let { movieTransactionItem.addAll(listOf(it)) }
+                    }
+                    transactionAdapter.submitList(movieTransactionItem)
+                    binding.rvTransactionItem.apply {
+                        layoutManager = LinearLayoutManager(context)
+                        adapter = transactionAdapter
+                        val spaceInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
+                        addItemDecoration(SpaceItemDecoration(spaceInPixels))
+                    }
                 }
-                transactionAdapter.submitList(movieTransactionItem)
-                binding.rvTransactionItem.apply {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = transactionAdapter
-                    val spaceInPixels = resources.getDimensionPixelSize(R.dimen.item_spacing)
-                    addItemDecoration(SpaceItemDecoration(spaceInPixels))
-                }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                context?.let {
-                    CustomSnackbar.showSnackBar(
-                        it,
-                        binding.root,
-                        getString(R.string.failed_to_get_data)
-                    )
+                override fun onCancelled(error: DatabaseError) {
+                    context?.let {
+                        CustomSnackbar.showSnackBar(
+                            it,
+                            binding.root,
+                            getString(R.string.failed_to_get_data)
+                        )
+                    }
                 }
-            }
-        })
+            })
     }
 
     override fun initListener() {}

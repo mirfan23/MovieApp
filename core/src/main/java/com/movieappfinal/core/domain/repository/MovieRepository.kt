@@ -23,11 +23,11 @@ interface MovieRepository {
 
     suspend fun deleteCart(cartEntity: CartEntity)
 
-    suspend fun fetchCart(id: Int): Flow<List<CartEntity>>
+    suspend fun fetchCart(id: String): Flow<List<CartEntity>>
 
     suspend fun insertWishList(wishListEntity: WishListEntity)
 
-    suspend fun fetchWishList(id: Int): Flow<List<WishListEntity>>
+    suspend fun fetchWishList(id: String): Flow<List<WishListEntity>>
 
     suspend fun deleteWishlist(wishListEntity: WishListEntity)
 

@@ -12,6 +12,6 @@ data class DataCart(
     val image: String = "",
     val movieTitle: String = "",
     val moviePrice: Int = 0,
-    val userId: Int = 0,
+    val userId: String = "",
     val isChecked: Boolean = false
 ):Parcelable

@@ -9,16 +9,19 @@ import com.google.firebase.database.FirebaseDatabase
 import com.movieappfinal.R
 import com.movieappfinal.core.domain.model.DataMovieTransaction
 import com.movieappfinal.core.utils.BaseFragment
+import com.movieappfinal.core.utils.launchAndCollectIn
 import com.movieappfinal.databinding.FragmentMoviePaymentPageBinding
 import com.movieappfinal.viewmodel.DashboardViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class MoviePaymentPageFragment : BaseFragment<FragmentMoviePaymentPageBinding, DashboardViewModel>(FragmentMoviePaymentPageBinding::inflate) {
+class MoviePaymentPageFragment : BaseFragment<FragmentMoviePaymentPageBinding, DashboardViewModel>(
+    FragmentMoviePaymentPageBinding::inflate
+) {
     override val viewModel: DashboardViewModel by viewModel()
     private val args: MoviePaymentPageFragmentArgs by navArgs()
-    private val database = FirebaseDatabase.getInstance().reference
+
     override fun initView() {
         val dataPayment = args.dataMoviePayment
         binding.tvPrice.text = dataPayment.itemPrice.toString()
@@ -61,15 +64,14 @@ class MoviePaymentPageFragment : BaseFragment<FragmentMoviePaymentPageBinding, D
             totalPrice = totalPrice,
             transactionTime = transactionDateTime.toString()
         )
-        /**
-         * println() use as return so it still need it
-         */
-        database.child("movie_transaction").child(userName?.userId ?: "").push().setValue(movieTransaction)
-            .addOnCompleteListener {
-                println("MASUK : berhasil kirim ke database")
-            }
-            .addOnFailureListener {
-                println("MASUK: GAGAL COK")
+        viewModel.sendMovieToDatabase(
+            dataMovieTransaction = movieTransaction,
+            userId = userName?.userId ?: ""
+        )
+            .launchAndCollectIn(viewLifecycleOwner) { success ->
+                if (success) {
+                    findNavController().navigate(R.id.action_tokenPaymentFragment_to_dashboardFragment)
+                }
             }
     }
 

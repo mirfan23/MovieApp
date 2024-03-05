@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Keep
 @Parcelize
 data class DataSearchMovie(
-    var id: Int? = null,
+    var movieId: Int? = null,
     var genreIds: List<Int>? = null,
     var title: String? = null,
     var backdrop: String? = null,

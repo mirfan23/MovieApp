@@ -16,7 +16,7 @@ interface MovieDao {
     suspend fun insertCart(cart: CartEntity)
 
     @Query("SELECT * FROM cart_table WHERE userId = :id")
-    fun retrieveAllCart(id: Int): Flow<List<CartEntity>>
+    fun retrieveAllCart(id: String): Flow<List<CartEntity>>
 
     @Query("DELETE FROM cart_table")
     suspend fun deleteAllCart()
@@ -28,7 +28,7 @@ interface MovieDao {
     suspend fun insertWishList(wishList: WishListEntity)
 
     @Query("SELECT * FROM wishlist_table WHERE userId = :id")
-    fun retrieveAllWishList(id: Int): Flow<List<WishListEntity>>
+    fun retrieveAllWishList(id: String): Flow<List<WishListEntity>>
 
     @Query("DELETE FROM wishlist_table")
     suspend fun deleteAllWishList()

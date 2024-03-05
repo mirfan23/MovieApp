@@ -5,6 +5,7 @@ import com.example.core.domain.model.DataPaymentMethod
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataDetailMovie
+import com.movieappfinal.core.domain.model.DataMovieTransaction
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
 import com.movieappfinal.core.domain.model.DataProfile
@@ -25,16 +26,29 @@ interface AppUseCase {
     suspend fun fetchDetailMovie(movieId: Int): DataDetailMovie
     suspend fun signUpFirebase(email: String, password: String): Flow<Boolean>
     suspend fun signInFirebase(email: String, password: String): Flow<Boolean>
-    suspend fun sendToDatabase(dataTokenTransaction: DataTokenTransaction): Flow<Boolean>
+    suspend fun sendTokenToDatabase(
+        dataTokenTransaction: DataTokenTransaction,
+        userId: String
+    ): Flow<Boolean>
+
+    suspend fun sendMovieToDatabase(
+        dataMovieTransaction: DataMovieTransaction,
+        userId: String
+    ): Flow<Boolean>
+
+    suspend fun getTokenFromDatabase(userId: String): Flow<Int>
+
+    suspend fun getMovieTransactionFromDatabase(userId: String): Flow<Int>
+
     suspend fun deleteAccount(): Flow<Boolean>
     suspend fun getCurrentUser(): DataProfile?
     suspend fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest): Flow<Boolean>
     suspend fun fetchSearch(query: String): Flow<PagingData<DataSearchMovie>>
     suspend fun insertCart(productCart: DataCart)
-    suspend fun fetchCart(id: Int): Flow<UiState<List<DataCart>>>
+    suspend fun fetchCart(id: String): Flow<UiState<List<DataCart>>>
     suspend fun deleteCart(dataCart: DataCart)
     suspend fun insertWishList(dataWishList: DataWishlist)
-    suspend fun fetchWishList(id: Int): Flow<UiState<List<DataWishlist>>>
+    suspend fun fetchWishList(id: String): Flow<UiState<List<DataWishlist>>>
     suspend fun deleteWishlist(dataWishList: DataWishlist)
     suspend fun getConfigStatusUpdate(): Flow<Boolean>
     suspend fun getConfigPayment(): Flow<List<DataTokenPaymentItem>>
@@ -46,7 +60,8 @@ interface AppUseCase {
     fun saveOnBoardingState(value: Boolean)
     fun getOnBoardingState(): Boolean
     fun putWishlistState(value: Boolean)
-//    fun getWishlistState(): Boolean
+
+    //    fun getWishlistState(): Boolean
     fun putThemeStatus(value: Boolean)
     fun getThemeStatus(): Boolean
     fun putLanguageStatus(value: String)
@@ -56,5 +71,5 @@ interface AppUseCase {
     fun putUid(value: String)
     fun getUid(): String
     fun clearAllSession()
-    suspend fun checkWishlist(movieId: Int) : Int
+    suspend fun checkWishlist(movieId: Int): Int
 }

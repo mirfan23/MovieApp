@@ -7,6 +7,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.gson.Gson
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataDetailMovie
+import com.movieappfinal.core.domain.model.DataMovieTransaction
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
 import com.movieappfinal.core.domain.model.DataProfile
@@ -63,11 +64,28 @@ class AppInteractor(
             firebaseRepo.signInFirebase(email, password)
         }
 
-    override suspend fun sendToDatabase(dataTokenTransaction: DataTokenTransaction): Flow<Boolean> =
+    override suspend fun sendTokenToDatabase(
+        dataTokenTransaction: DataTokenTransaction,
+        userId: String
+    ): Flow<Boolean> =
         safeDataCall {
-            println("MASUK : USECASE SEND TO DATABASE $dataTokenTransaction")
-            firebaseRepo.sendDataToDatabase(dataTokenTransaction)
+            firebaseRepo.sendDataToDatabase(dataTokenTransaction, userId)
         }
+
+    override suspend fun sendMovieToDatabase(
+        dataMovieTransaction: DataMovieTransaction,
+        userId: String
+    ): Flow<Boolean> = safeDataCall {
+        firebaseRepo.sendMovieToDataBase(dataMovieTransaction, userId)
+    }
+
+    override suspend fun getTokenFromDatabase(userId: String): Flow<Int> = safeDataCall{
+        firebaseRepo.getTokenFromFirebase(userId)
+    }
+
+    override suspend fun getMovieTransactionFromDatabase(userId: String): Flow<Int> = safeDataCall {
+        firebaseRepo.getMovieTransactionFromFirebase(userId)
+    }
 
     override suspend fun deleteAccount(): Flow<Boolean> =
         safeDataCall {
@@ -97,7 +115,7 @@ class AppInteractor(
         movieRepo.deleteCart(dataCart.toEntity())
     }
 
-    override suspend fun fetchCart(id: Int): Flow<UiState<List<DataCart>>> = safeDataCall {
+    override suspend fun fetchCart(id: String): Flow<UiState<List<DataCart>>> = safeDataCall {
         movieRepo.fetchCart(id).map { data ->
             val mapped = data.map { cartEntity -> cartEntity.toUIData() }
             UiState.Success(mapped)
@@ -108,7 +126,7 @@ class AppInteractor(
         movieRepo.insertWishList(dataWishList.toEntity())
     }
 
-    override suspend fun fetchWishList(id: Int): Flow<UiState<List<DataWishlist>>> =
+    override suspend fun fetchWishList(id: String): Flow<UiState<List<DataWishlist>>> =
         safeDataCall {
             movieRepo.fetchWishList(id).map { data ->
                 val mapped = data.map { wishListEntity -> wishListEntity.toUIData() }
@@ -131,8 +149,8 @@ class AppInteractor(
         firebaseRepo.getConfigStatusUpdate()
 
     override suspend fun getConfigPaymentMethod(): Flow<List<DataPaymentMethod>> = safeDataCall {
-        firebaseRepo.getConfigPaymentMethod().map { data ->
-            val response = Gson().fromJson(data, PaymentMethodResponse::class.java)
+        firebaseRepo.getConfigPaymentMethod().map { string ->
+            val response = Gson().fromJson(string, PaymentMethodResponse::class.java)
             response.data.map { data -> data.toUIData() }.toList()
         }
     }

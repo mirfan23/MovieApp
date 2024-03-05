@@ -57,15 +57,6 @@
                 android:fontFamily="@font/poppins_semi_bold"
                 tools:text="Pilih Semua" />
 
-            <Button
-                android:id="@+id/btn_delete_cart"
-                style="@style/Widget.Material3.Button.TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_semi_bold"
-                android:textColor="@color/primaryColor"
-                tools:text="Hapus" />
-
         </LinearLayout>
 
         <com.google.android.material.divider.MaterialDivider

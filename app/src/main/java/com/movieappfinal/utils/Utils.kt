@@ -1,17 +1,10 @@
 package com.movieappfinal.utils
 
-import android.os.Build
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import com.google.android.material.materialswitch.MaterialSwitch
-import com.movieappfinal.R
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-import java.util.Base64
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun String.toBase64() = Base64.getEncoder().encodeToString(this.toByteArray())
 
 fun MaterialSwitch.checkIf(state: Boolean) {
     this.isChecked = state
@@ -44,15 +37,15 @@ fun String?.validatePassword(): Boolean {
     /**
      * akan digunakan kembali
      *
-     * if (password.none { it.isUpperCase() }) {
-     *             showError("Password setidaknya terdapat satu huruf kapital")
-     *             return false
-     *         }
-     *         if (password.none { !it.isLetterOrDigit() }) {
-     *             showError("Password harus mengandung setidaknya satu karakter khusus")
-     *             return false
-     *         }
      */
+//     if (password.none { it.isUpperCase() }) {
+//                  showError("Password setidaknya terdapat satu huruf kapital")
+//                  return false
+//              }
+//              if (password.none { !it.isLetterOrDigit() }) {
+//                  showError("Password harus mengandung setidaknya satu karakter khusus")
+//                  return false
+//              }
 
     return isValid == true
 }

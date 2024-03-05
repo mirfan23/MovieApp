@@ -29,5 +29,4 @@ class HomeNowPlayingAdapter(
                 homeNowPlayingItemAdapter.submitList(item.items)
             }
         }
-
 }

@@ -14,7 +14,7 @@ class LocalDataSource(
     suspend fun insertCart(cartEntity: CartEntity) {
         dao.insertCart(cartEntity)
     }
-    fun fetchCart(id: Int): Flow<List<CartEntity>> = dao.retrieveAllCart(id)
+    fun fetchCart(id: String): Flow<List<CartEntity>> = dao.retrieveAllCart(id)
 
     suspend fun deleteCart(cartEntity: CartEntity) {
         dao.deleteCart(cartEntity)
@@ -24,7 +24,7 @@ class LocalDataSource(
         dao.insertWishList(wishListEntity)
     }
 
-    fun fetchWishList(id: Int): Flow<List<WishListEntity>> = dao.retrieveAllWishList(id)
+    fun fetchWishList(id: String): Flow<List<WishListEntity>> = dao.retrieveAllWishList(id)
 
     suspend fun deleteWishlist(wishListEntity: WishListEntity) {
         dao.deleteWishlist(wishListEntity)

@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 tools:text="@string/name_title_payment" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 tools:text="User" />
         </LinearLayout>
 
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 tools:text="@string/payment_method_title" />
 
             <TextView
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 tools:text="BCA Virtual Account" />
         </LinearLayout>
 
@@ -104,14 +104,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/ll_payment_price"
             android:layout_centerInParent="true"
-            android:layout_above="@id/btn_continue"
             android:layout_marginTop="100dp"
             android:layout_gravity="center">
 
             <ImageView
                 android:id="@+id/iv_token_ic"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:src="@drawable/ic_token" />
 
             <TextView
@@ -120,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_token_ic"
                 android:fontFamily="@font/poppins_medium"
-                android:textSize="70sp"
+                android:textSize="54sp"
                 tools:text="100" />
         </RelativeLayout>
 

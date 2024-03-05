@@ -15,7 +15,7 @@ class HomeTrendingAdapter(
     HomeItemBinding::inflate
 ) {
     override fun onItemBind(): (DataTrendingMovie, HomeItemBinding, View, Int) -> Unit =
-        { item, binding, itemView, _ ->
+        { item, binding, _, _ ->
             binding.run {
                 val homeTrendingItemAdapter = HomeTrendingItemAdapter(action)
                 tvSubTitle.text = root.context.getString(R.string.trending_title)
@@ -29,5 +29,4 @@ class HomeTrendingAdapter(
                 homeTrendingItemAdapter.submitList(item.items)
             }
         }
-
 }

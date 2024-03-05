@@ -19,7 +19,7 @@ data class CartEntity(
     @ColumnInfo(name = "productPrice")
     val moviePrice: Int = 0,
     @ColumnInfo(name = "userId")
-    val userId: Int = 0,
+    val userId: String = "",
     @ColumnInfo(name = "isChecked")
     val isChecked: Boolean = false
 )

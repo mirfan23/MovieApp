@@ -12,7 +12,6 @@ class WishlistAdapter(private val action: (DataWishlist) -> Unit, private val re
     override fun onItemBind(): (DataWishlist, WishlistCardBinding, View, Int) -> Unit =
         { item, binding, itemView, _ ->
             binding.run {
-                btnAddCart.text = root.context.getString(R.string.add_to_cart_btn)
                 ivMoviePoster.load(item.image)
                 tvMovieName.text = item.movieTitle
                 tvMoviePrice.text = item.moviePrice.toString()

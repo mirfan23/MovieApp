@@ -9,7 +9,8 @@ import com.movieappfinal.databinding.HomeRecyclerItemBinding
 import com.movieappfinal.utils.Constant.Img_Url_Original
 import com.movieappfinal.utils.changeGenre
 
-class HomeCarouselAdapter(private val movieList: List<DataPopularMovieItem>) : RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouselViewHolder>() {
+class HomeCarouselAdapter(private val movieList: List<DataPopularMovieItem>) :
+    RecyclerView.Adapter<HomeCarouselAdapter.HomeCarouselViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeCarouselViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -18,9 +19,10 @@ class HomeCarouselAdapter(private val movieList: List<DataPopularMovieItem>) : R
     }
 
     override fun onBindViewHolder(holder: HomeCarouselViewHolder, position: Int) {
-        val movie  = movieList[position]
+        val movie = movieList[position]
         holder.bind(movie)
     }
+
     override fun getItemCount(): Int {
         return 3
     }
@@ -28,7 +30,7 @@ class HomeCarouselAdapter(private val movieList: List<DataPopularMovieItem>) : R
     inner class HomeCarouselViewHolder(private val binding: HomeRecyclerItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: DataPopularMovieItem) {
-            binding.ivCarousel.load(Img_Url_Original+movie.backdrop)
+            binding.ivCarousel.load(Img_Url_Original + movie.backdrop)
             binding.tvTitleCarousel.text = movie.title
             binding.tvGenre.text = changeGenre(movie.genreIds.first())
         }

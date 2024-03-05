@@ -19,7 +19,6 @@ import com.movieappfinal.core.local.LocalDataSource
 import com.movieappfinal.core.local.database.MovieDatabase
 import com.movieappfinal.core.local.preferences.SharedPreferenceImpl
 import com.movieappfinal.core.local.preferences.SharedPreferenceImpl.Companion.PREFS_NAME
-import com.movieappfinal.core.remote.PagingDataSource
 import com.movieappfinal.core.remote.RemoteDataSource
 import com.movieappfinal.core.remote.client.MovieClient
 import com.movieappfinal.core.remote.interceptor.MovieInterceptor
@@ -30,7 +29,7 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 
 object CoreModule : BaseModules {
-    val sharedPrefModule = module {
+    private val sharedPrefModule = module {
         single { androidContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE) }
         single<SharedPreferencesHelper> {
             SharedPreferenceImpl(get())
@@ -60,7 +59,7 @@ object CoreModule : BaseModules {
         single { Firebase.analytics }
         single { Firebase.remoteConfig }
         single { Firebase.auth }
-        single { Firebase.database }
+        single { Firebase.database.reference }
         single<FirebaseRepository> { FirebaseRepositoryImpl(get(), get(), get(), get( )) }
     }
     val databaseModule = module {

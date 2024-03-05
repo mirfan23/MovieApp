@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Keep
 @Parcelize
 data class DataDetailMovie(
-    var id: Int = 0,
+    var movieId: Int = 0,
     var backdrop: String = "",
     var title: String = "",
     var releaseDate: String = "",

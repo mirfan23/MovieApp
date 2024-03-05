@@ -11,6 +11,7 @@ import com.movieappfinal.R
 import com.movieappfinal.adapter.CartAdapter
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataCheckout
+import com.movieappfinal.core.domain.model.DataListCheckout
 import com.movieappfinal.core.domain.state.oError
 import com.movieappfinal.core.domain.state.onLoading
 import com.movieappfinal.core.domain.state.onSuccess
@@ -27,7 +28,7 @@ import retrofit2.HttpException
 class CartFragment :
     BaseFragment<FragmentCartBinding, HomeViewModel>(FragmentCartBinding::inflate) {
     override val viewModel: HomeViewModel by viewModel()
-    private var dataCheckout = DataCheckout()
+    var listDataCheckout = DataListCheckout()
 
     private val cartAdapter by lazy {
         CartAdapter(
@@ -51,7 +52,6 @@ class CartFragment :
         viewModel.fetchCart()
         binding.apply {
             cartToolbar.title = getString(R.string.cart_title)
-            btnDeleteCart.text = getString(R.string.delete_btn_text)
             tvTotalPaymentCartTitle.text = getString(R.string.total_price_title)
             btnPay.text = getString(R.string.btn_buy)
         }
@@ -77,6 +77,7 @@ class CartFragment :
                                 val errorBody = error.response()?.errorBody()?.string()
                                 "$errorBody"
                             }
+
                             else -> "${error.message}"
                         }
                         context?.let {
@@ -92,12 +93,31 @@ class CartFragment :
                         /**
                          * comment still in use
                          */
+
 //                        dataCheckout = DataCheckout(
 //                            movieId = it.id,
 //                            image = Constant.Img_Url +it.poster,
 //                            itemName = it.title,
 //                            itemPrice = it.popularity
 //                        )
+                        listDataCheckout = DataListCheckout(
+                            data.map {
+                                DataCheckout(
+                                    movieId = it.movieId,
+                                    image = it.image,
+                                    itemPrice = it.moviePrice,
+                                    itemName = it.movieTitle
+                                )
+                            }
+                        )
+                        binding.btnPay.setOnClickListener {
+                                val bundle = bundleOf("listDataCheckout" to listDataCheckout)
+                                findNavController().navigate(
+                                    R.id.action_detailFragment_to_checkoutFragment,
+                                    bundle
+                                )
+                            }
+
                     }
                 }
             }

@@ -17,7 +17,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class AuthViewModel(private val useCase: AppUseCase, private val fireRepo: FirebaseRepository): ViewModel() {
+class AuthViewModel(private val useCase: AppUseCase, private val fireRepo: FirebaseRepository) :
+    ViewModel() {
 
     private val _validateLoginEmail: MutableStateFlow<FlowState<Boolean>> =
         MutableStateFlow(FlowState.FlowCreated)
@@ -52,10 +53,14 @@ class AuthViewModel(private val useCase: AppUseCase, private val fireRepo: Fireb
     val validateProfileField = _validateProfileField.asSharedFlow()
 
 
-    fun signUpWithFirebase(email: String, password: String) = runBlocking { useCase.signUpFirebase(email, password) }
+    fun signUpWithFirebase(email: String, password: String) =
+        runBlocking { useCase.signUpFirebase(email, password) }
 
-    fun signInWithFirebase(email: String, password: String) = runBlocking { useCase.signInFirebase(email, password) }
-    fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest) = runBlocking { useCase.updateProfile(userProfileChangeRequest) }
+    fun signInWithFirebase(email: String, password: String) =
+        runBlocking { useCase.signInFirebase(email, password) }
+
+    fun updateProfile(userProfileChangeRequest: UserProfileChangeRequest) =
+        runBlocking { useCase.updateProfile(userProfileChangeRequest) }
 
 
     fun validateLoginEmail(email: String) {

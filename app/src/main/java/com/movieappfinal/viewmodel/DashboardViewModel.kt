@@ -2,6 +2,7 @@ package com.movieappfinal.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.movieappfinal.core.domain.model.DataMovieTransaction
 import com.movieappfinal.core.domain.model.DataSession
 import com.movieappfinal.core.domain.model.DataTokenPaymentItem
 import com.movieappfinal.core.domain.repository.FirebaseRepository
@@ -14,7 +15,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class DashboardViewModel(private val useCase: AppUseCase, private val fireRepo: FirebaseRepository) : ViewModel() {
+class DashboardViewModel(
+    private val useCase: AppUseCase,
+    private val fireRepo: FirebaseRepository
+) : ViewModel() {
 
     private val _onBoarding = MutableStateFlow<SplashState<DataSession>>(SplashState.OnBoarding)
     val onBoarding = _onBoarding.asStateFlow()
@@ -65,10 +69,21 @@ class DashboardViewModel(private val useCase: AppUseCase, private val fireRepo: 
     fun clearAllSession() {
         useCase.clearAllSession()
     }
+
     fun firebaseAnalytic(screenName: String) {
         viewModelScope.launch {
             fireRepo.logScreenView(screenName)
         }
     }
+
+    fun sendMovieToDatabase(dataMovieTransaction: DataMovieTransaction, userId: String) =
+        runBlocking {
+            useCase.sendMovieToDatabase(dataMovieTransaction, userId)
+        }
+
+    fun getTokenFromDatabase(userId: String) = runBlocking { useCase.getTokenFromDatabase(userId) }
+
+    fun getMovieTransactionFromDatabase(userId: String) =
+        runBlocking { useCase.getMovieTransactionFromDatabase(userId) }
 
 }

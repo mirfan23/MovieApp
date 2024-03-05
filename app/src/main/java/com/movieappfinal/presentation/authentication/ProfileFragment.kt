@@ -1,8 +1,10 @@
 package com.movieappfinal.presentation.authentication
 
+import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.userProfileChangeRequest
@@ -21,6 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ProfileFragment : BaseFragment<FragmentProfileBinding, AuthViewModel>(FragmentProfileBinding::inflate) {
     override val viewModel: AuthViewModel by viewModel()
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private lateinit var auth: FirebaseAuth
 
     override fun initView() = with(binding){
@@ -41,6 +44,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, AuthViewModel>(Frag
                 val profileUpdates = userProfileChangeRequest {
                     displayName = tietProfile.text.toString().trim()
                 }
+                analytics("Profile")
                 viewModel.updateProfile(profileUpdates).launchAndCollectIn(viewLifecycleOwner) {
                     if (it){
                         findNavController().navigate(R.id.action_profileFragment_to_dashboardFragment)
@@ -72,6 +76,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding, AuthViewModel>(Frag
                     }
             }
         }
+    }
+
+    private fun analytics(data: String) {
+        val bundle = Bundle()
+        bundle.putString("show_message", data)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
     }
 
     private fun termsCo() {

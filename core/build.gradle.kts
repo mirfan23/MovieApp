@@ -5,12 +5,60 @@ plugins {
     id("com.google.gms.google-services")
     id("kotlin-parcelize")
     id("com.google.firebase.crashlytics")
+    id("jacoco")
 }
+
+private val coverageExclusions = listOf(
+    "**/R.class",
+    "**/R\$*.class",
+    "**/BuildConfig.*",
+    "**/Manifest*.*"
+)
 
 android {
     namespace = "com.movieappfinal.core"
     compileSdk = 34
     buildFeatures.buildConfig = true
+
+    configure<JacocoPluginExtension> {
+        toolVersion = "0.8.10"
+    }
+
+    val jacocoTestReport = tasks.create("jacocoTestReport")
+
+    androidComponents.onVariants { variant ->
+        val testTaskName = "test${variant.name.capitalize()}UnitTest"
+
+        val reportTask =
+            tasks.register("jacoco${testTaskName.capitalize()}Report", JacocoReport::class) {
+                dependsOn(testTaskName)
+
+                reports {
+                    html.required.set(true)
+                }
+
+                classDirectories.setFrom(
+                    fileTree("$buildDir/tmp/kotlin-classes/${variant.name}") {
+                        exclude(coverageExclusions)
+                    }
+                )
+
+                sourceDirectories.setFrom(
+                    files("$projectDir/src/main/java")
+                )
+                executionData.setFrom(file("$buildDir/jacoco/$testTaskName.exec"))
+//                executionData.setFrom(file("$buildDir/outputs/unit_test_code_coverage/${variant.name}UnitTest/$testTaskName.exec"))
+            }
+
+        jacocoTestReport.dependsOn(reportTask)
+    }
+
+    tasks.withType<Test>().configureEach {
+        configure<JacocoTaskExtension> {
+            isIncludeNoLocationClasses = true
+            excludes = listOf("jdk.internal.*")
+        }
+    }
 
     defaultConfig {
         minSdk = 24
@@ -32,11 +80,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 }
 
@@ -54,6 +106,7 @@ dependencies {
 
     //chucker
     debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
 
     //Gson
     implementation("com.google.code.gson:gson:2.10.1")
@@ -92,6 +145,7 @@ dependencies {
     api("com.google.firebase:firebase-messaging-ktx:23.4.1")
     api("com.google.firebase:firebase-auth")
     api("com.google.firebase:firebase-database")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

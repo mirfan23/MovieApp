@@ -48,7 +48,7 @@ class MovieRepositoryImpl(
         local.deleteCart(cartEntity)
     }
 
-    override suspend fun fetchCart(id: Int): Flow<List<CartEntity>> = safeDataCall {
+    override suspend fun fetchCart(id: String): Flow<List<CartEntity>> = safeDataCall {
         local.fetchCart(id)
     }
 
@@ -56,7 +56,7 @@ class MovieRepositoryImpl(
         local.insertWishList(wishListEntity)
     }
 
-    override suspend fun fetchWishList(id: Int): Flow<List<WishListEntity>> = safeDataCall {
+    override suspend fun fetchWishList(id: String): Flow<List<WishListEntity>> = safeDataCall {
         local.fetchWishList(id)
     }
 

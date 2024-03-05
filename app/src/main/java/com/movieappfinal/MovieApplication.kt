@@ -14,18 +14,12 @@ class MovieApplication: Application() {
         startKoin {
             androidLogger(level = Level.NONE)
             androidContext(this@MovieApplication)
-            /**
-             *commented code will be use later
-             */
             modules(
                 AppModule.getModules()
             )
             modules(
                 CoreModule.getModules()
             )
-//            modules(
-//                ProductModule.getModules()
-//            )
         }
     }
 }

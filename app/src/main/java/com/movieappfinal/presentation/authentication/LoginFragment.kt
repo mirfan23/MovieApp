@@ -67,7 +67,6 @@ class LoginFragment :
                 if (tilEmailLogin.isErrorEnabled.not() && tilPasswordLogin.isErrorEnabled.not()) {
                     viewModel.validateLoginField(email, password)
                 }
-//                viewModel.firebaseAnalytic("LOGIN")
                 analytics("LOGIN")
             }
         }
@@ -144,7 +143,16 @@ class LoginFragment :
         val bundle = Bundle()
         bundle.putString("show_message", data)
         firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val bundle = Bundle()
+        bundle.putString("srceen_name", getString(R.string.login_appbar_title))
+        firebaseAnalytics = FirebaseAnalytics.getInstance(requireContext())
+        firebaseAnalytics.logEvent("UHUY", bundle)
+
     }
 
     private fun enableLoginButtonIfValid() {

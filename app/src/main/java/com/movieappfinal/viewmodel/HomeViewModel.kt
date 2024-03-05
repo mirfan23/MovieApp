@@ -6,6 +6,7 @@ import androidx.paging.cachedIn
 import com.google.firebase.database.FirebaseDatabase
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataDetailMovie
+import com.movieappfinal.core.domain.model.DataMovieTransaction
 import com.movieappfinal.core.domain.model.DataNowPlaying
 import com.movieappfinal.core.domain.model.DataPopularMovie
 import com.movieappfinal.core.domain.model.DataTokenTransaction
@@ -21,14 +22,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.tasks.await
 
 class HomeViewModel(
     private val useCase: AppUseCase,
     private val fireRepo: FirebaseRepository
 ) : ViewModel() {
-    private val database = FirebaseDatabase.getInstance().reference
-    private val movieReference = database.child("movie_transaction")
 
     private val _totalPrice = MutableStateFlow(0)
     val totalPrice = _totalPrice.asStateFlow()
@@ -107,7 +105,7 @@ class HomeViewModel(
 
     fun fetchCart() = runBlocking {
         val uid = useCase.getUid()
-        useCase.fetchCart(uid.hashCode())
+        useCase.fetchCart(uid)
     }
 
     fun insertWishList() {
@@ -118,7 +116,7 @@ class HomeViewModel(
 
     fun fetchWishList() = runBlocking {
         val uid = useCase.getUid()
-        useCase.fetchWishList(uid.hashCode())
+        useCase.fetchWishList(uid)
     }
 
     fun removeCart(dataCart: DataCart) {
@@ -175,28 +173,14 @@ class HomeViewModel(
 
     fun deleteAccount() = runBlocking { useCase.deleteAccount() }
 
-    fun sendToDatabase(data: DataTokenTransaction) = runBlocking {
-        useCase.sendToDatabase(data)
-//        fireRepo.sendDataToDatabase(data)
+    fun sendTokenToDatabase(data: DataTokenTransaction, userId : String) = runBlocking {
+        useCase.sendTokenToDatabase(data, userId)
     }
+
+
 
     fun checkWishlist(movieId: Int) =
         runBlocking { useCase.checkWishlist(movieId) > 0 }
-
-    fun isMovieAlreadyPurchased(movieId: String): Boolean {
-        var isPurchased = false
-        viewModelScope.launch {
-            try {
-                val snapshot = movieReference.orderByChild("movieId").equalTo(movieId).get().await()
-                println("MASUK $snapshot")
-                isPurchased = snapshot.exists()
-            } catch (e: Exception) {
-                // Handle any errors
-                println("MASUK : Error checking movie transaction: $e")
-            }
-        }
-        return isPurchased
-    }
 
     fun updateCheckCart(cartId: Int, value: Boolean) {
         viewModelScope.launch {
@@ -216,11 +200,5 @@ class HomeViewModel(
             fireRepo.logScreenView(screenName)
         }
     }
-
-//    fun fetchTotalPrice() {
-//        viewModelScope.launch {
-//            updateTotalPrice(checked = false)
-//        }
-//    }
 
 }

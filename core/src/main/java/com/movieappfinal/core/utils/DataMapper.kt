@@ -81,7 +81,7 @@ object DataMapper {
     )
 
     fun DetailMovieResponse.toUIData() = DataDetailMovie(
-        id = id,
+        movieId = id,
         backdrop = backdropPath,
         title = title,
         releaseDate = releaseDate,
@@ -135,7 +135,7 @@ object DataMapper {
     )
 
     fun MoviesItem.toSearchData() = DataSearchMovie(
-        id = id,
+        movieId = id,
         genreIds = genreIds,
         title = title,
         backdrop = backdropPath,

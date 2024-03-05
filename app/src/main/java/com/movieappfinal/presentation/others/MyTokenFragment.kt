@@ -5,15 +5,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import coil.load
 import com.example.core.domain.model.DataPaymentMethod
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.movieappfinal.core.domain.model.DataPaymentMethodItem
 import com.movieappfinal.R
 import com.movieappfinal.adapter.TokenPaymentAdapter
 import com.movieappfinal.core.domain.model.DataTokenPaymentItem
-import com.movieappfinal.core.domain.model.DataTokenTransaction
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.core.utils.launchAndCollectIn
 import com.movieappfinal.databinding.FragmentMyTokenBinding
@@ -37,10 +32,8 @@ class MyTokenFragment :
         arguments?.getParcelable(ARG_SELECTED_PAYMENT) as DataPaymentMethod?
     }
     private var selectedBottomSheetItem: DataPaymentMethodItem? = null
-    private val database = FirebaseDatabase.getInstance().reference
-    private val tokenReference = database.child("token_transaction")
-    private val movieReference = database.child("movie_transaction")
-
+    private var totalToken = 0
+    private var totalPrice = 0
 
     override fun initView() {
         binding.apply {
@@ -61,51 +54,17 @@ class MyTokenFragment :
             }
         }
         val user = viewModel.getCurrentUser()
-        tokenReference.child(user?.userId ?: "")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    var totalTokenAmount = 0
-                    for (transactionTokenSnapshot in snapshot.children) {
-                        val tokenAmountString = transactionTokenSnapshot.child("tokenAmount").getValue(String::class.java)
-                        val tokenAmount = tokenAmountString?.toIntOrNull() ?: 0
+        viewModel.getTokenFromDatabase(user?.userId ?: "")
+            .launchAndCollectIn(viewLifecycleOwner) { token ->
+                totalToken = token
+            }
+        viewModel.getMovieTransactionFromDatabase(user?.userId ?: "")
+            .launchAndCollectIn(viewLifecycleOwner) { transaction ->
+                totalPrice = transaction
 
-                        totalTokenAmount += tokenAmount
-                    }
-                    movieReference.child(user?.userId ?: "").addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            var totalItemPrice = 0
-                            for (transactionMovieSnapshot in snapshot.children) {
-                                val itemPrice = transactionMovieSnapshot.child("itemPrice")
-                                    .getValue(Int::class.java) ?: 0
-                                totalItemPrice += itemPrice
-                            }
-                            val newTokenAmount = totalTokenAmount - totalItemPrice
-
-                            binding.tvTokenBalance.text = newTokenAmount.toString()
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            context?.let {
-                                CustomSnackbar.showSnackBar(
-                                    it,
-                                    binding.root,
-                                    getString(R.string.failed_to_get_data)
-                                )
-                            }
-                        }
-                    })
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    context?.let {
-                        CustomSnackbar.showSnackBar(
-                            it,
-                            binding.root,
-                            getString(R.string.failed_to_get_data)
-                        )
-                    }
-                }
-            })
+                val newTokenAmount = totalToken - totalPrice
+                binding.tvTokenBalance.text = newTokenAmount.toString()
+            }
     }
 
     override fun initListener() {
@@ -113,32 +72,24 @@ class MyTokenFragment :
             findNavController().popBackStack()
         }
         binding.btnContinueToken.setOnClickListener {
-            val enteredTokenAmount = binding.tietToken.text?.toString()?.toIntOrNull()
-            if (enteredTokenAmount != null && selectedBottomSheetItem != null || viewModel.selectedItem.value != null) {
+            val tokenAmountToSend = binding.tietToken.text?.toString()?.toIntOrNull()
+                ?: viewModel.selectedItem.value?.token
+            if (tokenAmountToSend != null && selectedBottomSheetItem != null || viewModel.selectedItem.value != null) {
                 val bundle = bundleOf(
                     "selectedTokenItem" to viewModel.selectedItem.value,
-                    "enteredTokenAmount" to enteredTokenAmount,
+                    "enteredTokenAmount" to tokenAmountToSend,
                     "bottomSheetItem" to selectedBottomSheetItem
                 )
                 findNavController().navigate(
                     R.id.action_myTokenFragment_to_tokenPaymentFragment,
                     bundle
                 )
-//            if (viewModel.selectedItem.value != null && selectedBottomSheetItem != null ) {
-//                val bundle = bundleOf(
-//                    "selectedTokenItem" to viewModel.selectedItem.value,
-//                    "bottomSheetItem" to selectedBottomSheetItem
-//                )
-//                findNavController().navigate(
-//                    R.id.action_myTokenFragment_to_tokenPaymentFragment,
-//                    bundle
-//                )
             } else {
                 context?.let { ctx ->
                     CustomSnackbar.showSnackBar(
                         ctx,
                         binding.root,
-                        "Data tidak boleh kosong"
+                        getString(R.string.data_con_not_be_null)
                     )
                 }
             }
