@@ -102,6 +102,9 @@
         <action
             android:id="@+id/action_cartFragment_to_checkoutFragment"
             app:destination="@id/checkoutFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
     <fragment
         android:id="@+id/myTokenFragment"
@@ -121,12 +124,7 @@
             android:id="@+id/action_checkoutFragment_to_moviePaymentPageFragment"
             app:destination="@id/moviePaymentPageFragment" />
         <argument
-            android:name="dataCheckout"
-            app:nullable="true"
-            app:argType="com.movieappfinal.core.domain.model.DataCheckout" />
-        <argument
             android:name="listDataCheckout"
-            app:nullable="true"
             app:argType="com.movieappfinal.core.domain.model.DataListCheckout" />
         <action
             android:id="@+id/action_checkoutFragment_to_myTokenFragment"
@@ -157,8 +155,8 @@
         android:label="fragment_movie_payment_page"
         tools:layout="@layout/fragment_movie_payment_page">
         <argument
-            android:name="dataMoviePayment"
-            app:argType="com.movieappfinal.core.domain.model.DataMoviePayment" />
+            android:name="listDataMoviePayment"
+            app:argType="com.movieappfinal.core.domain.model.DataListMovie" />
         <action
             android:id="@+id/action_moviePaymentPageFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />

@@ -6,9 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Keep
 @Parcelize
-data class DataMoviePayment(
-    var movieId: Int = 0,
-    var image: String = "",
-    var itemName: String = "",
-    var itemPrice: Int = 0,
-): Parcelable
+data class DataListMovie(
+    var listDataMovie: List<DataMoviePayment>,
+    var totalPayment: Int = 0
+):Parcelable

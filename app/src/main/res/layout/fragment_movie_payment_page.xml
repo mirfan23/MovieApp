@@ -78,36 +78,14 @@
                 android:src="@drawable/ic_token"/>
         </LinearLayout>
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_item"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="24dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_movie_payment_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/btn_continue"
             android:layout_below="@id/ll_payment_price"
-            android:layout_marginHorizontal="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/iv_movie_poster"
-                    android:layout_width="150dp"
-                    android:padding="12dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/on_boarding_1" />
-
-                <TextView
-                    android:id="@+id/tv_movie_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/poppins_medium"
-                    android:textSize="24sp"
-                    tools:text="John Wick Iv" />
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_centerInParent="true"
+            tools:listitem="@layout/payment_movie_item" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_continue"

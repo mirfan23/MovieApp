@@ -52,12 +52,20 @@ class MovieRepositoryImpl(
         local.fetchCart(id)
     }
 
+    override suspend fun retrieveCheckedCart(userId: String): Flow<List<CartEntity>> = safeDataCall {
+        local.retrieveCheckedCart(userId)
+    }
+
     override suspend fun insertWishList(wishListEntity: WishListEntity) {
         local.insertWishList(wishListEntity)
     }
 
     override suspend fun fetchWishList(id: String): Flow<List<WishListEntity>> = safeDataCall {
         local.fetchWishList(id)
+    }
+
+    override suspend fun fetchOneWishlist(movieId: Int, userId: String): WishListEntity = safeDataCall{
+        local.fetchOneWishlist(movieId, userId)
     }
 
     override suspend fun deleteWishlist(wishListEntity: WishListEntity) {
@@ -68,7 +76,7 @@ class MovieRepositoryImpl(
         local.putWishlistState(state)
     }
 
-//    override fun getWishlistState(): Boolean = local.getWishlistState()
+    override fun getWishlistState(): Boolean = local.getWishlistState()
 
     override fun getProfileName(): String = local.getProfileName()
 
@@ -96,7 +104,7 @@ class MovieRepositoryImpl(
         local.updateCheckCart(cartId, value)
     }
 
-    override suspend fun updateTotalPrice(): Int {
-        return local.updateTotalPriceChecked()
+    override suspend fun updateTotalPrice(userId: String): Int {
+        return local.updateTotalPriceChecked(userId)
     }
 }

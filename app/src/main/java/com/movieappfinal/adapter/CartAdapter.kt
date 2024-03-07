@@ -19,6 +19,10 @@ class CartAdapter(
         allChecked = checked
         notifyDataSetChanged()
     }
+
+    fun getSelectedItems(): List<DataCart> {
+        return currentList.filter {  it.isChecked }
+    }
     override fun onItemBind(): (DataCart, CartListCardBinding, View, Int) -> Unit =
         { item, binding, itemView, _ ->
             binding.run {

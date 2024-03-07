@@ -15,8 +15,8 @@ class TransactionAdapter(
     override fun onItemBind(): (DataMovieTransaction, TransactionItemBinding, View, Int) -> Unit =
         { item, binding, itemView, _ ->
             binding.run {
-                tvItemName.text = item.itemName.toString()
-                tvPrice.text = item.itemPrice.toString()
+                tvItemName.text = item.itemName.toString().replace("[", "").replace("]", "")
+                tvPrice.text = item.itemPrice.toString().replace("[", "").replace("]", "")
                 tvDateTime.text = item.transactionTime
             }
             itemView.setOnClickListener {

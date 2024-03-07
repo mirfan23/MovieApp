@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import okhttp3.internal.userAgent
 
 class HomeViewModel(
     private val useCase: AppUseCase,
@@ -58,6 +59,10 @@ class HomeViewModel(
 
     private val _language = MutableStateFlow(false)
     val language = _language.asStateFlow()
+
+    private val _wishlist = MutableStateFlow(false)
+    val wishlist = _wishlist.asStateFlow()
+
 
     fun getCurrentUser() = runBlocking { useCase.getCurrentUser() }
 
@@ -126,9 +131,11 @@ class HomeViewModel(
     }
 
     fun removeWishlistDetail() {
+        val userId = useCase.getUid()
         viewModelScope.launch {
             dataWishlist?.let {
-                useCase.deleteWishlist(it)
+                val movieData = useCase.fetchOneWishlist(it.movieId, userId)
+                useCase.deleteWishlist(movieData)
             }
         }
     }
@@ -152,6 +159,11 @@ class HomeViewModel(
         useCase.putWishlistState(value)
     }
 
+    fun getWishlistState() {
+        _wishlist.update { useCase.getWishlistState() }
+    }
+
+
     fun fetchSearch(query: String) =
         runBlocking { useCase.fetchSearch(query).cachedIn(viewModelScope) }
 
@@ -173,10 +185,9 @@ class HomeViewModel(
 
     fun deleteAccount() = runBlocking { useCase.deleteAccount() }
 
-    fun sendTokenToDatabase(data: DataTokenTransaction, userId : String) = runBlocking {
+    fun sendTokenToDatabase(data: DataTokenTransaction, userId: String) = runBlocking {
         useCase.sendTokenToDatabase(data, userId)
     }
-
 
 
     fun checkWishlist(movieId: Int) =
@@ -189,8 +200,9 @@ class HomeViewModel(
     }
 
     fun updateTotalPrice() {
+        val userId = useCase.getUid()
         viewModelScope.launch {
-            val totalPrice = useCase.updateTotalPrice()
+            val totalPrice = useCase.updateTotalPrice(userId)
             _totalPrice.value = totalPrice
         }
     }
@@ -199,6 +211,11 @@ class HomeViewModel(
         viewModelScope.launch {
             fireRepo.logScreenView(screenName)
         }
+    }
+
+    fun retrieveCheckedCart() = runBlocking {
+        val userId = useCase.getUid()
+        useCase.retrieveCheckedCart(userId)
     }
 
 }

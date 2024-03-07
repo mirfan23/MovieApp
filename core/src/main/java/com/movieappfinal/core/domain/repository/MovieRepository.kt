@@ -29,10 +29,12 @@ interface MovieRepository {
 
     suspend fun fetchWishList(id: String): Flow<List<WishListEntity>>
 
+    suspend fun fetchOneWishlist(movieId: Int, userId: String): WishListEntity
+
     suspend fun deleteWishlist(wishListEntity: WishListEntity)
 
     fun putWishlistState(state: Boolean)
-//    fun getWishlistState(): Boolean
+    fun getWishlistState(): Boolean
     fun getProfileName(): String
     fun saveProfileName(string: String)
     fun getOnBoardingState(): Boolean
@@ -41,5 +43,6 @@ interface MovieRepository {
     fun saveUid(string: String)
     suspend fun checkWishlist(movieId: Int): Int
     suspend fun updateCheckCart(cartId: Int, value: Boolean)
-    suspend fun updateTotalPrice(): Int
+    suspend fun updateTotalPrice(userId: String): Int
+    suspend fun retrieveCheckedCart(userId: String): Flow<List<CartEntity>>
 }

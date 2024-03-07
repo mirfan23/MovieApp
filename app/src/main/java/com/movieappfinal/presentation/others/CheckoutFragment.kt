@@ -6,6 +6,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.movieappfinal.R
 import com.movieappfinal.adapter.CheckoutAdapter
+import com.movieappfinal.core.domain.model.DataCheckout
+import com.movieappfinal.core.domain.model.DataListCheckout
+import com.movieappfinal.core.domain.model.DataListMovie
 import com.movieappfinal.core.domain.model.DataMoviePayment
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.core.utils.launchAndCollectIn
@@ -22,21 +25,30 @@ class CheckoutFragment :
     private val args: CheckoutFragmentArgs by navArgs()
     private var totalToken = 0
     private var totalPrice = 0
-    private var dataCheckoutToPayment = DataMoviePayment()
+    private var listDataCheckoutToPayment: DataListMovie? = null
+    private var listDataCheckout: DataListCheckout? = null
 
 
     override fun initView() {
+        listDataCheckout = args.listDataCheckout
         binding.toolbarCheckout.title = getString(R.string.check_out_title)
         binding.btnPay.text = getString(R.string.btn_buy)
-        val dataCheckoutFragment = args.dataCheckout
-        val listDataCheckout = args.listDataCheckout
 
-        val dataCheckout = if ((dataCheckoutFragment == null) && (listDataCheckout != null)) {
-            listDataCheckout
-        } else {
-            dataCheckoutFragment
+        binding.rvListView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = checkoutAdapter
+            checkoutAdapter.submitList(listDataCheckout?.listDataCheckout)
         }
+    }
 
+
+    override fun initListener() {
+        binding.toolbarCheckout.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    override fun observeData() {
         val user = viewModel.getCurrentUser()
         viewModel.getTokenFromDatabase(user?.userId ?: "")
             .launchAndCollectIn(viewLifecycleOwner) { token ->
@@ -47,57 +59,37 @@ class CheckoutFragment :
                 totalPrice = transaction
 
                 val newTokenAmount = totalToken - totalPrice
+
                 binding.tvTokenBalance.text = newTokenAmount.toString()
-                binding.tvTotalPrice.text = totalPrice.toString()
+                val totalItemPrice =
+                    listDataCheckout?.listDataCheckout?.sumOf { it.itemPrice ?: 0 } ?: 0
+                binding.tvTotalPrice.text = totalItemPrice.toString()
                 binding.btnPay.setOnClickListener {
-                    if (newTokenAmount >= (args.dataCheckout?.itemPrice ?: 0)) {
-                        dataCheckoutToPayment = DataMoviePayment(
-                            movieId = args.dataCheckout?.movieId ?: 0,
-                            image = args.dataCheckout?.image ?: "",
-                            itemName = args.dataCheckout?.itemName ?: "",
-                            itemPrice = args.dataCheckout?.itemPrice ?: 0,
-                            totalPayment = newTokenAmount
-                        )
-                        /**
-                         * commented code will be use later
-                         */
-//                    dataCheckout?.let {
-//                        if (newTokenAmount >= it.itemPrice) {
-//                            dataCheckoutToPayment = DataMoviePayment(
-//                                movieId = checkout.movieId,
-//                                image = checkout.image,
-//                                itemName = checkout.itemName,
-//                                itemPrice = checkout.itemPrice,
-//                                totalPayment = newTokenAmount
-//                            )
-                            val bundle =
-                                bundleOf("dataMoviePayment" to dataCheckoutToPayment)
-                            findNavController().navigate(
-                                R.id.action_checkoutFragment_to_moviePaymentPageFragment,
-                                bundle
+                    val dataCheckoutList =
+                        listDataCheckout?.listDataCheckout
+
+
+                    if (newTokenAmount >= totalItemPrice) {
+                        listDataCheckoutToPayment =
+                            DataListMovie(dataCheckoutList?.map { dataCheckout ->
+                                DataMoviePayment(
+                                    movieId = dataCheckout.movieId ?: 0,
+                                    image = dataCheckout.image ?: "",
+                                    itemName = dataCheckout.itemName ?: "",
+                                    itemPrice = dataCheckout.itemPrice ?: 0,
+                                )
+                            } ?: listOf(),
+                                totalPayment = totalItemPrice
                             )
-                        } else {
-                            findNavController().navigate(R.id.action_checkoutFragment_to_myTokenFragment)
-                        }
+                        val bundle = bundleOf("listDataMoviePayment" to listDataCheckoutToPayment)
+                        findNavController().navigate(
+                            R.id.action_checkoutFragment_to_moviePaymentPageFragment,
+                            bundle
+                        )
+                    } else {
+                        findNavController().navigate(R.id.action_checkoutFragment_to_myTokenFragment)
                     }
                 }
-
-                binding.rvListView.apply {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = checkoutAdapter
-                    val listDataCheckout = listOf(dataCheckoutFragment)
-                    checkoutAdapter.submitList(listDataCheckout)
-                }
             }
-
-
-    override fun initListener() {
-        binding.toolbarCheckout.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
-    }
-
-    override fun observeData() {
-
     }
 }

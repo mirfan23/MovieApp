@@ -26,6 +26,8 @@ class LocalDataSource(
 
     fun fetchWishList(id: String): Flow<List<WishListEntity>> = dao.retrieveAllWishList(id)
 
+    fun fetchOneWishlist(movieId: Int, userId: String): WishListEntity = dao.retrieveOneWishlist(movieId, userId)
+
     suspend fun deleteWishlist(wishListEntity: WishListEntity) {
         dao.deleteWishlist(wishListEntity)
     }
@@ -35,7 +37,7 @@ class LocalDataSource(
         preference.putOnBoardingState(state)
     }
 
-//    fun getWishlistState(): Boolean = preference.getWishlistState()
+    fun getWishlistState(): Boolean = preference.getWishlistState()
 
     fun putWishlistState(state: Boolean) {
         preference.putWishlistState(state)
@@ -61,7 +63,8 @@ class LocalDataSource(
 
     suspend fun updateCheckCart(cartId: Int, value: Boolean) = dao.updateCheckCart(cartId, value)
 
+    fun updateTotalPriceChecked(userId: String): Int = dao.updateTotalPriceChecked(userId)
 
-    fun updateTotalPriceChecked(): Int = dao.updateTotalPriceChecked()
+    fun retrieveCheckedCart(userId: String): Flow<List<CartEntity>> = dao.retrieveCheckedCart(userId)
 
 }

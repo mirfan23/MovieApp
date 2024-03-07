@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.movieappfinal.core.local.entity.CartEntity
 import com.movieappfinal.core.local.entity.WishListEntity
-import com.movieappfinal.core.utils.Constant.tableCartName
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -30,8 +29,12 @@ interface MovieDao {
     @Query("SELECT * FROM wishlist_table WHERE userId = :id")
     fun retrieveAllWishList(id: String): Flow<List<WishListEntity>>
 
+    @Query("SELECT * FROM wishlist_table WHERE productId = :movieId AND userId = :userId")
+    fun retrieveOneWishlist(movieId: Int, userId: String): WishListEntity
+
     @Query("DELETE FROM wishlist_table")
     suspend fun deleteAllWishList()
+
 
     @Delete
     suspend fun deleteWishlist(wishList: WishListEntity)
@@ -42,7 +45,10 @@ interface MovieDao {
     @Query("UPDATE cart_table SET isChecked = :value WHERE cartId = :cartId")
     suspend fun updateCheckCart(cartId: Int, value: Boolean)
 
-    @Query("SELECT SUM(productPrice) FROM cart_table WHERE isChecked = 1")
-    fun updateTotalPriceChecked(): Int
+    @Query("SELECT SUM(productPrice) FROM cart_table WHERE isChecked = 1 AND userId = :userId")
+    fun updateTotalPriceChecked(userId: String): Int
+
+    @Query("SELECT * FROM cart_table WHERE isChecked = 1 AND userId = :userId")
+    fun retrieveCheckedCart(userId: String) : Flow<List<CartEntity>>
 
 }

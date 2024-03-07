@@ -4,9 +4,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.load
-import com.google.firebase.database.FirebaseDatabase
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.movieappfinal.R
+import com.movieappfinal.adapter.MoviePaymentItemAdapter
 import com.movieappfinal.core.domain.model.DataMovieTransaction
 import com.movieappfinal.core.utils.BaseFragment
 import com.movieappfinal.core.utils.launchAndCollectIn
@@ -21,18 +21,27 @@ class MoviePaymentPageFragment : BaseFragment<FragmentMoviePaymentPageBinding, D
 ) {
     override val viewModel: DashboardViewModel by viewModel()
     private val args: MoviePaymentPageFragmentArgs by navArgs()
+    private val paymentMovieItemAdapter by lazy {
+        MoviePaymentItemAdapter {}
+    }
 
     override fun initView() {
-        val dataPayment = args.dataMoviePayment
-        binding.tvPrice.text = dataPayment.itemPrice.toString()
-        binding.ivMoviePoster.load(dataPayment.image)
-        binding.tvMovieTitle.text = dataPayment.itemName
         val userName = viewModel.getCurrentUser()
-        binding.tvUsername.text = userName.let { it?.userName }
+        val dataPayment = args.listDataMoviePayment.listDataMovie
+        binding.apply {
+            tvPrice.text = args.listDataMoviePayment.totalPayment.toString()
+            tvUsername.text = userName.let { it?.userName }
+            btnContinue.text = getString(R.string.btn_continue)
+            tvNameUser.text = getString(R.string.name_title_payment)
+            tvPriceTitle.text = getString(R.string.total_price_title)
+            rvMoviePaymentItem.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = paymentMovieItemAdapter
+                paymentMovieItemAdapter.submitList(dataPayment)
+            }
+        }
 
-        binding.btnContinue.text = getString(R.string.btn_continue)
-        binding.tvNameUser.text = getString(R.string.name_title_payment)
-        binding.tvPriceTitle.text = getString(R.string.total_price_title)
+
     }
 
     override fun initListener() {}
@@ -47,12 +56,12 @@ class MoviePaymentPageFragment : BaseFragment<FragmentMoviePaymentPageBinding, D
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveTransactionToDatabase() {
-        val movieId = args.dataMoviePayment.movieId
-        val itemPrice = args.dataMoviePayment.itemPrice
-        val itemName = args.dataMoviePayment.itemName
-        val totalPrice = args.dataMoviePayment.totalPayment
+        val movieId = args.listDataMoviePayment.listDataMovie.map { it.movieId }
+        val itemPrice = args.listDataMoviePayment.listDataMovie.map { it.itemPrice }
+        val itemName = args.listDataMoviePayment.listDataMovie.map { it.itemName }
+        val totalPrice = args.listDataMoviePayment.totalPayment
         val userName = viewModel.getCurrentUser()
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
         val transactionDateTime = LocalDateTime.now().format(formatter)
 
         val movieTransaction = DataMovieTransaction(

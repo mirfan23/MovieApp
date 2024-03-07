@@ -178,44 +178,45 @@ class FirebaseRepositoryImpl(
 
     override suspend fun getTokenFromFirebase(userId: String): Flow<Int> = callbackFlow {
         trySend(0)
-        database.database.reference.child("token_transaction").child(userId).addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var totalToken = 0
-
-                for (transaction in snapshot.children) {
-                    val token = transaction.child("tokenAmount").getValue(String::class.java)
-                    val tokenAmount = token?.toIntOrNull() ?: 0
-                    totalToken += tokenAmount
+        database.database.reference.child("token_transaction").child(userId)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var totalToken = 0
+                    for (transaction in snapshot.children) {
+                        val token = transaction.child("tokenAmount").getValue(String::class.java)
+                        val tokenAmount = token?.toIntOrNull() ?: 0
+                        totalToken += tokenAmount
+                    }
+                    trySend(totalToken)
                 }
-                trySend(totalToken)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                trySend(0)
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    trySend(0)
+                }
+            })
         awaitClose()
     }
 
     override suspend fun getMovieTransactionFromFirebase(userId: String): Flow<Int> = callbackFlow {
         trySend(0)
-        database.database.reference.child("movie_transaction").child(userId).addValueEventListener(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var totalPrice = 0
+        database.database.reference.child("movie_transaction").child(userId)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var totalPrice = 0
 
-                for (transaction in snapshot.children) {
-                    val price = transaction.child("itemPrice").getValue(Int::class.java)
-                    if (price != null) {
-                        totalPrice += price
+                    for (transaction in snapshot.children) {
+                        val price = transaction.child("totalPrice").getValue(Int::class.java)
+                        if (price != null) {
+                            totalPrice += price
+                        }
                     }
+                    trySend(totalPrice)
                 }
-                trySend(totalPrice)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                trySend(0)
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    trySend(0)
+                }
+            })
         awaitClose()
     }
 

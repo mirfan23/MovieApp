@@ -5,6 +5,7 @@ import com.example.core.domain.model.DataPaymentMethod
 import com.movieappfinal.core.local.preferences.SharedPreferencesHelper
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataDetailMovie
 import com.movieappfinal.core.domain.model.DataMovieTransaction
@@ -20,6 +21,7 @@ import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.repository.FirebaseRepository
 import com.movieappfinal.core.domain.repository.MovieRepository
 import com.movieappfinal.core.domain.state.UiState
+import com.movieappfinal.core.local.entity.CartEntity
 import com.movieappfinal.core.remote.data.PaymentMethodResponse
 import com.movieappfinal.core.remote.data.TokenPaymentResponse
 import com.movieappfinal.core.utils.DataMapper.toEntity
@@ -122,6 +124,13 @@ class AppInteractor(
         }.flowOn(Dispatchers.IO).catch { throwable -> UiState.Error(throwable) }
     }
 
+    override suspend fun retrieveCheckedCart(userId: String): Flow<UiState<List<DataCart>>> = safeDataCall{
+        movieRepo.retrieveCheckedCart(userId).map { data ->
+            val mapped = data.map { cartEntity -> cartEntity.toUIData() }
+            UiState.Success(mapped)
+        }.flowOn(Dispatchers.IO).catch { throwable -> UiState.Error(throwable) }
+    }
+
     override suspend fun insertWishList(dataWishList: DataWishlist) {
         movieRepo.insertWishList(dataWishList.toEntity())
     }
@@ -134,16 +143,23 @@ class AppInteractor(
             }.flowOn(Dispatchers.IO).catch { throwable -> UiState.Error(throwable) }
         }
 
+    override suspend fun fetchOneWishlist(movieId: Int, userId: String): DataWishlist = safeDataCall{
+        movieRepo.fetchOneWishlist(movieId, userId).toUIData()
+    }
+
     override suspend fun deleteWishlist(dataWishList: DataWishlist) {
         movieRepo.deleteWishlist(dataWishList.toEntity())
     }
 
-    override suspend fun getConfigPayment(): Flow<List<DataTokenPaymentItem>> = safeDataCall {
+    override suspend fun getConfigPayment(): Flow<List<DataTokenPaymentItem>> =
+//        safeDataCall {
         firebaseRepo.getConfigPayment().map { data ->
-            val response = Gson().fromJson(data, TokenPaymentResponse::class.java)
-            response.map { it.toUiData() }.toList()
+            val typeToken = object  : TypeToken<List<DataTokenPaymentItem>>(){}.type
+//            val response = Gson().fromJson(data, TokenPaymentResponse::class.java)
+            val response : List<DataTokenPaymentItem> = Gson().fromJson(data, typeToken)
+            response
         }
-    }
+//    }
 
     override suspend fun getConfigStatusUpdate(): Flow<Boolean> =
         firebaseRepo.getConfigStatusUpdate()
@@ -174,8 +190,7 @@ class AppInteractor(
     override fun putWishlistState(value: Boolean) {
         movieRepo.putWishlistState(value)
     }
-
-//    override fun getWishlistState(): Boolean = movieRepo.getWishlistState()
+    override fun getWishlistState(): Boolean = movieRepo.getWishlistState()
 
 
     override fun getThemeStatus(): Boolean = sharedPreferencesHelper.getThemeStatus()
@@ -212,7 +227,7 @@ class AppInteractor(
         movieRepo.updateCheckCart(cartId, value)
     }
 
-    override suspend fun updateTotalPrice(): Int = safeDataCall {
-        movieRepo.updateTotalPrice()
+    override suspend fun updateTotalPrice(userId: String): Int = safeDataCall {
+        movieRepo.updateTotalPrice(userId)
     }
 }

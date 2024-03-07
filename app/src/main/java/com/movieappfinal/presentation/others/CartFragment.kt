@@ -28,15 +28,13 @@ import retrofit2.HttpException
 class CartFragment :
     BaseFragment<FragmentCartBinding, HomeViewModel>(FragmentCartBinding::inflate) {
     override val viewModel: HomeViewModel by viewModel()
-    var listDataCheckout = DataListCheckout()
+    private var listDataCheckout = DataListCheckout()
 
     private val cartAdapter by lazy {
         CartAdapter(
             action = {
                 val bundle = bundleOf("movieId" to it.movieId)
-                activity?.supportFragmentManager?.findFragmentById(R.id.fragment_container)
-                    ?.findNavController()
-                    ?.navigate(R.id.action_dashboardFragment_to_detailFragment, bundle)
+                findNavController().navigate(R.id.action_cartFragment_to_detailFragment, bundle)
             },
             remove = { entity -> removeItemFromCart(entity) },
             checkbox = { id, isChecked ->
@@ -65,6 +63,18 @@ class CartFragment :
         binding.cartToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.btnPay.setOnClickListener {
+            viewModel.retrieveCheckedCart()
+            val bundle =
+                bundleOf(
+                    "listDataCheckout" to listDataCheckout,
+                )
+            findNavController().navigate(
+                R.id.action_cartFragment_to_checkoutFragment,
+                bundle
+            )
+        }
     }
 
     override fun observeData() {
@@ -89,37 +99,43 @@ class CartFragment :
                         }
                     }.onSuccess { data ->
                         cartAdapter.submitList(data)
-                        viewModel.setDataListCart(data)
-                        /**
-                         * comment still in use
-                         */
-
-//                        dataCheckout = DataCheckout(
-//                            movieId = it.id,
-//                            image = Constant.Img_Url +it.poster,
-//                            itemName = it.title,
-//                            itemPrice = it.popularity
-//                        )
-                        listDataCheckout = DataListCheckout(
-                            data.map {
-                                DataCheckout(
-                                    movieId = it.movieId,
-                                    image = it.image,
-                                    itemPrice = it.moviePrice,
-                                    itemName = it.movieTitle
-                                )
-                            }
-                        )
-                        binding.btnPay.setOnClickListener {
-                                val bundle = bundleOf("listDataCheckout" to listDataCheckout)
-                                findNavController().navigate(
-                                    R.id.action_detailFragment_to_checkoutFragment,
-                                    bundle
-                                )
-                            }
-
                     }
                 }
+            }
+            retrieveCheckedCart().launchAndCollectIn(viewLifecycleOwner) { state ->
+                this.launch {
+                    state.onLoading {}
+                        .oError { error ->
+                            val errorMessage = when (error) {
+                                is HttpException -> {
+                                    val errorBody = error.response()?.errorBody()?.string()
+                                    "$errorBody"
+                                }
+
+                                else -> "${error.message}"
+                            }
+                            context?.let {
+                                CustomSnackbar.showSnackBar(
+                                    it,
+                                    binding.root,
+                                    errorMessage
+                                )
+                            }
+                        }.onSuccess { data ->
+                            viewModel.setDataListCart(data)
+                            listDataCheckout = DataListCheckout(
+                                data.map {
+                                    DataCheckout(
+                                        movieId = it.movieId,
+                                        image = it.image,
+                                        itemPrice = it.moviePrice,
+                                        itemName = it.movieTitle
+                                    )
+                                }
+                            )
+                        }
+                }
+
             }
             totalPrice.launchAndCollectIn(viewLifecycleOwner) {
                 binding.tvTotalPrice.text = it.toString()

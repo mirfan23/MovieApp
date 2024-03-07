@@ -16,6 +16,8 @@ import com.movieappfinal.core.domain.model.DataTokenTransaction
 import com.movieappfinal.core.domain.model.DataTrendingMovie
 import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.state.UiState
+import com.movieappfinal.core.local.entity.CartEntity
+import com.movieappfinal.core.local.entity.WishListEntity
 import kotlinx.coroutines.flow.Flow
 
 interface AppUseCase {
@@ -49,19 +51,20 @@ interface AppUseCase {
     suspend fun deleteCart(dataCart: DataCart)
     suspend fun insertWishList(dataWishList: DataWishlist)
     suspend fun fetchWishList(id: String): Flow<UiState<List<DataWishlist>>>
+    suspend fun fetchOneWishlist(movieId: Int, userId: String): DataWishlist
     suspend fun deleteWishlist(dataWishList: DataWishlist)
     suspend fun getConfigStatusUpdate(): Flow<Boolean>
     suspend fun getConfigPayment(): Flow<List<DataTokenPaymentItem>>
     suspend fun getConfigStatusUpdatePayment(): Flow<Boolean>
     suspend fun getConfigPaymentMethod(): Flow<List<DataPaymentMethod>>
     suspend fun updateCheckCart(cartId: Int, value: Boolean)
-    suspend fun updateTotalPrice(): Int
+    suspend fun updateTotalPrice(userId: String): Int
+    suspend fun retrieveCheckedCart(userId: String): Flow<UiState<List<DataCart>>>
     fun dataSession(): DataSession
     fun saveOnBoardingState(value: Boolean)
     fun getOnBoardingState(): Boolean
     fun putWishlistState(value: Boolean)
-
-    //    fun getWishlistState(): Boolean
+    fun getWishlistState(): Boolean
     fun putThemeStatus(value: Boolean)
     fun getThemeStatus(): Boolean
     fun putLanguageStatus(value: String)

@@ -13,6 +13,7 @@ import com.movieappfinal.R
 import com.movieappfinal.core.domain.model.DataCart
 import com.movieappfinal.core.domain.model.DataCheckout
 import com.movieappfinal.core.domain.model.DataDetailMovie
+import com.movieappfinal.core.domain.model.DataListCheckout
 import com.movieappfinal.core.domain.model.DataWishlist
 import com.movieappfinal.core.domain.state.onSuccess
 import com.movieappfinal.core.utils.BaseFragment
@@ -28,9 +29,8 @@ class DetailFragment :
     BaseFragment<FragmentDetailBinding, HomeViewModel>(FragmentDetailBinding::inflate) {
     override val viewModel: HomeViewModel by viewModel()
     private val safeArgs: DetailFragmentArgs by navArgs()
-    private var dataCart = DataCart()
-    private var dataWishlist = DataWishlist()
     private var dataCheckout = DataCheckout()
+    private var listDataCheckout = DataListCheckout()
     private val database = FirebaseDatabase.getInstance().reference
     private val movieReference = database.child("movie_transaction")
 
@@ -38,6 +38,7 @@ class DetailFragment :
         safeArgs.movieId.let { movieId ->
             viewModel.fetchDetail(movieId)
         }
+        viewModel.getWishlistState()
         binding.apply {
             toolbarDetail.title = getString(R.string.detail_title)
             tvDetailProduct.text = getString(R.string.movie_overview)
@@ -62,8 +63,7 @@ class DetailFragment :
                 )
             }
         }
-        binding.cbWishlist.setOnClickListener {
-            val isChecked = binding.cbWishlist.isChecked
+        binding.cbWishlist.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.cbWishlist.setButtonDrawable(context?.getDrawable(R.drawable.ic_wishlist_filled))
                 context?.let { context ->
@@ -76,7 +76,7 @@ class DetailFragment :
                 }
             } else {
                 binding.cbWishlist.setButtonDrawable(context?.getDrawable(R.drawable.ic_wishlist))
-                viewModel.run { removeWishlist(dataWishlist) }
+                viewModel.run { removeWishlistDetail() }
                 context?.let { context ->
                     CustomSnackbar.showSnackBar(
                         context,
@@ -85,6 +85,7 @@ class DetailFragment :
                     )
                 }
             }
+            viewModel.putWishlistState(isChecked)
         }
     }
 
@@ -102,33 +103,54 @@ class DetailFragment :
                             "%duration%",
                             it.runtime.toString()
                         )
-                        tvGenres.text = it.genres.map { it.name }.toString()
+                        tvGenres.text =
+                            it.genres.map { it.name }.toString().replace("[", "").replace("]", "");
                         tvDetailDesc.text = it.overview
                         tvMoviePrice.text = it.popularity.toString()
                         updateWishlist()
                         setDataCartDetail(it)
-                        viewModel.setDataCart(dataCart)
-                        setDataWishlistDetail(it)
-                        viewModel.setDataWishlist(dataWishlist)
-                        dataCheckout = DataCheckout(
-                            movieId = it.movieId,
-                            image = Img_Url + it.poster,
-                            itemName = it.title,
-                            itemPrice = it.popularity
+                        viewModel.setDataCart(
+                            DataCart(
+                                movieId = it.movieId,
+                                image = Img_Url + it.poster,
+                                movieTitle = it.title,
+                                moviePrice = it.popularity,
+                                userId = user.let { it?.userId ?: "" },
+                                isChecked = false,
+                            )
                         )
-                        /**
-                         * println() still in use
-                         */
+                        setDataWishlistDetail(it)
+                        viewModel.setDataWishlist(
+                            DataWishlist(
+                                movieId = it.movieId,
+                                image = Img_Url + it.poster,
+                                movieTitle = it.title,
+                                moviePrice = it.popularity,
+                                userId = user.let { it?.userId ?: "" },
+                                releaseDate = it.releaseDate,
+                                wishlist = false
+                            )
+                        )
+                        listDataCheckout = DataListCheckout(
+                            listOf(
+                                DataCheckout(
+                                    movieId = it.movieId,
+                                    image = Img_Url + it.poster,
+                                    itemName = it.title,
+                                    itemPrice = it.popularity
+
+                                )
+                            )
+                        )
                         movieReference.child(user?.userId ?: "")
                             .addListenerForSingleValueEvent(object : ValueEventListener {
                                 override fun onDataChange(snapshot: DataSnapshot) {
                                     for (childSnapshot in snapshot.children) {
-                                        val firebaseMovieId =
-                                            childSnapshot.child("movieId").getValue(Int::class.java)
-                                        if (firebaseMovieId == it.movieId) {
+                                        val firebaseMovieIds = childSnapshot.child("movieId").children.map { it.getValue(Int::class.java) ?: 0 }
+                                        if (firebaseMovieIds.contains(it.movieId)) {
                                             binding.btnBuy.isEnabled = false
-                                        } else {
-                                            binding.btnBuy.isEnabled = true
+                                            binding.btnToCart.isEnabled = false
+                                            break
                                         }
                                     }
                                 }
@@ -139,7 +161,9 @@ class DetailFragment :
                             })
                         binding.btnBuy.setOnClickListener {
                             if (btnBuy.isEnabled) {
-                                val bundle = bundleOf("dataCheckout" to dataCheckout)
+                                val bundle = bundleOf(
+                                    "listDataCheckout" to listDataCheckout
+                                )
                                 findNavController().navigate(
                                     R.id.action_detailFragment_to_checkoutFragment,
                                     bundle
@@ -162,7 +186,7 @@ class DetailFragment :
 
     private fun setDataCartDetail(dataDetailMovie: DataDetailMovie) {
         val user = viewModel.getCurrentUser()
-        dataCart = DataCart(
+        DataCart(
             movieId = dataDetailMovie.movieId,
             image = Img_Url + dataDetailMovie.poster,
             movieTitle = dataDetailMovie.title,
@@ -174,7 +198,7 @@ class DetailFragment :
 
     private fun setDataWishlistDetail(dataDetailMovie: DataDetailMovie) {
         val user = viewModel.getCurrentUser()
-        dataWishlist = DataWishlist(
+        DataWishlist(
             movieId = dataDetailMovie.movieId,
             image = Img_Url + dataDetailMovie.poster,
             movieTitle = dataDetailMovie.title,
